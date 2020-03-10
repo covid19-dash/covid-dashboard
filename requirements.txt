@@ -1,0 +1,7 @@
+pycovid
+plotly
+numpy
+pandas
+ipywidgets
+jupyter
+jupytext
