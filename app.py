@@ -1,4 +1,5 @@
 import dash
+from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
 from make_functions import make_map, make_timeplot
@@ -25,7 +26,38 @@ app.layout = html.Div([
         ],
         className="six columns"
         ),
+    dcc.Store(id='store', data=fig2)
     ])
+
+
+@app.callback(
+    Output('plot', 'figure'),
+    [Input('store', 'data')])
+def update_store(data):
+    return data
+
+
+@app.callback(
+    Output('store', 'data'),
+    [Input('map', 'clickData'),
+     Input('map', 'selectedData')],
+    [State('store', 'data')])
+def update_figure(clickData, selectedData, fig):
+    if clickData is None and selectedData is None:
+        return dash.no_update
+    if clickData is not None:
+        country = clickData['points'][0]['customdata'][1]
+        for trace in fig['data']:
+            if trace['name'] == country:
+                trace['visible'] = True
+    if selectedData is not None:
+        print(selectedData['points'])
+        countries = [point['customdata'][1]
+                        for point in selectedData['points']]
+        for trace in fig['data']:
+            if trace['name'] in countries:
+                trace['visible'] = True
+    return fig
 
 
 if __name__ == '__main__':

@@ -14,7 +14,9 @@ def make_map(df, country_mapping):
                     color_continuous_scale='Reds')
     fig.update_layout(title='Click or box/lasso select on map to select a country(ies)',
             coloraxis_colorbar_tickprefix='1.e')
-    fig.update_traces(hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}')
+    fig.update_traces(
+        hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
+        )
     return fig
 
 
@@ -23,7 +25,8 @@ def make_timeplot(df):
     fig = go.Figure()
     for country in df_confirmed.columns:
         fig.add_trace(go.Scatter(x=df_confirmed.index, y=df_confirmed[country],
-                                name=country, mode='markers+lines'))
+                                name=country, mode='markers+lines',
+                                visible=False))
     fig.update_layout(title='')
     return fig
 
