@@ -3,3 +3,4 @@ plotly
 numpy
 pandas
 dash
+gunicorn
