@@ -2,6 +2,7 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 from make_functions import make_map, make_timeplot
+from data_input import get_data
 
 from pycovid import pycovid
 df_all = pycovid.getCovidCases()
@@ -16,7 +17,7 @@ df_all = df.reset_index()
 
 
 fig1 = make_map(df_all)
-fig2 = make_timeplot(df_all)
+fig2 = make_timeplot(get_data())
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 

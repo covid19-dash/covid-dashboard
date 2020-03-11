@@ -14,13 +14,12 @@ def make_map(df_all):
     return fig
 
 
-def make_timeplot(df_all):
-    df_confirmed = df_all.query("type =='confirmed'")
+def make_timeplot(df):
+    df_confirmed = df['confirmed']
     fig = go.Figure()
-    for country in df_confirmed['iso'].unique():
-        df_tmp = df_confirmed.query("iso == @country")
-        fig.add_trace(go.Scatter(x=df_tmp['date'], y=np.cumsum(df_tmp['cases']),
-                                name=country, visible=False, mode='markers+lines'))
+    for country in df_confirmed.columns:
+        fig.add_trace(go.Scatter(x=df_confirmed.index, y=df_confirmed[country],
+                                name=country, mode='markers+lines'))
     fig.update_layout(title='')
     return fig
 
