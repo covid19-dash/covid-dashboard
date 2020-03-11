@@ -1,4 +1,4 @@
-#%%
+# %%
 # Preprocess data
 
 from pycovid import pycovid
@@ -12,7 +12,7 @@ group_columns.remove('province_state')
 df = df_all.groupby(group_columns).sum()
 df_all = df.reset_index()
 
-#%%
+# %%
 # Define static figure to tune its layout
 import plotly.express as px
 import plotly.graph_objects as go
@@ -40,7 +40,7 @@ fig2.update_layout(title='')
 fig1.show()
 fig2.show()
 
-#%%
+# %%
 # Now define figure widgets and connect click and selection events
 from ipywidgets import widgets
 import plotly.graph_objects as go
@@ -66,17 +66,17 @@ def update_countries(trace, points, selector):
         for country_index in country_indices:
             figw2.data[country_index].visible = True
         figw2.layout.title.text = 'Evolution' 
-        
 
-#%%
+
+# %%
 map_chart.on_click(update_country)
 map_chart.on_selection(update_countries)
 
-#%%
+# %%
 widgets.VBox([figw1, figw2])
 
-#%%
+# %%
 df_all.pivot(columns='type', values=['cases'])
 
-#%%
+# %%
 df_all
