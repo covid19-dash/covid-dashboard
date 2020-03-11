@@ -1,18 +1,4 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.2'
-      jupytext_version: 1.3.0
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-```python
+#%%
 # Preprocess data
 
 from pycovid import pycovid
@@ -20,22 +6,20 @@ df_all = pycovid.getCovidCases()
 df_all['iso'] = df_all['alpha-3']
 
 # Sum data for provinces
-group_columns = list(df_all.columns) 
+group_columns = list(df_all.columns)
 group_columns.remove('cases')
 group_columns.remove('province_state')
 df = df_all.groupby(group_columns).sum()
 df_all = df.reset_index()
 
-```
-
-```python
+#%%
 # Define static figure to tune its layout
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 
 df = df_all.query("type == 'confirmed'").query("date == '2020-03-08'")
-fig1 = px.choropleth(df, locations='iso', color=np.log(df['cases']), 
+fig1 = px.choropleth(df, locations='iso', color=np.log(df['cases']),
                     projection='robinson',
                     hover_data=[df['cases'], df['name']],
                     color_continuous_scale='Reds')
@@ -55,9 +39,8 @@ fig2.update_layout(title='')
 
 fig1.show()
 fig2.show()
-```
 
-```python
+#%%
 # Now define figure widgets and connect click and selection events
 from ipywidgets import widgets
 import plotly.graph_objects as go
@@ -85,28 +68,15 @@ def update_countries(trace, points, selector):
         figw2.layout.title.text = 'Evolution' 
         
 
+#%%
 map_chart.on_click(update_country)
 map_chart.on_selection(update_countries)
 
+#%%
 widgets.VBox([figw1, figw2])
-```
 
-```python
-
-```
-
-```python
-
-```
-
-```python
+#%%
 df_all.pivot(columns='type', values=['cases'])
-```
 
-```python
+#%%
 df_all
-```
-
-```python
-
-```
