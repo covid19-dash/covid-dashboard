@@ -4,6 +4,18 @@ Data massaging: prepare the data so that it is easy to plot it.
 
 from pycovid import pycovid
 
+def get_mapping():
+    """ Returns mapping between country names (keys) and ISO codes (values).
+    To be used for geo charts.
+    """
+    df = pycovid.getCovidCases()
+    countries = df['name'].unique()
+    # Ugly, could be faster
+    mapping = {country: df.query("name == @country")['alpha-3'].unique()[0] 
+                        for country in countries}
+    return mapping
+
+
 def get_data():
     """ Download the data and return it as a 'wide' data frame
     """
