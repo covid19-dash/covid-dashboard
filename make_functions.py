@@ -13,7 +13,8 @@ def make_map(df, country_mapping):
                     hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Reds')
     fig.update_layout(title='Click or box/lasso select on map to select a country(ies)',
-            coloraxis_colorbar_tickprefix='1.e')
+            coloraxis_colorbar_tickprefix='1.e',
+            dragmode='select')
     fig.update_traces(
         hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
         )
