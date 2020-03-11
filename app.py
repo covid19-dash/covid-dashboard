@@ -14,6 +14,7 @@ fig2 = make_timeplot(df)
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server 
 
 app.layout = html.Div([
     html.Div([
@@ -51,7 +52,6 @@ def update_figure(clickData, selectedData, fig):
             if trace['name'] == country:
                 trace['visible'] = True
     if selectedData is not None:
-        print(selectedData['points'])
         countries = [point['customdata'][1]
                         for point in selectedData['points']]
         for trace in fig['data']:
