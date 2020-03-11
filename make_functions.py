@@ -3,14 +3,18 @@ import plotly.express as px
 import numpy as np
 
 
-def make_map(df_all):
-    df = df_all.query("type == 'confirmed'").query("date == '2020-03-08'")
-    fig = px.choropleth(df, locations='iso', color=np.log(df['cases']),
+def make_map(df, country_mapping):
+    df = df['confirmed'].reset_index().melt(id_vars='date')
+    date_max = df['date'].max()
+    df = df.query("date == @date_max")
+    df['iso'] = [country_mapping[country] for country in df['country_region']]
+    fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
                     projection='robinson',
-                    hover_data=[df['cases'], df['name']],
+                    hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Reds')
-    fig.update_layout(title='Click or box/lasso select on map to select a country(ies)')
-    fig.update_traces(hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>New cases</b>:%{customdata[0]}')
+    fig.update_layout(title='Click or box/lasso select on map to select a country(ies)',
+            coloraxis_colorbar_tickprefix='1.e')
+    fig.update_traces(hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}')
     return fig
 
 

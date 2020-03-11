@@ -1,7 +1,9 @@
 # covid-dashboard
 
-The **last** cell of `covid.md` is a widget: you can select countries either by
-clicking or using selection tools of the modebar (box select or lasso select).
+To launch the Dash app:
 
-It is not implemented yet to unselect countries, but you can click in the
-legend to toggle the visibility of countries.
+```
+python3 app.py
+```
+
+then visit http://127.0.0.1:8050 with your browser

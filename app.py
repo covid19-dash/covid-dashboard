@@ -2,22 +2,13 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 from make_functions import make_map, make_timeplot
-from data_input import get_data
+from data_input import get_data, get_mapping
 
-from pycovid import pycovid
-df_all = pycovid.getCovidCases()
-df_all['iso'] = df_all['alpha-3']
-df_all = df_all.sort_values(by='date')
-# Sum data for provinces
-group_columns = list(df_all.columns)
-group_columns.remove('cases')
-group_columns.remove('province_state')
-df = df_all.groupby(group_columns).sum()
-df_all = df.reset_index()
+df = get_data()
+mapping = get_mapping()
 
-
-fig1 = make_map(df_all)
-fig2 = make_timeplot(get_data())
+fig1 = make_map(df, mapping)
+fig2 = make_timeplot(df)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
