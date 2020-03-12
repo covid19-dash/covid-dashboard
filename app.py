@@ -11,11 +11,8 @@ mapping = get_mapping()
 fig1 = make_map(df, mapping)
 fig2 = make_timeplot(df)
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, 
-        external_stylesheets=external_stylesheets
-        )
+app = dash.Dash(__name__)
 server = app.server 
 
 app.layout = html.Div([
@@ -30,7 +27,8 @@ app.layout = html.Div([
         className="six columns"
         ),
     dcc.Store(id='store', data=fig2)
-    ])
+    ],
+    style={'backgroundColor':'black'})
 
 app.clientside_callback(
     ClientsideFunction(
@@ -47,33 +45,13 @@ app.clientside_callback(
         function_name='update_store_data'
     ),
     output=Output('store', 'data'),
-    inputs=[Input('map', 'clickData')],
+    inputs=[
+        Input('map', 'clickData'),
+            Input('map', 'selectedData')],
     state=[State('store', 'data')],
     )
 
 
-"""
-@app.callback(
-    Output('store', 'data'),
-    [Input('map', 'clickData'),
-     Input('map', 'selectedData')],
-    [State('store', 'data')])
-def update_figure(clickData, selectedData, fig):
-    if clickData is None and selectedData is None:
-        return dash.no_update
-    if clickData is not None:
-        country = clickData['points'][0]['customdata'][1]
-        for trace in fig['data']:
-            if trace['name'] == country:
-                trace['visible'] = True
-    if selectedData is not None:
-        countries = [point['customdata'][1]
-                        for point in selectedData['points']]
-        for trace in fig['data']:
-            if trace['name'] in countries:
-                trace['visible'] = True
-    return fig
-"""
 
 if __name__ == '__main__':
     app.run_server(debug=True)
