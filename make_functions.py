@@ -32,6 +32,40 @@ def make_timeplot(df):
                                 name=country, mode='markers+lines',
                                 visible=False))
     fig.update_layout(title='')
+    fig.update_layout(
+    updatemenus=[
+        dict(
+            type = "buttons",
+            direction = "left",
+            buttons=list([
+                dict(
+                    args=[{"visible": [False,]*len(df_confirmed.columns)}],
+                    label="Reset",
+                    method="update",
+                ),
+                dict(
+                    args=["yaxis", {'type':'log'}],
+                    label="log",
+                    method="relayout",
+                ),
+                dict(
+                    args=["yaxis", {'type':'linear'}],
+                    label="lin",
+                    method="relayout",
+                ),
+
+            ]),
+            pad={"r": 10, "t": 10},
+            showactive=True,
+            x=0.05,
+            xanchor="left",
+            y=1.15,
+            yanchor="top",
+            font_color='black',
+        ),
+    ]
+)
+
     return fig
 
 

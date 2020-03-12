@@ -19,7 +19,7 @@ window.dash_clientside.clientside = {
 	    var country = clickdata['points'][0]['customdata'][1];
 	    for (i = 0; i < new_fig['data'].length; i++) {
 		if (new_fig['data'][i]['name'] == country){
-		    new_fig['data'][i]['visible'] = true;
+		    new_fig['data'][i]['visible'] = !(new_fig['data'][i]['visible']);
 		}
 	    }
 	}
