@@ -1,5 +1,5 @@
 import dash
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_html_components as html
 import dash_core_components as dcc
 from make_functions import make_map, make_timeplot
@@ -13,7 +13,9 @@ fig2 = make_timeplot(df)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, 
+        external_stylesheets=external_stylesheets
+        )
 server = app.server 
 
 app.layout = html.Div([
@@ -30,14 +32,27 @@ app.layout = html.Div([
     dcc.Store(id='store', data=fig2)
     ])
 
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside2',
+        function_name='get_store_data'
+    ),
+    output=Output('plot', 'figure'),
+    inputs=[Input('store', 'data')])
 
-@app.callback(
-    Output('plot', 'figure'),
-    [Input('store', 'data')])
-def update_store(data):
-    return data
+
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_store_data'
+    ),
+    output=Output('store', 'data'),
+    inputs=[Input('map', 'clickData')],
+    state=[State('store', 'data')],
+    )
 
 
+"""
 @app.callback(
     Output('store', 'data'),
     [Input('map', 'clickData'),
@@ -58,7 +73,7 @@ def update_figure(clickData, selectedData, fig):
             if trace['name'] in countries:
                 trace['visible'] = True
     return fig
-
+"""
 
 if __name__ == '__main__':
     app.run_server(debug=True)
