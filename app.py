@@ -19,12 +19,12 @@ app.layout = html.Div([
     html.Div([
         dcc.Graph(id='map', figure=fig1)
         ],
-        className="six columns"
+        className="seven columns"
         ),
     html.Div([
         dcc.Graph(id='plot', figure=fig2)
         ],
-        className="six columns"
+        className="five columns"
         ),
     dcc.Store(id='store', data=fig2)
     ],
@@ -54,5 +54,5 @@ app.clientside_callback(
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)
 

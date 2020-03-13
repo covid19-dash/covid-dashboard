@@ -12,12 +12,13 @@ def make_map(df, country_mapping):
     df = df.query("date == @date_max")
     df['iso'] = [country_mapping[country] for country in df['country_region']]
     fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
-                    projection='robinson',
+                    #projection='robinson',
                     hover_data=[df['value'], df['country_region']],
-                    color_continuous_scale='Reds')
+                    color_continuous_scale='Plasma')
     fig.update_layout(title='Click or box/lasso select on map to select a country(ies)',
             coloraxis_colorbar_tickprefix='1.e',
-            dragmode='select')
+            #dragmode='select',
+            margin=dict(l=0))
     fig.update_traces(
         hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
         )
@@ -31,7 +32,9 @@ def make_timeplot(df):
         fig.add_trace(go.Scatter(x=df_confirmed.index, y=df_confirmed[country],
                                 name=country, mode='markers+lines',
                                 visible=False))
-    fig.update_layout(title='')
+    fig.update_layout(title='',
+            xaxis=dict(rangeslider_visible=True,
+                range=('2020-02-15', '2020-03-12'))) #TODO use a variable for max date
     fig.update_layout(
     updatemenus=[
         dict(
@@ -55,11 +58,11 @@ def make_timeplot(df):
                 ),
 
             ]),
-            pad={"r": 10, "t": 10},
+            pad={"r": 10, "t": 10, "b":5},
             showactive=True,
             x=0.05,
             xanchor="left",
-            y=1.15,
+            y=1.35,
             yanchor="top",
             font_color='black',
         ),
