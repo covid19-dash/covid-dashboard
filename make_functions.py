@@ -15,7 +15,7 @@ def make_map(df, country_mapping):
                     #projection='robinson',
                     hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Plasma')
-    fig.update_layout(title='Click or box/lasso select on map to select a country(ies)',
+    fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
             #dragmode='select',
             margin=dict(l=0))
@@ -30,7 +30,7 @@ def make_timeplot(df):
     fig = go.Figure()
     for country in df_confirmed.columns:
         fig.add_trace(go.Scatter(x=df_confirmed.index, y=df_confirmed[country],
-                                name=country, mode='markers+lines',
+                                name=country[1], mode='markers+lines',
                                 visible=False))
     fig.update_layout(title='',
             xaxis=dict(rangeslider_visible=True,
