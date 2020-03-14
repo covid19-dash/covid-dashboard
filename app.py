@@ -84,15 +84,28 @@ app.clientside_callback(
     ),
     output=Output('store', 'data'),
     inputs=[
-        Input('map', 'clickData'),
-        Input('map', 'selectedData'),
         Input('table', "derived_virtual_data"),
         Input('table', "derived_virtual_selected_rows")],
     state=[State('store', 'data')],
     )
 
 
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside3',
+        function_name='update_table'
+    ),
+    output=Output('table', 'selected_rows'),
+    inputs=[
+        Input('map', 'clickData'),
+        Input('map', 'selectedData'),
+        Input('table', 'data')
+        ],
+    state=[State('table', 'selected_rows')],
+    )
+
+
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)
 
