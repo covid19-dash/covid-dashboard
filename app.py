@@ -15,30 +15,40 @@ import dash_core_components as dcc
 from make_figures import make_map, make_timeplot
 from data_input import get_data, get_mapping, tidy_most_recent
 
+# Data
 df = get_data()
 mapping = get_mapping()
 
+# Figures
 fig1 = make_map(tidy_most_recent(df), mapping)
 fig2 = make_timeplot(df)
+
+# Markdown text
+with open("text_block.md", "r") as f:
+    intro_md = f.read()
 
 
 app = dash.Dash(__name__)
 server = app.server 
 
 app.layout = html.Div([
-    html.Div([
-        dcc.Graph(id='map', figure=fig1)
-        ],
-        className="seven columns"
-        ),
-    html.Div([
-        dcc.Graph(id='plot', figure=fig2)
-        ],
-        className="five columns"
-        ),
-    dcc.Store(id='store', data=fig2)
+    html.Div([#row
+        html.Div([
+            dcc.Graph(id='map', figure=fig1)
+            ],
+            className="seven columns"
+            ),
+        html.Div([
+            dcc.Graph(id='plot', figure=fig2)
+            ],
+            className="five columns"
+            ),
+        dcc.Store(id='store', data=fig2)
+    ], className="row"),
+    html.Div([#row
+        dcc.Markdown(intro_md)
+        ], className="row", style={'font-color':'white'}),
     ],
-    #style={'backgroundColor':'black'}
     )
 
 app.clientside_callback(
@@ -65,5 +75,5 @@ app.clientside_callback(
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)
 
