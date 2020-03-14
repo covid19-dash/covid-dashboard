@@ -49,7 +49,7 @@ app.layout = html.Div([
         dcc.Store(id='store', data=fig2)
     ], className="row"),
     html.Div([#row
-        html.Div([dcc.Markdown(intro_md)], className="six columns"),
+        html.Div([dcc.Markdown(intro_md)], className="eight columns"),
         html.Div([
             dash_table.DataTable(
                 id='table',
@@ -62,9 +62,9 @@ app.layout = html.Div([
                     'maxHeight': '300px',
                     'overflowY': 'scroll'
                     },
-            )
-            ], className="six columns")
-        ], className="row", style={'font-color':'white'}),
+            ),
+            ], className="four columns")
+        ], className="row"),
     ],
     )
 
@@ -85,7 +85,9 @@ app.clientside_callback(
     output=Output('store', 'data'),
     inputs=[
         Input('map', 'clickData'),
-            Input('map', 'selectedData')],
+        Input('map', 'selectedData'),
+        Input('table', "derived_virtual_data"),
+        Input('table', "derived_virtual_selected_rows")],
     state=[State('store', 'data')],
     )
 
