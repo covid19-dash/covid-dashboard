@@ -5,7 +5,23 @@ The idea is to associate a visualization that shows data relevant to the
 public with a didactic text on why such evolution is expected. A
 forecasting model will be developed. 
 
-# covid-dashboard
+## Project vision
+
+This web-based visualization (https://covid19-dash.github.io/) is meant
+to help someone wanting to see or show what is a likely evolution of the
+situation for his local environment. The utlimate goal is to influence
+individual behavior, to decrease the spread.
+
+So, the goal is to reach the general public, not experts familiar with
+graphs and numbers.
+
+To predictions and the associated text should be trustworthy, hence be
+solid and sober, rather than fancy and dramatic. We would like this to be
+approved by people with the relevant expertise.
+
+# Development workflow
+
+## covid-dashboard
 
 To launch the Dash app:
 
@@ -15,15 +31,6 @@ python3 app.py
 
 then visit http://127.0.0.1:8050 with your browser
 
-Deployed version https://covid-dash.herokuapp.com/
-
-# Heroku deployment
-
-git push heroku master
-heroku ps:scale web=1
-
-Visit  https://covid-dash.herokuapp.com
-
-# Make static pages and deploy to github pages
+## Make static pages and deploy to github pages
 
 See the `Makefile`.
