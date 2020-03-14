@@ -1,3 +1,10 @@
+# Raising awareness on COVID-19 evolution
+
+The goal on this project is to raise awareness on the evolution of COVID.
+The idea is to associate a visualization that shows data relevant to the
+public with a didactic text on why such evolution is expected. A
+forecasting model will be developed. 
+
 # covid-dashboard
 
 To launch the Dash app:
