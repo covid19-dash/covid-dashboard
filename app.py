@@ -13,12 +13,12 @@ from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_html_components as html
 import dash_core_components as dcc
 from make_figures import make_map, make_timeplot
-from data_input import get_data, get_mapping
+from data_input import get_data, get_mapping, tidy_most_recent
 
 df = get_data()
 mapping = get_mapping()
 
-fig1 = make_map(df, mapping)
+fig1 = make_map(tidy_most_recent(df), mapping)
 fig2 = make_timeplot(df)
 
 

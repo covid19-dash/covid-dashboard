@@ -11,9 +11,6 @@ pio.templates.default = "plotly_dark"
 
 
 def make_map(df, country_mapping):
-    df = df['confirmed'].reset_index().melt(id_vars='date')
-    date_max = df['date'].max()
-    df = df.query("date == @date_max")
     df['iso'] = [country_mapping[country] for country in df['country_region']]
     fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
                     #projection='robinson',

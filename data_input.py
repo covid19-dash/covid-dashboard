@@ -4,6 +4,12 @@ Data massaging: prepare the data so that it is easy to plot it.
 
 from pycovid import pycovid
 
+def tidy_most_recent(df):
+    df = df['confirmed'].reset_index().melt(id_vars='date')
+    date_max = df['date'].max()
+    df = df.query("date == @date_max")
+    return df
+
 def get_mapping():
     """ Returns mapping between country names (keys) and ISO codes (values).
     To be used for geo charts.
