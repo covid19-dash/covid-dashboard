@@ -7,7 +7,7 @@ import plotly.express as px
 import numpy as np
 import plotly.io as pio
 
-pio.templates.default = "plotly_dark"
+pio.templates.default = "plotly_white"
 
 
 def make_map(df, country_mapping):
