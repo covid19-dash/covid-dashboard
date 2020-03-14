@@ -5,12 +5,10 @@ on:
       - master
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
+        uses: actions/checkout@v1
 
       - name: Setup python
         uses: actions/setup-python@v1
@@ -29,9 +27,13 @@ jobs:
         shell: bash
         run: make html
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3-test
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
         with:
-          SSH: true
-          BRANCH: gh-pages
-          FOLDER: 127.0.0.1:8050
+          hugo-version: '0.64.0'
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          publish_dir: ./127.0.0.1:8050
