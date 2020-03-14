@@ -1,8 +1,18 @@
+"""
+Dash app entry point
+
+To launch the app, run
+
+> python app.py
+
+Dash documentation: https://dash.plot.ly/
+"""
+
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_html_components as html
 import dash_core_components as dcc
-from make_functions import make_map, make_timeplot
+from make_figures import make_map, make_timeplot
 from data_input import get_data, get_mapping
 
 df = get_data()
@@ -28,7 +38,8 @@ app.layout = html.Div([
         ),
     dcc.Store(id='store', data=fig2)
     ],
-    style={'backgroundColor':'black'})
+    #style={'backgroundColor':'black'}
+    )
 
 app.clientside_callback(
     ClientsideFunction(
