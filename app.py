@@ -55,6 +55,13 @@ app.layout = html.Div([
                 id='table',
                 columns=[{"name": i, "id": i} for i in df_tidy_table],
                 data=df_tidy_table.to_dict('records'),
+                filter_action="native",
+                sort_action="native",
+                row_selectable="multi",
+                style_table={
+                    'maxHeight': '300px',
+                    'overflowY': 'scroll'
+                    },
             )
             ], className="six columns")
         ], className="row", style={'font-color':'white'}),
