@@ -32,10 +32,16 @@ most_affected_countries = active.columns[last_day.argsort()][::-1]
 
 ax = active[most_affected_countries[:20]].plot()
 ax.set_yscale('log')
-ax.set_title("Log-scale plot of number of cases")
+ax.set_title("Log-scale plot of number of active cases")
 
 # %%
-# Plot the logarithmic derivative (relative increments)
+# # A first attempt at modeling by smoothing the logarithmic growth
+
+# %%
+# The challenge is that the growth is spurred by the number of active
+# cases, for which we have only a poor estimate
+#
+# The logarithmic derivative (relative increments)
 #
 # Model: intercept + exponential:
 #          data = a + [1, b, b**2, b**3, ...]
@@ -78,9 +84,32 @@ ax = smoothed_increments.plot()
 ax.set_title('Smoothed increments')
 
 # %%
-# Fit the intercept of an exponential model with the corresponding
-# increment for the last few days of a country
-last_increments = smoothed_increments.iloc[-1]
-offsets = smoothed_increments.iloc[-1]
-#predictions = np.
+# # A second attempt with a simpler model: fit the last few points
+
+# %%
+# the log of the active counts in the last fortnight
+last_fortnight = active.iloc[-len(smoothing_kernel):]
+last_fortnight = np.log(last_fortnight)
+last_fortnight[last_fortnight == -np.inf] = 0
+
+ax = last_fortnight.plot()
+ax.set_title('Log of the number of active cases in the last fortnight')
+
+# %%
+# We use a weighted least square on the log of the active counts
+import pandas as pd
+design = pd.DataFrame({'linear': np.arange(len(smoothing_kernel)),
+                       'const': np.ones(len(smoothing_kernel))})
+
+import statsmodels.api as sm
+growth_rate = pd.DataFrame(data=np.zeros((1, len(active.columns))),
+                           columns=active.columns)
+for country in active.columns:
+    mod_wls = sm.WLS(last_fortnight[country].values, design,
+                    weights=smoothing_kernel, hasconst=True)
+    res_wls = mod_wls.fit()
+    growth_rate[country] = np.exp(res_wls.params.linear)
+
+growth_rate.T.plot(kind='barh')
+print(growth_rate.T.sort_values(by=0))
 
