@@ -17,7 +17,7 @@ clean:
 	rm -rf 127.0.0.1:8050/
 
 gh-pages:
-	cd 127.0.0.1:8050 && touch .nojekyll && git init && git add * && git add .nojekyll && git commit -m "update" && git remote add origin https://github.com/pydata-covid/pydata-covid.github.io.git && git push -f origin master
+	cd 127.0.0.1:8050 && touch .nojekyll && git init && git add * && git add .nojekyll && git commit -m "update" && git remote add origin https://github.com/covid19-dash/covid-dashboard.git && git push -f origin master
 	
 all: gh-pages
 
