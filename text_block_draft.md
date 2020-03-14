@@ -1,6 +1,6 @@
-# Documentation for covid-dashboard
+# What do these data mean?
 
-The aim of this project is to provide measured predictions about the future of the COVID-19 epidemic.  Please keep in mind that predicting the future is hard, and there is a substantial amount of uncertainty around any predictions regarding this epidemic.
+The aim of these visualizations is to provide measured predictions about the future of the COVID-19 epidemic based on existing data.  Please keep in mind that predicting the future is hard, and there is a substantial amount of uncertainty around any predictions regarding this epidemic.
 
 ## Where do the data come from?
 The data used here come from the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE), via their [Github page](https://github.com/CSSEGISandData/COVID-19). These data are aggregated from a large number of sources, described in more detail on their site.  The counts in the dataset describe the number of "confirmed cases", but note that these also include *presumptive positive* cases --- that is, cases that have the appearance of COVID-19 but have not been definitively confirmed by testing for the virus.
