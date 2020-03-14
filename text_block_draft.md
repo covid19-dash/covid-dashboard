@@ -19,15 +19,15 @@ A perfect diagnostic test would provide a positive result for every infected per
 ### Population differences
 There are differences between populations within and across countries that could affect the spread of the disease.  For example, the prevalence of chronic lung diseases (which increase the risk of severe COVID-19 infection) [vary between countries and between urban and rural enviornments](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4693508).  Differences in population density and in local customs (such as hand-shaking or face-kissing) could also affect the rates of disease transmission between different countries.
 
-## What's the difference between a linear plot and a log plot?
+## Understanding exponential growth and the log plot
 
-The linear plot shows the actual count of cases, while the log plot shows the *logarithm* of the number of cases - which is basically the number of times one has to multiply one number in order to get another.  In this case, we use 10 as the number that we will multiply, so that the logarithm tells us how many times would need to multiply 10 in order to get some particular value. There are a couple of reasons that it's common to plot the logarithm of the data.
+The plot of cases over time includes two different options: The linear plot shows the actual count of cases, while the log plot shows the *logarithm* of the number of cases - which is basically the number of times one has to multiply the number 10 in order to get the number of cases. There are a couple of reasons that it's common to plot the logarithm of the data.
 
-First, it lets us more easily see the relationships between trends over time when the actual numbers are very different.  Because the logarithm increasingly compresses large numbers, it makes it easier to see whether the rate of increase is similar between two countries, even when one has many more cases. 
-
-Second, and more important, the logarithm has a direct relationship to the way in which epidemics can grow. You may be familiar with the idea of *exponential growth* -- this is the idea that the number of cases grows as a multiple of itself.  Let's say that Patient Zero infects two people, and then each of those infects two more people, and so on. The number of infected people will grow by a larger amount each day -- two on the first day, four on the second day, eight on the third day, and so on.  This is what we call exponential growth, because the number of cases on each day is some number raised to the power of the number of days.  You can think of the logarithm as the opposite of the exponential.  If we take a plot of perfect exponential growth and plot it using the logarithmic scale, it will look like a straight line.  
+Most importantly, the logarithm has a direct relationship to the way in which epidemics can grow. You may be familiar with the idea of *exponential growth* -- this is the idea that the number of cases grows as a multiple of itself.  Let's say that Patient Zero infects two people, and then each of those infects two more people, and so on. The number of infected people will grow by a larger amount each day -- two on the first day, four on the second day, eight on the third day, and so on.  This is what we call exponential growth, because the number of cases on each day is some number raised to the power of the number of days.  You can think of the logarithm as the opposite of the exponential.  If we take a plot of perfect exponential growth and plot it using the logarithmic scale, it will look like a straight line.  
 
 For a deeper explanation of how exponential growth relates to epidemics, see [this video](https://www.youtube.com/watch?v=Kas0tIxDvrg).
+
+In addition, the log plot lets us more easily see the relationships between trends over time when the actual numbers are very different.  Because the logarithm increasingly compresses large numbers, it makes it easier to see whether the rate of increase is similar between two countries, even when one has many more cases. 
 
 
 ## How is the forecast made?
