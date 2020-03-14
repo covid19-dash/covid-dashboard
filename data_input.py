@@ -10,6 +10,7 @@ def tidy_most_recent(df):
     df = df.query("date == @date_max")
     return df
 
+
 def get_mapping():
     """ Returns mapping between country names (keys) and ISO codes (values).
     To be used for geo charts.

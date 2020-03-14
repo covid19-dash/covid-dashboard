@@ -21,7 +21,11 @@ approved by people with the relevant expertise.
 
 # Development workflow
 
-## covid-dashboard
+The application is built with a local dash app (https://plot.ly/dash/)
+for development. Then a Makefile is used to turn this in a static
+website.
+
+## Local development
 
 To launch the Dash app:
 

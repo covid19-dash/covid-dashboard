@@ -12,15 +12,25 @@ mem = Memory(location='.')
 import data_input
 data = mem.cache(data_input.get_data)()
 
+data = data.fillna(value=0)
+
+# %%
+# Align columns and compute active cases
+death, recovered = data['death'].align(data['recovered'], join='outer',
+                                       fill_value=0)
+inactive = death + recovered
+confirmed, inactive = data['confirmed'].align(inactive, join='outer',
+                                              fill_value=0)
+active = confirmed - inactive
+
 # Let's restrict ourselves to working only on the confirmed cases
-data = data['confirmed']
 
 # %%
 # Plot the time course of the most affected countries
-last_day = data.iloc[-1]
-most_affected_countries = data.columns[last_day.argsort()][::-1]
+last_day = active.iloc[-1]
+most_affected_countries = active.columns[last_day.argsort()][::-1]
 
-ax = data[most_affected_countries[:20]].plot()
+ax = active[most_affected_countries[:20]].plot()
 ax.set_yscale('log')
 ax.set_title("Log-scale plot of number of cases")
 
@@ -32,8 +42,8 @@ ax.set_title("Log-scale plot of number of cases")
 # hence:   diff = data.diff() = [b, b**2, b**3, ...]
 #          log = log(diff) = log(b) [1, 2, 3, ...]
 #          diff(log) = [log(b) log(b) log(b)]
-selected_countries = data.columns[last_day > 10]
-selected_data = data[selected_countries]
+selected_countries = active.columns[last_day > 10]
+selected_data = active[selected_countries]
 
 import numpy as np
 increments = selected_data.fillna(value=0).diff()
