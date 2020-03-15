@@ -7,6 +7,7 @@ To launch the app, run
 
 Dash documentation: https://dash.plot.ly/
 """
+import os
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
@@ -15,6 +16,11 @@ import dash_core_components as dcc
 from make_figures import make_map, make_timeplot
 from data_input import tidy_most_recent, get_all_data
 
+if 'DEBUG' in os.environ:
+    print("variable defined")
+    debug = os.environ['DEBUG'] == 'True'
+else:
+    debug = True
 
 # -------- Data --------------------------
 df, df_prediction = get_all_data()
@@ -124,5 +130,5 @@ app.clientside_callback(
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=debug)
 

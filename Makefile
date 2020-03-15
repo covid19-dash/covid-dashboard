@@ -1,3 +1,4 @@
+DEBUG :=False
 
 html:
 	python3 modeling.py
