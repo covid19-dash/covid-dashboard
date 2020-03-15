@@ -11,14 +11,19 @@ pio.templates.default = "plotly_white"
 
 
 def make_map(df, country_mapping):
+    """
+    Build figure with map of total number of cases
+
+    Parameters
+    ----------
+    df: pandas DataFrame
+    """
     df['iso'] = [country_mapping[country] for country in df['country_region']]
     fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
-                    #projection='robinson',
                     hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Plasma')
     fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
-            #dragmode='select',
             margin=dict(l=0))
     fig.update_traces(
         hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
@@ -27,6 +32,16 @@ def make_map(df, country_mapping):
 
 
 def make_timeplot(df):
+    """
+    Build figure showing evolution of number of cases vs. time for all countries.
+    The visibility of traces is set to 0 so that the interactive app will
+    toggle the visibility.
+
+    Parameters
+    ----------
+    df: pandas DataFrame
+        DataFrame created by :func:`data_input.get_data`, of wide format.
+    """
     df_confirmed = df['confirmed']
     fig = go.Figure()
     for country in df_confirmed.columns:
@@ -37,7 +52,7 @@ def make_timeplot(df):
             xaxis=dict(rangeslider_visible=True,
                 range=('2020-02-15', '2020-03-12'))) #TODO use a variable for max date
     fig.update_layout(
-    updatemenus=[
+        updatemenus=[
         dict(
             type = "buttons",
             direction = "left",
