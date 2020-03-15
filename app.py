@@ -16,20 +16,23 @@ import dash_core_components as dcc
 from make_figures import make_map, make_timeplot
 from data_input import get_data, get_mapping, tidy_most_recent
 
-# Data
-df = get_data()
-mapping = get_mapping()
-df_tidy = tidy_most_recent(df)
-df_tidy_table = df_tidy[['country_region', 'value']]
 
-# Figures
+# -------- Data --------------------------
+df = get_data() # all data
+mapping = get_mapping()
+df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
+df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
+
+# ----------- Figures ---------------------
 fig1 = make_map(df_tidy, mapping)
 fig2 = make_timeplot(df)
 
-# Markdown text
+# ------------ Markdown text ---------------
+# maybe later we can break the text in several parts
 with open("text_block.md", "r") as f:
     intro_md = f.read()
 
+# app definition
 
 app = dash.Dash(__name__)
 server = app.server 
@@ -67,6 +70,11 @@ app.layout = html.Div([
         ], className="row"),
     ],
     )
+
+# ---------------------- Callbacks ---------------------------------
+# Callbacks are all client-side (https://dash.plot.ly/performance)
+# in order to transform the app into static html pages
+# javascript functions are defined in assets/callbacks.js
 
 app.clientside_callback(
     ClientsideFunction(
@@ -107,5 +115,5 @@ app.clientside_callback(
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
 
