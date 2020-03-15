@@ -20,7 +20,7 @@ def get_mapping():
     df = fetch_john_hopkins_data()
     countries = df['name'].unique()
     # Ugly, could be faster
-    mapping = {country: df.query("name == @country")['alpha-3'].unique()[0]
+    mapping = {country: df.query("name == @country")['iso'].unique()[0]
                for country in countries}
     return mapping
 
@@ -29,14 +29,14 @@ def get_data():
     """ Download the data and return it as a 'wide' data frame
     """
     df = fetch_john_hopkins_data()
-    df.rename(columns={"alpha-3": "iso"}, inplace=True)
     # The number of reported cases per day, country, and type
     df_day = df.groupby(['country_region', 'iso', 'date', 'type']).sum()
 
     # %%
     # The cumulative sum
-    df_sum = df_day.groupby(['country_region', 'iso', 'type']
-                            ).transform(lambda x: x.cumsum())['cases']
+    df_sum = df_day.groupby([
+        'country_region', 'iso', 'type']
+    ).transform(lambda x: x.cumsum())['cases']
     df_sum = df_sum.reset_index()
     # %%
     # Switch to wide format (time series)
@@ -47,11 +47,13 @@ def get_data():
     data = data.fillna(value=0)
 
     # Align columns and compute active cases
-    death, recovered = data['death'].align(data['recovered'], join='outer',
-                                        fill_value=0)
+    death, recovered = data['death'].align(
+        data['recovered'], join='outer', fill_value=0
+    )
     inactive = death + recovered
-    confirmed, inactive = data['confirmed'].align(inactive, join='outer',
-                                                fill_value=0)
+    confirmed, inactive = data['confirmed'].align(
+        inactive, join='outer', fill_value=0
+    )
 
     active = confirmed - inactive
     # Add a level
@@ -59,4 +61,3 @@ def get_data():
     active.columns.names = ['type', 'iso', 'country_region']
     data = pd.concat((data, active), axis=1)
     return data
-
