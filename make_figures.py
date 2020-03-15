@@ -9,6 +9,7 @@ import plotly.io as pio
 
 pio.templates.default = "plotly_white"
 
+FIRST_LINE_HEIGHT = 600
 
 def make_map(df, country_mapping):
     """
@@ -24,7 +25,8 @@ def make_map(df, country_mapping):
                     color_continuous_scale='Plasma_r')
     fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
-            margin=dict(l=0))
+            margin=dict(l=0, r=0),
+            height=FIRST_LINE_HEIGHT)
     fig.update_traces(
         hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
         )
@@ -102,7 +104,8 @@ def make_timeplot(df_measure, df_prediction):
             yanchor="top",
             font_color='black',
         ),
-    ]
+    ],
+    height=.9*FIRST_LINE_HEIGHT,
 )
 
     return fig
