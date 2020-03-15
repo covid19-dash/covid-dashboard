@@ -15,20 +15,13 @@ import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
 from make_figures import make_map, make_timeplot
-from data_input import get_data, get_mapping, tidy_most_recent
+from data_input import get_data, get_mapping, tidy_most_recent, get_all_data
 
 
 # -------- Data --------------------------
-df = get_data() # all data
-mapping = get_mapping()
+df, df_prediction, mapping = get_all_data()
 df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
 df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
-
-if not os.path.exists('predictions.pkl'):
-    with open("modeling.py") as f_py:
-        exec(f_py.read())
-with open('predictions.pkl', 'rb') as f_pkl:
-    df_prediction = pickle.load(f_pkl)
 
 # ----------- Figures ---------------------
 fig1 = make_map(df_tidy, mapping)
