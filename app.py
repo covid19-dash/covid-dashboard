@@ -50,15 +50,15 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(id='map', figure=fig1)
             ],
-            className="seven columns"
+            className="pure-u-3-5"
             ),
         html.Div([
             dcc.Graph(id='plot', figure=fig2)
             ],
-            className="five columns"
+            className="pure-u-2-5"
             ),
         dcc.Store(id='store', data=fig2)
-    ], className="row"),
+    ], className="pure-g"),
     html.Div([#row
         html.Div([dcc.Markdown(intro_md)], className="eight columns"),
         html.Div([
