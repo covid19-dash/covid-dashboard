@@ -7,7 +7,8 @@ To launch the app, run
 
 Dash documentation: https://dash.plot.ly/
 """
-
+import os
+import pickle
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
@@ -23,9 +24,15 @@ mapping = get_mapping()
 df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
 df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
 
+if not os.path.exists('predictions.pkl'):
+    with open("modeling.py") as f_py:
+        exec(f_py.read())
+with open('predictions.pkl', 'rb') as f_pkl:
+    df_prediction = pickle.load(f_pkl)
+
 # ----------- Figures ---------------------
 fig1 = make_map(df_tidy, mapping)
-fig2 = make_timeplot(df, df)
+fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
 # maybe later we can break the text in several parts
@@ -34,33 +41,23 @@ with open("text_block.md", "r") as f:
 
 # app definition
 
-app = dash.Dash(__name__,
-    external_stylesheets = [
-        {
-            'href': 'https://unpkg.com/purecss@1.0.1/build/pure-min.css',
-            'rel': 'stylesheet',
-            'integrity': 'sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47',
-            'crossorigin': 'anonymous'
-        },
-        'https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css',
-        ],
-    )
-server = app.server
+app = dash.Dash(__name__)
+server = app.server 
 
 app.layout = html.Div([
     html.Div([#row
         html.Div([
             dcc.Graph(id='map', figure=fig1)
             ],
-            className="pure-u-1 pure-u-md-3-5"
+            className="seven columns"
             ),
         html.Div([
             dcc.Graph(id='plot', figure=fig2)
             ],
-            className="pure-u-1 pure-u-md-2-5"
+            className="five columns"
             ),
         dcc.Store(id='store', data=fig2)
-    ], className="pure-g"),
+    ], className="row"),
     html.Div([#row
         html.Div([dcc.Markdown(intro_md)], className="eight columns"),
         html.Div([

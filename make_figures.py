@@ -48,7 +48,6 @@ def make_timeplot(df_measure, df_prediction):
     # mode = 'confirmed'
     mode = 'active'
     df_measure_confirmed = df_measure[mode]
-    df_prediction_confirmed = df_prediction[mode]
     colors = px.colors.qualitative.Dark24
     n_colors = len(colors)
     fig = go.Figure()
@@ -59,9 +58,9 @@ def make_timeplot(df_measure, df_prediction):
                                  marker_color=colors[i%n_colors],
                                  line_color=colors[i%n_colors],
                                  visible=False))
-    for i, country in enumerate(df_prediction_confirmed.columns):
-        fig.add_trace(go.Scatter(x=df_measure_confirmed.index, 
-                                 y=df_measure_confirmed[country],
+    for i, country in enumerate(df_prediction.columns):
+        fig.add_trace(go.Scatter(x=df_prediction.index, 
+                                 y=df_prediction[country],
                                  name='+' + country[1], mode='lines',
                                  line_dash='dash',
                                  line_color=colors[i%n_colors],
