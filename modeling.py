@@ -12,18 +12,9 @@ mem = Memory(location='.')
 import data_input
 data = mem.cache(data_input.get_data)()
 
-data = data.fillna(value=0)
-
-# %%
-# Align columns and compute active cases
-death, recovered = data['death'].align(data['recovered'], join='outer',
-                                       fill_value=0)
-inactive = death + recovered
-confirmed, inactive = data['confirmed'].align(inactive, join='outer',
-                                              fill_value=0)
-active = confirmed - inactive
 
 # Below, we restrict ourselves to working only on the active cases
+active = data['active']
 
 # %%
 # Plot the time course of the most affected countries

@@ -3,6 +3,7 @@ Data massaging: prepare the data so that it is easy to plot it.
 """
 
 from pycovid import pycovid
+import pandas as pd
 
 def tidy_most_recent(df):
     df = df['confirmed'].reset_index().melt(id_vars='date')
@@ -42,5 +43,19 @@ def get_data():
                               columns=['type', 'iso', 'country_region'],
                               index=['date'])
     data = data.fillna(method='ffill')
+    data = data.fillna(value=0)
+
+    # Align columns and compute active cases
+    death, recovered = data['death'].align(data['recovered'], join='outer',
+                                        fill_value=0)
+    inactive = death + recovered
+    confirmed, inactive = data['confirmed'].align(inactive, join='outer',
+                                                fill_value=0)
+
+    active = confirmed - inactive
+    # Add a level
+    active = pd.concat(dict(active=active), axis=1)
+    active.columns.names = ['type', 'iso', 'country_region']
+    data = pd.concat((data, active), axis=1)
     return data
 
