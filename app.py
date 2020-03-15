@@ -7,15 +7,13 @@ To launch the app, run
 
 Dash documentation: https://dash.plot.ly/
 """
-import os
-import pickle
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
 from make_figures import make_map, make_timeplot
-from data_input import get_data, get_mapping, tidy_most_recent, get_all_data
+from data_input import tidy_most_recent, get_all_data
 
 
 # -------- Data --------------------------

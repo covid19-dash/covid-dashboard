@@ -64,15 +64,28 @@ def get_data():
     return data
 
 
+def exec_full(filepath):
+    """ Execute a Python file as a script
+    """
+    global_namespace = {
+        "__file__": filepath,
+        "__name__": "__main__",
+    }
+    with open(filepath, 'rb') as file:
+        exec(compile(file.read(), filepath, 'exec'), global_namespace)
+
+
 def get_all_data():
+    """ Retrieve both the actual data and the predictions from our model.
+    """
     df = get_data() # all data
     mapping = get_mapping()
     df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
     df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
 
     if not os.path.exists('predictions.pkl'):
-        with open("modeling.py") as f_py:
-            exec(f_py.read())
+        print('Running the model')
+        exec_full('modeling.py')
     with open('predictions.pkl', 'rb') as f_pkl:
         df_prediction = pickle.load(f_pkl)
     return df, df_prediction, mapping
