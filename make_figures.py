@@ -23,7 +23,7 @@ def make_map(df, country_mapping):
     fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
                     hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Plasma_r',
-                    labels={'color': 'Confirmed <br> cases'})
+                    labels={'color': 'Active <br> cases'})
     fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
             margin=dict(l=0, r=0),

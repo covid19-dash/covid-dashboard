@@ -1,3 +1,7 @@
+"""
+Fetch the data from John Hopkins' github
+"""
+
 import os
 import pandas as pd
 
