@@ -75,6 +75,7 @@ app.layout = html.Div([
                 data=df_tidy_table.to_dict('records'),
                 filter_action="native",
                 sort_action="native",
+                sort_by=[{'column_id':'value', 'direction':'desc'}],
                 row_selectable="multi",
                 style_table={
                     'maxHeight': '300px',
