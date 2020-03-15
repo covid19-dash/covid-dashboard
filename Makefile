@@ -1,5 +1,6 @@
 
 html:
+	python3 modeling.py
 	python3 app.py &
 	sleep 40
 	wget -r http://127.0.0.1:8050/ 
