@@ -1,7 +1,7 @@
 
 html:
 	python3 app.py &
-	sleep 8
+	sleep 20
 	wget -r http://127.0.0.1:8050/ 
 	wget -r http://127.0.0.1:8050/_dash-layout 
 	wget -r http://127.0.0.1:8050/_dash-dependencies
