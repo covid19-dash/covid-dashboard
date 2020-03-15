@@ -41,7 +41,9 @@ app = dash.Dash(__name__,
             'rel': 'stylesheet',
             'integrity': 'sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47',
             'crossorigin': 'anonymous'
-        }],
+        },
+        'https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css',
+        ],
     )
 server = app.server
 
