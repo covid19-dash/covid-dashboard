@@ -7,6 +7,7 @@ To launch the app, run
 
 Dash documentation: https://dash.plot.ly/
 """
+import os
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
@@ -15,14 +16,19 @@ import dash_core_components as dcc
 from make_figures import make_map, make_timeplot
 from data_input import tidy_most_recent, get_all_data
 
+if 'DEBUG' in os.environ:
+    print("variable defined")
+    debug = os.environ['DEBUG'] == 'True'
+else:
+    debug = True
 
 # -------- Data --------------------------
-df, df_prediction, mapping = get_all_data()
+df, df_prediction = get_all_data()
 df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
 df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
 
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy, mapping)
+fig1 = make_map(df_tidy)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
@@ -31,24 +37,35 @@ with open("text_block.md", "r") as f:
     intro_md = f.read()
 
 # app definition
-
-app = dash.Dash(__name__)
-server = app.server 
+app = dash.Dash(__name__,
+    external_stylesheets = [
+        {
+            'href': 'https://unpkg.com/purecss@1.0.1/build/pure-min.css',
+            'rel': 'stylesheet',
+            'integrity': 'sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47',
+            'crossorigin': 'anonymous'
+        },
+        'https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css',
+    ],
+)
+app.title = 'Covid-19: active cases and extrapolation'
+server = app.server
 
 app.layout = html.Div([
     html.Div([#row
         html.Div([
             dcc.Graph(id='map', figure=fig1)
             ],
-            className="seven columns"
+            className="pure-u-1 pure-u-md-3-5",
             ),
         html.Div([
             dcc.Graph(id='plot', figure=fig2)
             ],
-            className="five columns"
+            className="pure-u-1 pure-u-md-2-5",
             ),
-        dcc.Store(id='store', data=fig2)
-    ], className="row"),
+        dcc.Store(id='store', data=fig2),
+        ],
+        className="pure-g"),
     html.Div([#row
         html.Div([dcc.Markdown(intro_md)], className="eight columns"),
         html.Div([
@@ -113,5 +130,4 @@ app.clientside_callback(
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
-
+    app.run_server(debug=debug)

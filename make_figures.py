@@ -11,7 +11,7 @@ pio.templates.default = "plotly_white"
 
 FIRST_LINE_HEIGHT = 600
 
-def make_map(df, country_mapping):
+def make_map(df):
     """
     Build figure with map of total number of cases
 
@@ -19,11 +19,10 @@ def make_map(df, country_mapping):
     ----------
     df: pandas DataFrame
     """
-    df['iso'] = [country_mapping[country] for country in df['country_region']]
     fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
                     hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Plasma_r',
-                    labels={'color': 'Confirmed <br> cases'})
+                    labels={'color': 'Active <br> cases'})
     fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
             margin=dict(l=0, r=0),
@@ -113,8 +112,8 @@ def make_timeplot(df_measure, df_prediction):
 
 if __name__ == '__main__':
     from data_input import get_all_data, tidy_most_recent
-    df, df_prediction, mapping = get_all_data()
+    df, df_prediction = get_all_data()
     df_tidy = tidy_most_recent(df)
-    fig1 = make_map(df_tidy, mapping)
+    fig1 = make_map(df_tidy)
     fig2 = make_timeplot(df, df_prediction)
 
