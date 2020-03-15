@@ -9,7 +9,7 @@ forecasting model will be developed.
 
 This web-based visualization (https://covid19-dash.github.io/) is meant
 to help someone wanting to see or show what is a likely evolution of the
-situation for his local environment. The utlimate goal is to influence
+situation for their local environment. The ultimate goal is to influence
 individual behavior, to decrease the spread.
 
 So, the goal is to reach the general public, not experts familiar with
