@@ -14,18 +14,6 @@ def tidy_most_recent(df, column='active'):
     return df
 
 
-def get_mapping():
-    """ Returns mapping between country names (keys) and ISO codes (values).
-    To be used for geo charts.
-    """
-    df = fetch_john_hopkins_data()
-    countries = df['name'].unique()
-    # Ugly, could be faster
-    mapping = {country: df.query("name == @country")['iso'].unique()[0]
-               for country in countries}
-    return mapping
-
-
 def get_data():
     """ Download the data and return it as a 'wide' data frame
     """
@@ -72,7 +60,6 @@ def get_all_data():
     """ Retrieve both the actual data and the predictions from our model.
     """
     df = get_data() # all data
-    mapping = get_mapping()
     df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
     df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
 
@@ -81,4 +68,4 @@ def get_all_data():
         exec_full('modeling.py')
     with open('predictions.pkl', 'rb') as f_pkl:
         df_prediction = pickle.load(f_pkl)
-    return df, df_prediction, mapping
+    return df, df_prediction

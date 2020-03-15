@@ -17,12 +17,12 @@ from data_input import tidy_most_recent, get_all_data
 
 
 # -------- Data --------------------------
-df, df_prediction, mapping = get_all_data()
+df, df_prediction = get_all_data()
 df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
 df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
 
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy, mapping)
+fig1 = make_map(df_tidy)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
