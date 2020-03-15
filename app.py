@@ -50,12 +50,12 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(id='map', figure=fig1)
             ],
-            className="pure-u-3-5"
+            className="pure-u-1 pure-u-md-3-5"
             ),
         html.Div([
             dcc.Graph(id='plot', figure=fig2)
             ],
-            className="pure-u-2-5"
+            className="pure-u-1 pure-u-md-2-5"
             ),
         dcc.Store(id='store', data=fig2)
     ], className="pure-g"),
