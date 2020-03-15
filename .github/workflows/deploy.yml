@@ -25,7 +25,9 @@ jobs:
 
       - name: Build static page
         shell: bash
-        run: make html
+        run: |
+            make clean
+            make html
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
