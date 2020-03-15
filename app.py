@@ -31,9 +31,9 @@ with open("text_block.md", "r") as f:
     intro_md = f.read()
 
 # app definition
-
 app = dash.Dash(__name__)
-server = app.server 
+app.title = 'Covid-19: active cases and extrapolation'
+server = app.server
 
 app.layout = html.Div([
     html.Div([#row
