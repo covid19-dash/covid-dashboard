@@ -89,10 +89,10 @@ ax.set_title('Smoothed increments')
 # %%
 # the log of the active counts in the last fortnight
 last_fortnight = active.iloc[-len(smoothing_kernel):]
-last_fortnight = np.log(last_fortnight)
-last_fortnight[last_fortnight == -np.inf] = 0
+log_last_fortnight = np.log(last_fortnight)
+log_last_fortnight[last_fortnight == -np.inf] = 0
 
-ax = last_fortnight.plot()
+ax = last_fortnight[most_affected_countries[:20]].plot()
 ax.set_title('Log of the number of active cases in the last fortnight')
 
 # %%
@@ -105,11 +105,14 @@ import statsmodels.api as sm
 growth_rate = pd.DataFrame(data=np.zeros((1, len(active.columns))),
                            columns=active.columns)
 for country in active.columns:
-    mod_wls = sm.WLS(last_fortnight[country].values, design,
+    mod_wls = sm.WLS(log_last_fortnight[country].values, design,
                     weights=smoothing_kernel, hasconst=True)
     res_wls = mod_wls.fit()
     growth_rate[country] = np.exp(res_wls.params.linear)
 
-growth_rate.T.plot(kind='barh')
+ax = growth_rate[most_affected_countries[:20]].T.plot(kind='barh')
 print(growth_rate.T.sort_values(by=0))
+
+# %%
+# Now come back to the non-log data
 
