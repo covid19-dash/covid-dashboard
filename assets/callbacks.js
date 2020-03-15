@@ -60,7 +60,8 @@ window.dash_clientside.clientside = {
 	    countries.push(selectedrows[rows[i]]["country_region"]);
 	}
 	for (i = 0; i < new_fig['data'].length; i++) {
-	    if (countries.includes(new_fig['data'][i]['name'])){
+	    var name = new_fig['data'][i]['name'];
+	    if (countries.includes(name) || countries.includes(name.substring(1))){
 		new_fig['data'][i]['visible'] = true;
 	    }
 	    else{

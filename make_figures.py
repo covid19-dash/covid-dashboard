@@ -31,7 +31,7 @@ def make_map(df, country_mapping):
     return fig
 
 
-def make_timeplot(df):
+def make_timeplot(df_measure, df_prediction):
     """
     Build figure showing evolution of number of cases vs. time for all countries.
     The visibility of traces is set to 0 so that the interactive app will
@@ -39,18 +39,38 @@ def make_timeplot(df):
 
     Parameters
     ----------
-    df: pandas DataFrame
-        DataFrame created by :func:`data_input.get_data`, of wide format.
+    df_measure: pandas DataFrame
+        DataFrame of measured cases, created by :func:`data_input.get_data`, of wide format.
+
+    df_prediction: pandas DataFrame
+        DataFrame of predictions, with similar structure as df_measure
     """
-    df_confirmed = df['confirmed']
+    # mode = 'confirmed'
+    mode = 'active'
+    df_measure_confirmed = df_measure[mode]
+    df_prediction_confirmed = df_prediction[mode]
+    colors = px.colors.qualitative.Dark24
+    n_colors = len(colors)
     fig = go.Figure()
-    for country in df_confirmed.columns:
-        fig.add_trace(go.Scatter(x=df_confirmed.index, y=df_confirmed[country],
-                                name=country[1], mode='markers+lines',
-                                visible=False))
+    for i, country in enumerate(df_measure_confirmed.columns):
+        fig.add_trace(go.Scatter(x=df_measure_confirmed.index, 
+                                 y=df_measure_confirmed[country],
+                                 name=country[1], mode='markers+lines',
+                                 marker_color=colors[i%n_colors],
+                                 line_color=colors[i%n_colors],
+                                 visible=False))
+    for i, country in enumerate(df_prediction_confirmed.columns):
+        fig.add_trace(go.Scatter(x=df_measure_confirmed.index, 
+                                 y=df_measure_confirmed[country],
+                                 name='+' + country[1], mode='lines',
+                                 line_dash='dash',
+                                 line_color=colors[i%n_colors],
+                                 showlegend=False,
+                                 visible=False))
+
     fig.update_layout(title='',
             xaxis=dict(rangeslider_visible=True,
-                range=('2020-02-15', '2020-03-12'))) #TODO use a variable for max date
+                range=('2020-02-15', '2020-03-13'))) #TODO use a variable for max date
     fig.update_layout(
         updatemenus=[
         dict(
@@ -58,7 +78,7 @@ def make_timeplot(df):
             direction = "left",
             buttons=list([
                 dict(
-                    args=[{"visible": [False,]*len(df_confirmed.columns)}],
+                    args=[{"visible": [False,]*len(df_measure_confirmed.columns)}],
                     label="Reset",
                     method="update",
                 ),

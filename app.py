@@ -25,7 +25,7 @@ df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for
 
 # ----------- Figures ---------------------
 fig1 = make_map(df_tidy, mapping)
-fig2 = make_timeplot(df)
+fig2 = make_timeplot(df, df)
 
 # ------------ Markdown text ---------------
 # maybe later we can break the text in several parts
