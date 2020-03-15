@@ -6,3 +6,4 @@ dash
 gunicorn
 joblib
 matplotlib
+statsmodels
