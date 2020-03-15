@@ -5,6 +5,7 @@ Data massaging: prepare the data so that it is easy to plot it.
 from pycovid import pycovid
 import pandas as pd
 
+
 def tidy_most_recent(df):
     df = df['confirmed'].reset_index().melt(id_vars='date')
     date_max = df['date'].max()
