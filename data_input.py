@@ -2,7 +2,7 @@
 Data massaging: prepare the data so that it is easy to plot it.
 """
 
-from pycovid import pycovid
+from fetcher import fetch_john_hopkins_data
 import pandas as pd
 
 
@@ -17,18 +17,18 @@ def get_mapping():
     """ Returns mapping between country names (keys) and ISO codes (values).
     To be used for geo charts.
     """
-    df = pycovid.getCovidCases()
+    df = fetch_john_hopkins_data()
     countries = df['name'].unique()
     # Ugly, could be faster
-    mapping = {country: df.query("name == @country")['alpha-3'].unique()[0] 
-                        for country in countries}
+    mapping = {country: df.query("name == @country")['alpha-3'].unique()[0]
+               for country in countries}
     return mapping
 
 
 def get_data():
     """ Download the data and return it as a 'wide' data frame
     """
-    df = pycovid.getCovidCases()
+    df = fetch_john_hopkins_data()
     df.rename(columns={"alpha-3": "iso"}, inplace=True)
     # The number of reported cases per day, country, and type
     df_day = df.groupby(['country_region', 'iso', 'date', 'type']).sum()

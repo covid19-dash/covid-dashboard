@@ -7,14 +7,42 @@ URL_BASE = (
 )
 FILENAME_JOHN_HOPKINS = {
     "confirmed": "time_series_19-covid-Confirmed.csv",
-    "deaths": "time_series_19-covid-Deaths.csv",
+    "death": "time_series_19-covid-Deaths.csv",
     "recovered": "time_series_19-covid-Recovered.csv",
 }
 
 URL_COUNTRY_ISO = (
-    "https://raw.githubusercontent.com/lukes/"
-    "ISO-3166-Countries-with-Regional-Codes/master/slim-3/slim-3.csv"
+    "https://gist.githubusercontent.com/tadast/8827699/raw/"
+    "7255fdfbf292c592b75cf5f7a19c16ea59735f74/"
+    "countries_codes_and_coordinates.csv"
 )
+
+MAP_UNMATCHED_COUNTRIES = {
+    'Congo (Kinshasa)': "Congo, the Democratic Republic of the",
+    "Cote d'Ivoire": "Côte d'Ivoire",
+    'Czechia': "Czech Republic",
+    'Eswatini': "Swaziland",
+    'Holy See': "Italy",
+    'Iran': "Iran, Islamic Republic of",
+    'Korea, South': "South Korea",
+    'Moldova': "Moldova, Republic of",
+    'North Macedonia': "Macedonia, the former Yugoslav Republic of",
+    'Reunion': "Réunion",
+    'Taiwan*': "Taiwan",
+    'US': "United States",
+    'occupied Palestinian territory': "Palestinian Territory, Occupied",
+}
+
+MISSING_COUNTRIES = pd.DataFrame({
+    "Country": ["Curacao"],
+    "Alpha-2 code": ["CW"],
+    "Alpha-3 code": ["CUW"],
+    "Numeric code": [531.0],
+    "Latitude (average)": [12.169570],
+    "Longitude (average)": [-68.990021],
+})
+
+UNMATCHED_COUNTRIES = ['Cruise Ship']
 
 
 def fetch_john_hopkins_data():
@@ -34,5 +62,38 @@ def fetch_john_hopkins_data():
         )
         df_covid[key]["type"] = key
     df_covid = pd.concat(df_covid.values(), ignore_index=True)
+    df_covid = df_covid.replace({"Country/Region": MAP_UNMATCHED_COUNTRIES})
 
-    return df_covid
+    df_countries = pd.read_csv(URL_COUNTRY_ISO)
+    for col_name in df_countries.columns:
+        df_countries[col_name] = df_countries[col_name].str.strip('. "."')
+    float_column = [
+        "Numeric code", "Latitude (average)", "Longitude (average)"
+    ]
+    df_countries[float_column] = df_countries[float_column].astype(float)
+    df_countries = pd.concat(
+        [df_countries, MISSING_COUNTRIES], ignore_index=True
+    )
+
+    df = pd.merge(
+        left=df_covid,
+        right=df_countries,
+        left_on="Country/Region",
+        right_on="Country",
+        how="inner",
+    )
+
+    assert df["Country"].unique().shape == (141,), \
+        "Missing countries when making the merge"
+
+    df = df.rename(
+        columns={
+            "Country/Region": "name",
+            "Country": "country_region",
+            "Alpha-3 code": "alpha-3",
+            "Latitude (average)": "lat",
+            "Longitude (average)": "long",
+        }
+    )
+
+    return df
