@@ -76,7 +76,7 @@ growth_rate = pd.DataFrame(data=np.zeros((1, len(active.columns))),
 
 predicted_active_cases = pd.DataFrame()
 prediction_dates = pd.date_range(active.index[-kernel_size],
-                                 periods=kernel_size + 3)
+                                 periods=kernel_size + 7)
 
 for country in active.columns:
     mod_wls = sm.WLS(log_last_fortnight[country].values, design,
@@ -107,3 +107,7 @@ plt.legend(loc='best', ncol=3)
 ax.set_yscale('log')
 ax.set_title('Number of active cases in the last fortnight and prediction')
 plt.tight_layout()
+
+# %%
+# Save our results for the dashboard
+predicted_active_cases.to_pickle('predictions.pkl')
