@@ -41,7 +41,7 @@ The last 14 days of each country is used to estimate an exponential
 growth model.
 
 For people who understand numerical computing, the details of the
-computation can be found [here!](modelling.html).
+computation can be found [here](modeling.html).
 
 ## How can you be sure that the forecast is accurate?
 
