@@ -108,8 +108,8 @@ app.clientside_callback(
     ),
     output=Output('store', 'data'),
     inputs=[
-        Input('table', "derived_virtual_data"),
-        Input('table', "derived_virtual_selected_rows")],
+        Input('table', "data"),
+        Input('table', "selected_rows")],
     state=[State('store', 'data')],
     )
 
@@ -132,4 +132,3 @@ app.clientside_callback(
 
 if __name__ == '__main__':
     app.run_server(debug=debug)
-
