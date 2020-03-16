@@ -58,12 +58,12 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(id='map', figure=fig1)
             ],
-            className="pure-u-1 pure-u-md-1 pure-u-lg-3-5 pure-u-xl-12-24",
+            className="pure-u-1 pure-u-lg-1 pure-u-xl-12-24",
             ),
         html.Div([
             dcc.Graph(id='plot', figure=fig2)
             ],
-            className="pure-u-1 pure-u-md-1-2 pure-u-lg-2-5 pure-u-xl-7-24",
+            className="pure-u-1 pure-u-lg-1-2 pure-u-xl-7-24",
             ),
         dcc.Store(id='store', data=fig2),
         html.Div([
@@ -83,10 +83,10 @@ app.layout = html.Div([
                     },
             ),
             ],
-            className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4 pure-u-xl-5-24"),
+            className="pure-u-1 pure-u-lg-1-2 pure-u-xl-5-24"),
         html.Div([html.Div([dcc.Markdown(intro_md)],
                   className="text-block")],
-            className="pure-u-1 pure-u-md-1 pure-u-lg-3-4 pure-u-xl-22-24"),
+            className="pure-u-1 pure-u-lg-1 pure-u-xl-22-24"),
         ],
         className="pure-g"),
     ],
