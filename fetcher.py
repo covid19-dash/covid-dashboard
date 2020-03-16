@@ -88,8 +88,12 @@ def fetch_john_hopkins_data():
         how="inner",
     )
 
-    assert df["Country"].unique().shape == (141,), \
-        "Missing countries when making the merge"
+    assert df["Country"].unique().shape[0] >= 143, \
+        "Missing countries when making the merge: not enough countries"
+    assert 'China' in df["Country"].unique(), \
+        "Missing countries when making the merge: China missing"
+    assert 'South Korea' in df["Country"].unique(), \
+        "Missing countries when making the merge: South Korea missing"
 
     df = df.rename(
         columns={
