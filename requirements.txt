@@ -8,6 +8,6 @@ joblib
 matplotlib
 statsmodels
 nbconvert
-ipython
+ipykernel
 jupyter_client
 sphinx-gallery
