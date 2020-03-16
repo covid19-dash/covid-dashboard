@@ -125,8 +125,8 @@
 html is set to 62.5% so that all the REM measurements throughout Skeleton
 are based on 10px sizing. So basically 1.5rem = 15px :) */
 /* Gael Varoquaux: overridding to have better display on small devices */
-/*html {
-  font-size: 62.5%; }*/
+html {
+  font-size: 75%; }
 body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
@@ -415,3 +415,10 @@ there.
 /* Larger than Desktop HD */
 @media (min-width: 1200px) {}
 
+/* Rules specific to the Covid app
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+div.text-block {
+    max-width: 70em;
+    margin-left: auto;
+    margin-right: auto;
+}

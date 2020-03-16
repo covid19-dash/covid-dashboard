@@ -13,7 +13,7 @@ from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
-from make_figures import make_map, make_timeplot
+from make_figures import make_map, make_timeplot, FIRST_LINE_HEIGHT
 from data_input import tidy_most_recent, get_all_data
 
 if 'DEBUG' in os.environ:
@@ -53,22 +53,19 @@ app.title = 'Covid-19: active cases and extrapolation'
 server = app.server
 
 app.layout = html.Div([
+    html.H1(children=app.title),
     html.Div([#row
         html.Div([
             dcc.Graph(id='map', figure=fig1)
             ],
-            className="pure-u-1 pure-u-md-3-5",
+            className="pure-u-1 pure-u-md-1 pure-u-lg-3-5 pure-u-xl-12-24",
             ),
         html.Div([
             dcc.Graph(id='plot', figure=fig2)
             ],
-            className="pure-u-1 pure-u-md-2-5",
+            className="pure-u-1 pure-u-md-1-2 pure-u-lg-2-5 pure-u-xl-7-24",
             ),
         dcc.Store(id='store', data=fig2),
-        ],
-        className="pure-g"),
-    html.Div([#row
-        html.Div([dcc.Markdown(intro_md)], className="eight columns"),
         html.Div([
             dash_table.DataTable(
                 id='table',
@@ -81,12 +78,17 @@ app.layout = html.Div([
                 sort_by=[{'column_id':'value', 'direction':'desc'}],
                 row_selectable="multi",
                 style_table={
-                    'maxHeight': '300px',
+                    'maxHeight': '{0}px'.format(FIRST_LINE_HEIGHT),
                     'overflowY': 'scroll'
                     },
             ),
-            ], className="four columns")
-        ], className="row"),
+            ],
+            className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4 pure-u-xl-5-24"),
+        html.Div([html.Div([dcc.Markdown(intro_md)],
+                  className="text-block")],
+            className="pure-u-1 pure-u-md-1 pure-u-lg-3-4 pure-u-xl-22-24"),
+        ],
+        className="pure-g"),
     ],
     )
 
