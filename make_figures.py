@@ -75,7 +75,7 @@ def make_timeplot(df_measure, df_prediction):
     fig.update_layout(title='',
             xaxis=dict(rangeslider_visible=True,
                 range=(last_day - 2 * week,
-                       last_day + week)))
+                       last_day + .4 * week)))
     fig.update_layout(
         updatemenus=[
         dict(
