@@ -5,6 +5,7 @@ Utility functions to generate plotly figures from dataframe. Called in app.py
 import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
+import pandas as pd
 import plotly.io as pio
 
 pio.templates.default = "plotly_white"
@@ -69,9 +70,12 @@ def make_timeplot(df_measure, df_prediction):
                                  showlegend=False,
                                  visible=False))
 
+    last_day = df_measure_confirmed.index.max()
+    week = pd.DateOffset(days=7)
     fig.update_layout(title='',
             xaxis=dict(rangeslider_visible=True,
-                range=('2020-03-02', '2020-03-20'))) #TODO use a variable for max date
+                range=(last_day - 2 * week,
+                       last_day + week)))
     fig.update_layout(
         updatemenus=[
         dict(
