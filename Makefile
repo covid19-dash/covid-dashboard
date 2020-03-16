@@ -1,8 +1,7 @@
-DEBUG :=False
 
 html:
 	python3 modeling.py
-	python3 app.py &
+	export DEBUG=False && python3 app.py &
 	sleep 40
 	wget -r http://127.0.0.1:8050/ 
 	wget -r http://127.0.0.1:8050/_dash-layout 
