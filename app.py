@@ -72,7 +72,9 @@ app.layout = html.Div([
         html.Div([
             dash_table.DataTable(
                 id='table',
-                columns=[{"name": i, "id": i} for i in df_tidy_table],
+                columns=[{"name": "Country", "id": "country_region"},
+                         {"name": "Cases", "id": "value"},
+                        ],
                 data=df_tidy_table.to_dict('records'),
                 filter_action="native",
                 sort_action="native",

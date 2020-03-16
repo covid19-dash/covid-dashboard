@@ -71,7 +71,7 @@ def make_timeplot(df_measure, df_prediction):
 
     fig.update_layout(title='',
             xaxis=dict(rangeslider_visible=True,
-                range=('2020-02-15', '2020-03-13'))) #TODO use a variable for max date
+                range=('2020-03-02', '2020-03-20'))) #TODO use a variable for max date
     fig.update_layout(
         updatemenus=[
         dict(
