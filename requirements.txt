@@ -7,3 +7,6 @@ gunicorn
 joblib
 matplotlib
 statsmodels
+nbconvert
+jupyter_client
+sphinx-gallery
