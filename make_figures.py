@@ -74,7 +74,7 @@ def make_timeplot(df_measure, df_prediction):
     day = pd.DateOffset(days=1)
     fig.update_layout(title='',
             xaxis=dict(rangeslider_visible=True,
-                range=(last_day - 14 * day,
+                range=(last_day - 10 * day,
                        last_day + 4 * day)))
     fig.update_layout(
         updatemenus=[
