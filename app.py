@@ -17,8 +17,8 @@ from make_figures import make_map, make_timeplot
 from data_input import tidy_most_recent, get_all_data
 
 if 'DEBUG' in os.environ:
-    print("DEBUG environment variable present")
     debug = os.environ['DEBUG'] == 'True'
+    print(f"DEBUG environment variable present, DEBUG set to {debug}")
 else:
     print("No DEBUG environment variable: defaulting to debug mode")
     debug = True
