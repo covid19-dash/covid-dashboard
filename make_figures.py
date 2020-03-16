@@ -71,11 +71,11 @@ def make_timeplot(df_measure, df_prediction):
                                  visible=False))
 
     last_day = df_measure_confirmed.index.max()
-    week = pd.DateOffset(days=7)
+    day = pd.DateOffset(days=1)
     fig.update_layout(title='',
             xaxis=dict(rangeslider_visible=True,
-                range=(last_day - 2 * week,
-                       last_day + .4 * week)))
+                range=(last_day - 14 * day,
+                       last_day + 4 * day)))
     fig.update_layout(
         updatemenus=[
         dict(
