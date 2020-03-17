@@ -77,9 +77,6 @@ import statsmodels.api as sm
 def fit_on_window(data, kernel):
     """ Fit the last window of the data
     """
-    kernel = smoothing_kernel
-    data = active
-
     kernel_size = len(kernel)
     last_fortnight = data.iloc[-kernel_size:]
     log_last_fortnight = np.log(last_fortnight)
@@ -210,7 +207,8 @@ def historical_replay(data, kernel, threshold=50, prediction_horizon=4):
         # We now compute the mean absolute relative error
 
         # Note that pandas' axis align magical matches the dates below
-        relative_error = (test_data - predicted_data).dropna() / test_data
+        relative_error = ((test_data - predicted_data[-prediction_horizon:])
+                          / test_data)
         relative_error = relative_error.abs().mean(axis=1)
         all_errors.append(relative_error.reset_index()[0])
     return np.mean(all_errors, axis=0)
