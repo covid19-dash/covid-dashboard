@@ -161,7 +161,7 @@ def make_timeplot(df_measure, df_prediction):
         margin=dict(t=0, b=0.02),
         # The legend position + font size
         # See https://plot.ly/python/legend/#style-legend
-        legend=dict(x=.5, y=.8, font_size=LABEL_FONT_SIZE,
+        legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
                     title="Active cases in"),
 )
     return fig
