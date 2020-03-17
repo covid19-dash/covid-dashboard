@@ -56,20 +56,42 @@ def make_timeplot(df_measure, df_prediction):
     n_colors = len(colors)
     fig = go.Figure()
     for i, country in enumerate(df_measure_confirmed.columns):
-        fig.add_trace(go.Scatter(x=df_measure_confirmed.index, 
+        fig.add_trace(go.Scatter(x=df_measure_confirmed.index,
                                  y=df_measure_confirmed[country],
                                  name=country[1], mode='markers+lines',
                                  marker_color=colors[i%n_colors],
                                  line_color=colors[i%n_colors],
                                  visible=False))
-    for i, country in enumerate(df_prediction.columns):
-        fig.add_trace(go.Scatter(x=df_prediction.index, 
-                                 y=df_prediction[country],
+    prediction = df_prediction['prediction']
+    upper_bound = df_prediction['upper_bound']
+    lower_bound = df_prediction['lower_bound']
+    for i, country in enumerate(prediction.columns):
+        # Do not plot predictions for a country with less than 50 cases
+        if df_measure_confirmed[country][-1] < 50:
+            continue
+        fig.add_trace(go.Scatter(x=prediction.index,
+                                 y=prediction[country],
                                  name='+' + country[1], mode='lines',
                                  line_dash='dash',
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
                                  visible=False))
+        fig.add_trace(go.Scatter(x=upper_bound.index,
+                                 y=upper_bound[country],
+                                 name='+' + country[1], mode='lines',
+                                 line_dash='dot',
+                                 line_color=colors[i%n_colors],
+                                 showlegend=False,
+                                 visible=False,
+                                 line_width=.8))
+        fig.add_trace(go.Scatter(x=lower_bound.index,
+                                 y=lower_bound[country],
+                                 name='+' + country[1], mode='lines',
+                                 line_dash='dot',
+                                 line_color=colors[i%n_colors],
+                                 showlegend=False,
+                                 visible=False,
+                                 line_width=.8))
 
     last_day = df_measure_confirmed.index.max()
     day = pd.DateOffset(days=1)

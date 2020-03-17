@@ -8,7 +8,6 @@ To launch the app, run
 Dash documentation: https://dash.plot.ly/
 """
 import os
-import textwrap
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table

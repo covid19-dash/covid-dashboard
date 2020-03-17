@@ -77,6 +77,9 @@ import statsmodels.api as sm
 def fit_on_window(data, kernel):
     """ Fit the last window of the data
     """
+    kernel = smoothing_kernel
+    data = active
+
     kernel_size = len(kernel)
     last_fortnight = data.iloc[-kernel_size:]
     log_last_fortnight = np.log(last_fortnight)
@@ -89,6 +92,8 @@ def fit_on_window(data, kernel):
                                columns=data.columns)
 
     predicted_cases = pd.DataFrame()
+    predicted_cases_lower = pd.DataFrame()
+    predicted_cases_upper = pd.DataFrame()
     prediction_dates = pd.date_range(data.index[-kernel_size],
                                     periods=kernel_size + 7)
 
@@ -100,7 +105,21 @@ def fit_on_window(data, kernel):
         predicted_cases[country] = np.exp(res_wls.params.const +
                 res_wls.params.linear * np.arange(len(prediction_dates))
             )
+        # 1st and 3rd quartiles in the confidence intervals
+        conf_int = res_wls.conf_int(alpha=.25)
+        # We chose to account only for error in growth rate, and not in
+        # baseline number of cases
+        predicted_cases_lower[country] = np.exp(res_wls.params.const +
+                conf_int[0].linear * np.arange(len(prediction_dates))
+            )
+        predicted_cases_upper[country] = np.exp(res_wls.params.const +
+                conf_int[1].linear * np.arange(len(prediction_dates))
+            )
 
+    predicted_cases = pd.concat(dict(prediction=predicted_cases,
+                                     lower_bound=predicted_cases_lower,
+                                     upper_bound=predicted_cases_upper),
+                                axis=1)
     predicted_cases['date'] = prediction_dates
     predicted_cases = predicted_cases.set_index('date')
     if kernel_size > 10:
@@ -113,8 +132,7 @@ def fit_on_window(data, kernel):
 
 # %%
 # Fit it on the data
-growth_rate, predicted_active_cases = fit_on_window(active,
-                                                    smoothing_kernel)
+growth_rate, predicted_cases = fit_on_window(active, smoothing_kernel)
 
 ax = growth_rate[most_affected_countries[:20]].T.plot(kind='barh',
     legend=False)
@@ -124,20 +142,30 @@ plt.tight_layout()
 print(growth_rate.T.sort_values(by=0))
 
 # %%
-# Our prediction
+# Plot our prediction
 
-ax = predicted_active_cases[most_affected_countries[:10]].plot(
-        style='--', figsize=(7, 7))
+ax = last_fortnight[most_affected_countries[:10]].plot(figsize=(8, 7))
+predicted_cases['prediction'][most_affected_countries[:10]].plot(
+        ax=ax, style='--')
+predicted_cases['lower_bound'][most_affected_countries[:10]].plot(
+        ax=ax, style=':')
+predicted_cases['upper_bound'][most_affected_countries[:10]].plot(
+        ax=ax, style=':')
 
-last_fortnight[most_affected_countries[:10]].plot(ax=ax)
-plt.legend(loc='best', ncol=3)
+plt.legend(loc=(.8, -1.3))
 ax.set_yscale('log')
 ax.set_title('Number of active cases in the last fortnight and prediction')
-plt.tight_layout()
 
 # %%
-# Save our results for the dashboard
-predicted_active_cases.to_pickle('predictions.pkl')
+# Save our results for the dashboard. We pickle a dict, because
+# hierachical columns do not pickle right
+import pickle
+with open('predictions.pkl', 'wb') as out_file:
+    pickle.dump(dict(prediction=predicted_cases['prediction'],
+                     lower_bound=predicted_cases['lower_bound'],
+                     upper_bound=predicted_cases['upper_bound'],
+                    ),
+                out_file)
 
 # %%
 # --------
@@ -178,6 +206,7 @@ def historical_replay(data, kernel, threshold=50, prediction_horizon=4):
         train_data = past_data[:-prediction_horizon]
         test_data = past_data[-prediction_horizon:]
         _, predicted_data = fit_on_window(train_data, kernel)
+        predicted_data = predicted_data['prediction']
         # We now compute the mean absolute relative error
 
         # Note that pandas' axis align magical matches the dates below
