@@ -27,13 +27,18 @@ else:
 df, df_prediction = get_all_data()
 # most recent date, tidy format (one column for countries)
 df_tidy = tidy_most_recent(df)
+df_tidy_fatalities = tidy_most_recent(df, 'death')
+df_tidy_recovered = tidy_most_recent(df, 'recovered')
 # keep only two columns for Dash DataTable
 df_tidy_table = df_tidy[['country_region', 'value']]
 # The population information
 pop = get_populations()
 
+df_tidy_table = df_tidy_table.reset_index()
+initial_indices = list(df_tidy_table['value'].nlargest(2).index)
+
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy, pop)
+fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered, pop)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
@@ -52,13 +57,14 @@ app = dash.Dash(__name__,
             'crossorigin': 'anonymous'
         },
         'https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css',
+        'https://unpkg.com/purecss@1.0.1/build/base-min.css',
     ],
 )
 app.title = 'Covid-19: active cases and extrapolation'
 server = app.server
 
 app.layout = html.Div([
-    html.H1(children=app.title),
+    html.H1(children=app.title, className="title"),
     html.Div([#row
         html.Div([
             dcc.Graph(id='map', figure=fig1)
@@ -70,7 +76,7 @@ app.layout = html.Div([
             ],
             className="pure-u-1 pure-u-lg-1-2 pure-u-xl-8-24",
             ),
-        dcc.Store(id='store', data=fig2),
+        dcc.Store(id='store', data=[fig2, initial_indices]),
         html.Div([
             dash_table.DataTable(
                 id='table',
@@ -152,7 +158,8 @@ app.clientside_callback(
         Input('map', 'selectedData'),
         Input('table', 'data')
         ],
-    state=[State('table', 'selected_rows')],
+    state=[State('table', 'selected_rows'),
+           State('store', 'data')],
     )
 
 
