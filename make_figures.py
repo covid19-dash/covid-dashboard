@@ -14,7 +14,8 @@ FIRST_LINE_HEIGHT = 600
 
 LABEL_FONT_SIZE = 18
 
-def make_map(df, pop):
+
+def make_map(df, df_fatalities, df_recovered, pop):
     """
     Build figure with map of total number of cases
 
@@ -32,19 +33,27 @@ def make_map(df, pop):
     normalized_values = normalized_values.dropna()
     # Plot per Million individual
     normalized_values *= 1e6
+    hovertemplate = ('<b>Country</b>:%{customdata[0]}<br>' +
+                     '<b>Active cases per million</b>: %{customdata[1]:.1f}<br>' +
+                     '<b>Active cases</b>: %{customdata[2]}<br>' +
+                     '<b>Fatalities</b>: %{customdata[3]}<br>' +
+                     '<b>Recovered</b>: %{customdata[4]}' 
+                     )
     fig = px.choropleth(df, locations='iso',
                     color=np.log10(normalized_values),
-                    hover_data=[df['value'], df['country_region']],
+                    custom_data=[df['country_region'], normalized_values,
+                                 df['value'], df_fatalities['value'],
+                                 df_recovered['value']],
                     color_continuous_scale='Plasma_r',
                     labels={'color': 'Active<br>cases<br>per<br>Million'})
-    fig.update_layout(title='Click on map to select a country',
+    fig.update_layout(title='Click on map to add/remove a country',
             coloraxis_colorbar_tickprefix='1.e',
             coloraxis_colorbar_len=0.6,
             coloraxis_colorbar_title_font_size=LABEL_FONT_SIZE,
-            margin=dict(l=0.03, r=0, t=0, b=0),
+            margin=dict(l=0.03, r=0, b=0),
             height=FIRST_LINE_HEIGHT)
     fig.update_traces(
-        hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
+            hovertemplate=hovertemplate,
         )
     return fig
 

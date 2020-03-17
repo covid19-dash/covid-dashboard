@@ -21,13 +21,13 @@ window.dash_clientside.clientside3 = {
 
 	var countries = [];
 	if (clickdata) {
-	    var country = clickdata['points'][0]['customdata'][1];
+	    var country = clickdata['points'][0]['customdata'][0];
 	    countries.push(country);
 	}
 	if (selecteddata) {
 	    var countries = [];
 		for (i = 0; i < selecteddata['points'].length; i++) {
-		    countries.push(selecteddata['points'][i]['customdata'][1]);
+		    countries.push(selecteddata['points'][i]['customdata'][0]);
 	    }
 	}
 	for (i = 0; i < countries.length; i++) {

@@ -27,13 +27,15 @@ else:
 df, df_prediction = get_all_data()
 # most recent date, tidy format (one column for countries)
 df_tidy = tidy_most_recent(df)
+df_tidy_fatalities = tidy_most_recent(df, 'death')
+df_tidy_recovered = tidy_most_recent(df, 'recovered')
 # keep only two columns for Dash DataTable
 df_tidy_table = df_tidy[['country_region', 'value']]
 # The population information
 pop = get_populations()
 
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy, pop)
+fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered, pop)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
