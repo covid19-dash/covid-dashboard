@@ -92,8 +92,13 @@ app.layout = html.Div([
                 style_cell_conditional=[
                     {'if': {'column_id': 'country_region'},
                      'width': '70%'},
-                ]
-
+                ],
+                style_data_conditional=[
+                {
+                    'if': {'row_index': 'odd'},
+                    'backgroundColor': 'rgb(248, 248, 248)'
+                }
+                ],
             ),
             ],
             className="pure-u-1 pure-u-lg-1-2 pure-u-xl-4-24"),
