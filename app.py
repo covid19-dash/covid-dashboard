@@ -79,8 +79,6 @@ app.layout = html.Div([
                 sort_action="native",
                 sort_by=[{'column_id':'value', 'direction':'desc'}],
                 row_selectable="multi",
-                tooltip={'value':{'type': 'markdown', 'value': tooltip_cases, 
-                                  'delay':0, 'duration': 3000}},
                 style_table={
                     'maxHeight': '{0}px'.format(FIRST_LINE_HEIGHT),
                     'overflowY': 'scroll'
