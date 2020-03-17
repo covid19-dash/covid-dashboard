@@ -26,7 +26,8 @@ def make_map(df):
                     labels={'color': 'Active <br> cases'})
     fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
-            margin=dict(l=0, r=0),
+            coloraxis_colorbar_len=0.6,
+            margin=dict(l=0, r=0, t=0, b=0),
             height=FIRST_LINE_HEIGHT)
     fig.update_traces(
         hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
