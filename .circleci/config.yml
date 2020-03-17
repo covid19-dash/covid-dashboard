@@ -13,7 +13,7 @@ jobs:
       - run: make html
       - store_artifacts:
           path: ./127.0.0.1:8050
-          destination: doc
+          destination: .
       - persist_to_workspace:
           root: ./127.0.0.1:8050
           paths: .
