@@ -65,7 +65,7 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(id='plot', figure=fig2)
             ],
-            className="pure-u-1 pure-u-lg-1-2 pure-u-xl-7-24",
+            className="pure-u-1 pure-u-lg-1-2 pure-u-xl-8-24",
             ),
         dcc.Store(id='store', data=fig2),
         html.Div([
@@ -97,7 +97,7 @@ app.layout = html.Div([
 
             ),
             ],
-            className="pure-u-1 pure-u-lg-1-2 pure-u-xl-5-24"),
+            className="pure-u-1 pure-u-lg-1-2 pure-u-xl-4-24"),
         html.Div([html.Div([dcc.Markdown(intro_md)],
                   className="text-block")],
             className="pure-u-1 pure-u-lg-1 pure-u-xl-22-24"),
