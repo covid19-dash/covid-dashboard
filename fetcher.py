@@ -2,12 +2,12 @@
 Fetch the data from John Hopkins' github
 """
 
-import os
 import pandas as pd
+import urllib
 
 URL_BASE = (
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/"
-    "csse_covid_19_data/csse_covid_19_time_series"
+    "csse_covid_19_data/csse_covid_19_time_series/"
 )
 FILENAME_JOHN_HOPKINS = {
     "confirmed": "time_series_19-covid-Confirmed.csv",
@@ -51,7 +51,7 @@ UNMATCHED_COUNTRIES = ['Cruise Ship']
 
 def fetch_john_hopkins_data():
     df_covid = {
-        key: pd.read_csv(os.path.join(URL_BASE, filename))
+        key: pd.read_csv(urllib.request.urljoin(URL_BASE, filename))
         for key, filename in FILENAME_JOHN_HOPKINS.items()
     }
     columns_drop = ["Province/State", "Lat", "Long"]
