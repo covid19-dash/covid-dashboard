@@ -8,6 +8,7 @@ To launch the app, run
 Dash documentation: https://dash.plot.ly/
 """
 import os
+import textwrap
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
@@ -37,7 +38,8 @@ fig2 = make_timeplot(df, df_prediction)
 with open("text_block.md", "r") as f:
     intro_md = f.read()
 
-# app definition
+
+# -----------App definition-----------------------
 app = dash.Dash(__name__,
     external_stylesheets = [
         {
@@ -81,6 +83,18 @@ app.layout = html.Div([
                     'maxHeight': '{0}px'.format(FIRST_LINE_HEIGHT),
                     'overflowY': 'scroll'
                     },
+                style_cell={
+                    'height': 'auto', 'minHeight': '30px',
+                    'minWidth': '0px', 'maxWidth': '10px',
+                    'whiteSpace': 'normal'
+                },
+                style_filter={'height':'20px',
+                    },
+                style_cell_conditional=[
+                    {'if': {'column_id': 'country_region'},
+                     'width': '70%'},
+                ]
+
             ),
             ],
             className="pure-u-1 pure-u-lg-1-2 pure-u-xl-5-24"),
