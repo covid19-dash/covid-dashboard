@@ -11,6 +11,7 @@ jobs:
       - run: export
       - run: make clean
       - run: make html
+      - run: python ./.circleci/inject_parllel_number.py ./127.0.0.1\:8050/index.html
       - store_artifacts:
           path: ./127.0.0.1:8050
           destination: .
