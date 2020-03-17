@@ -28,6 +28,9 @@ df, df_prediction = get_all_data()
 df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
 df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
 
+df_tidy_table = df_tidy_table.reset_index()
+initial_indices = list(df_tidy_table['value'].nlargest(2).index)
+
 # ----------- Figures ---------------------
 fig1 = make_map(df_tidy)
 fig2 = make_timeplot(df, df_prediction)
@@ -66,7 +69,7 @@ app.layout = html.Div([
             ],
             className="pure-u-1 pure-u-lg-1-2 pure-u-xl-8-24",
             ),
-        dcc.Store(id='store', data=fig2),
+        dcc.Store(id='store', data=[fig2, initial_indices]),
         html.Div([
             dash_table.DataTable(
                 id='table',
@@ -148,7 +151,8 @@ app.clientside_callback(
         Input('map', 'selectedData'),
         Input('table', 'data')
         ],
-    state=[State('table', 'selected_rows')],
+    state=[State('table', 'selected_rows'),
+           State('store', 'data')],
     )
 
 
