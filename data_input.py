@@ -69,3 +69,7 @@ def get_all_data():
     with open('predictions.pkl', 'rb') as f_pkl:
         df_prediction = pickle.load(f_pkl)
     return df, df_prediction
+
+def get_populations():
+    pop = pd.read_csv('data/countryInfo.txt', sep='\t', skiprows=50)
+    return pop

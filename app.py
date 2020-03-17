@@ -14,7 +14,7 @@ import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
 from make_figures import make_map, make_timeplot, FIRST_LINE_HEIGHT
-from data_input import tidy_most_recent, get_all_data
+from data_input import tidy_most_recent, get_all_data, get_populations
 
 if 'DEBUG' in os.environ:
     debug = os.environ['DEBUG'] == 'True'
@@ -25,11 +25,15 @@ else:
 
 # -------- Data --------------------------
 df, df_prediction = get_all_data()
-df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
-df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
+# most recent date, tidy format (one column for countries)
+df_tidy = tidy_most_recent(df)
+# keep only two columns for Dash DataTable
+df_tidy_table = df_tidy[['country_region', 'value']]
+# The population information
+pop = get_populations()
 
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy)
+fig1 = make_map(df_tidy, pop)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
