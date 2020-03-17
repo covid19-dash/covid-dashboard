@@ -100,6 +100,7 @@ def make_timeplot(df_measure, df_prediction):
                 range=(last_day - 10 * day,
                        last_day + 4 * day)))
     fig.update_layout(
+        showlegend=True,
         updatemenus=[
         dict(
             type = "buttons",
