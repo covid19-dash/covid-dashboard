@@ -52,13 +52,14 @@ app = dash.Dash(__name__,
             'crossorigin': 'anonymous'
         },
         'https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css',
+        'https://unpkg.com/purecss@1.0.1/build/base-min.css',
     ],
 )
 app.title = 'Covid-19: active cases and extrapolation'
 server = app.server
 
 app.layout = html.Div([
-    html.H1(children=app.title),
+    html.H1(children=app.title, className="title"),
     html.Div([#row
         html.Div([
             dcc.Graph(id='map', figure=fig1)
