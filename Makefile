@@ -7,7 +7,7 @@ html:
 	sed '/# --------/,$$d' modeling.py > modeling_short.py
 	sphx_glr_python_to_jupyter.py modeling_short.py
 	jupyter nbconvert --execute --to html modeling_short.ipynb
-	rm -rf modeling_short.ipynb
+	rm -rf modeling_short.ipynb modeling_short.py
 	# Now build the app
 	export DEBUG=False && python3 app.py &
 	sleep 30
