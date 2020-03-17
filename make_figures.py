@@ -12,7 +12,7 @@ pio.templates.default = "plotly_white"
 
 FIRST_LINE_HEIGHT = 600
 
-LABEL_FONT_SIZE = 20
+LABEL_FONT_SIZE = 18
 
 def make_map(df):
     """
@@ -25,12 +25,12 @@ def make_map(df):
     fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
                     hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Plasma_r',
-                    labels={'color': 'Active <br> cases'})
+                    labels={'color': 'Active<br>cases'})
     fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
             coloraxis_colorbar_len=0.6,
             coloraxis_colorbar_title_font_size=LABEL_FONT_SIZE,
-            margin=dict(l=0, r=0, t=0, b=0),
+            margin=dict(l=0.03, r=0, t=0, b=0),
             height=FIRST_LINE_HEIGHT)
     fig.update_traces(
         hovertemplate='<b>Country</b>:%{customdata[1]}<br><b>Cases</b>:%{customdata[0]}',
@@ -130,19 +130,20 @@ def make_timeplot(df_measure, df_prediction):
             showactive=True,
             x=0.05,
             xanchor="left",
-            y=1.35,
+            y=1.05,
             yanchor="top",
             font_color='black',
         ),
         ],
-        xaxis_tickfont_size=LABEL_FONT_SIZE - 2,
-        yaxis_tickfont_size=LABEL_FONT_SIZE - 2,
+        xaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+        yaxis_tickfont_size=LABEL_FONT_SIZE - 4,
         height=FIRST_LINE_HEIGHT,
+        margin=dict(t=0, b=0.02),
         # The legend position + font size
         # See https://plot.ly/python/legend/#style-legend
-        legend=dict(x=.5, y=.8, font_size=LABEL_FONT_SIZE),
+        legend=dict(x=.5, y=.8, font_size=LABEL_FONT_SIZE,
+                    title="Active cases in"),
 )
-
     return fig
 
 
