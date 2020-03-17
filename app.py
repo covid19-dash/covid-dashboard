@@ -117,7 +117,8 @@ app.layout = html.Div([
             className="pure-u-1 pure-u-lg-1 pure-u-xl-22-24"),
         ],
         className="pure-g"),
-        html.Footer([
+        html.Div([
+            html.Span('Contributors', className='contributors'),
             html.Ul([
                 html.Li(['Gaël Varoquaux, Inria & McGill University']),
                 html.Li(['Emmanuelle Gouillart, Plotly Inc']),

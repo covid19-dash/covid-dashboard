@@ -140,7 +140,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0;
   font-weight: 400; }
-h1 { font-size: 2rem; letter-spacing: -.1rem; margin-bottom: 1.5rem; margin-top: 2rem}
+h1 { font-size: 2rem; letter-spacing: -.1rem; margin-bottom: 1.5rem; margin-top: 2.5rem}
 h1.title {font-size: 2.5rem; color: rgb(18, 7, 137); margin-left: 1em;}
 h2 { font-size: 1.5rem; letter-spacing: -.1rem; margin-bottom: 1rem; margin-top: 1.6rem;}
 h3 { font-size: 1.3rem; letter-spacing: -.1rem; margin-bottom: .8rem; margin-top: 1.4rem;}
@@ -425,5 +425,26 @@ div.text-block {
 
 
 div.footer {
-    border: 4px lightgrey solid;
+    font-size: 75%;
+    border-top: 1px solid #eee;
+    margin-top: 3.4286em;
+    margin-bottom: .5em;
+    padding: 1.1429em;
+    background: rgb(250, 250, 250);
+    color: #666;
+}
+
+div.footer ul {
+    list-style: none;
+    display: inline-block;
+    margin-bottom: 0em;
+}
+
+div.footer ul li {
+    display: inline-block;
+    margin-left: 2em;
+}
+
+div.footer span.contributors {
+    font-weight: 600;
 }
