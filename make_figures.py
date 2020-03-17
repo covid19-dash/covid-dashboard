@@ -122,7 +122,7 @@ def make_timeplot(df_measure, df_prediction):
                 ),
 
             ]),
-            pad={"r": 10, "t": 10, "b":5},
+            pad={"r": 10, "t": 0, "b": 0},
             showactive=True,
             x=0.05,
             xanchor="left",
@@ -131,7 +131,9 @@ def make_timeplot(df_measure, df_prediction):
             font_color='black',
         ),
     ],
-    height=.9*FIRST_LINE_HEIGHT,
+    height=FIRST_LINE_HEIGHT,
+    # The legend position
+    legend=dict(x=.5, y=.8),
 )
 
     return fig
