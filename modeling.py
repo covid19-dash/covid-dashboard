@@ -150,22 +150,21 @@ predicted_active_cases.to_pickle('predictions.pkl')
 # Historical replay to estimate an error
 
 def historical_replay(data, kernel, threshold=50, prediction_horizon=4):
-    """ Run the forecasting model in the past and measure how well it
-        does.
+    """ Run the forecasting model in the past and measure how well it does.
 
-        Arguments
-        ==========
-        data: dataframe
-            The dataframe of the cases across countries (columns) and
-            time (index)
-        kernel: 1d numpy array
-            The array of weights defining the window
-        threshold: number
-            Do not include a country in the evaluation if the
-            last observed data point has less cases than "threshold"
-        prediction_horizon: number
-            The number of points we consider in the future to compute the
-            error
+    Parameters
+    ==========
+    data: dataframe
+        The dataframe of the cases across countries (columns) and
+        time (index)
+    kernel: 1d numpy array
+        The array of weights defining the window
+    threshold: number
+        Do not include a country in the evaluation if the
+        last observed data point has less cases than "threshold"
+    prediction_horizon: number
+        The number of points we consider in the future to compute the
+        error
     """
 
     all_errors = list()

@@ -1,10 +1,14 @@
 
 html:
 	# First run our model
+	# The following line matches a specific line in the python file
+	# and truncate the file the. The goal is to avoid running the
+	# last part of the notebook which takes very long to run
 	sed '/# --------/,$$d' modeling.py > modeling_short.py
 	sphx_glr_python_to_jupyter.py modeling_short.py
 	jupyter nbconvert --execute --to html modeling_short.ipynb
 	rm -rf modeling_short.ipynb
+	# Now build the app
 	export DEBUG=False && python3 app.py &
 	sleep 30
 	wget -r http://127.0.0.1:8050/ 
