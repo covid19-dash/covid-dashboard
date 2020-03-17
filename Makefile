@@ -1,8 +1,14 @@
 
 html:
-	sphx_glr_python_to_jupyter.py modeling.py
-	jupyter nbconvert --execute --to html modeling.ipynb
-	rm -rf modeling.ipynb
+	# First run our model
+	# The following line matches a specific line in the python file
+	# and truncate the file the. The goal is to avoid running the
+	# last part of the notebook which takes very long to run
+	sed '/# --------/,$$d' modeling.py > modeling_short.py
+	sphx_glr_python_to_jupyter.py modeling_short.py
+	jupyter nbconvert --execute --to html modeling_short.ipynb
+	rm -rf modeling_short.ipynb modeling_short.py
+	# Now build the app
 	export DEBUG=False && python3 app.py &
 	sleep 30
 	wget -r http://127.0.0.1:8050/ 
@@ -12,17 +18,19 @@ html:
 	sed -i 's/_dash-dependencies/_dash-dependencies.json/g' 127.0.0.1:8050/_dash-component-suites/dash_renderer/*.js
 	mv 127.0.0.1:8050/_dash-layout 127.0.0.1:8050/_dash-layout.json	
 	mv 127.0.0.1:8050/_dash-dependencies 127.0.0.1:8050/_dash-dependencies.json
-	cp modeling.html 127.0.0.1:8050/
+	cp modeling_short.html 127.0.0.1:8050/
 	cp assets/* 127.0.0.1:8050/assets/
 	cp _static/async* 127.0.0.1:8050/_dash-component-suites/dash_core_components/
 	cp _static/async-table* 127.0.0.1:8050/_dash-component-suites/dash_table/
 	ps | grep python | awk '{print $$1}' | xargs kill -9	
 
+predictions.pkl:
+
 clean:
 	rm -rf 127.0.0.1:8050/
 	rm -rf joblib
 	rm -rf predictions.pkl
-	rm -rf modeling.html
+	rm -rf modeling_short.html
 
 gh-pages:
 	cd 127.0.0.1:8050 && touch .nojekyll && git init && git add * && git add .nojekyll && git commit -m "update" && git remote add origin https://github.com/covid19-dash/covid19-dash.github.io.git && git push -f origin master
