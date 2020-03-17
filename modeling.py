@@ -234,7 +234,7 @@ plt.title('Errors as a function of ramp kernel parameter')
 # ramping all the way
 
 # %%
-# Now the exponental kernels
+# Now the exponential kernels
 errors_by_kernel = dict()
 
 for start in range(12, 18):
@@ -277,4 +277,3 @@ plt.title('Errors as a function of exp kernel parameter')
 # We chose not to explore longer than 17 days because these very long
 # windows only improve prediction slightly, but risk biasing it when
 # there is a change in public policy.
-
