@@ -67,7 +67,13 @@ app.layout = html.Div([
     html.H1(children=app.title, className="title"),
     html.Div([#row
         html.Div([
-            dcc.Graph(id='map', figure=fig1)
+            dcc.Graph(
+                id='map', figure=fig1,
+                config={
+                    'displayModeBar': True,
+                    'modeBarButtonsToRemove': ['toImage', 'lasso2d',
+                                               'toggleSpikelines',
+                                               'hoverClosestGeo']})
             ],
             className="pure-u-1 pure-u-lg-1 pure-u-xl-12-24",
             ),
