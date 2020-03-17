@@ -17,7 +17,7 @@ jobs:
           command: |
             make clean
             make html
-            python ./build_tools/circleci/post_processing.py ./127.0.0.1\:8050/index.html
+            python ./build_tools/circleci/post_processing.py ./127.0.0.1\:8050
       - store_artifacts:
           path: ./127.0.0.1:8050
           destination: .
