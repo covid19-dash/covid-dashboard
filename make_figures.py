@@ -14,18 +14,29 @@ FIRST_LINE_HEIGHT = 600
 
 LABEL_FONT_SIZE = 18
 
-def make_map(df):
+def make_map(df, pop):
     """
     Build figure with map of total number of cases
 
     Parameters
     ----------
     df: pandas DataFrame
+        Our cases to plot
+    pop: pandas DataFrame
+        The population, used to normalize
     """
-    fig = px.choropleth(df, locations='iso', color=np.log10(df['value']),
+    normalized_values = (df.set_index('iso')['value']
+                         / pop.set_index('ISO3')['Population'])
+    # NAs appeared because we don't have data for all entries of the pop
+    # table
+    normalized_values = normalized_values.dropna()
+    # Plot per Million individual
+    normalized_values *= 1e6
+    fig = px.choropleth(df, locations='iso',
+                    color=np.log10(normalized_values),
                     hover_data=[df['value'], df['country_region']],
                     color_continuous_scale='Plasma_r',
-                    labels={'color': 'Active<br>cases'})
+                    labels={'color': 'Active<br>cases<br>per<br>Million'})
     fig.update_layout(title='Click on map to select a country',
             coloraxis_colorbar_tickprefix='1.e',
             coloraxis_colorbar_len=0.6,
