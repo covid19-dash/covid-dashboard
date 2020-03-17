@@ -143,7 +143,8 @@ predicted_active_cases.to_pickle('predictions.pkl')
 # --------
 # Now an analysis to optimize the kernel.
 #
-# This takes longer and is left out from building the website
+# This takes longer and is left out from the notebook displayed on the
+# website (modeling_short)
 
 # %%
 # Historical replay to estimate an error
