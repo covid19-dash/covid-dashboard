@@ -6,12 +6,18 @@ jobs:
       - image: circleci/python:3.8.2
     steps:
       - checkout
-      - run: python -m pip install --upgrade pip
-      - run: python -m pip install -r requirements.txt
-      - run: export
-      - run: make clean
-      - run: make html
-      - run: python ./.circleci/inject_parllel_number.py ./127.0.0.1\:8050/index.html
+      - run:
+          name: install dependencies
+          command: |
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt
+            export
+      - run:
+          name: build the static website
+          command: |
+            make clean
+            make html
+            python ./build_tools/circleci/inject_parllel_number.py ./127.0.0.1\:8050/index.html
       - store_artifacts:
           path: ./127.0.0.1:8050
           destination: .
