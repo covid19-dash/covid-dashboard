@@ -422,3 +422,8 @@ div.text-block {
     margin-right: auto;
     line-height: 1.6em;
 }
+
+
+div.footer {
+    border: 4px lightgrey solid;
+}
