@@ -8,11 +8,14 @@ To launch the app, run
 Dash documentation: https://dash.plot.ly/
 """
 import os
+import numpy as np
+
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
+
 from make_figures import make_map, make_timeplot, FIRST_LINE_HEIGHT
 from data_input import tidy_most_recent, get_all_data
 
@@ -33,7 +36,11 @@ df_tidy_recovered = tidy_most_recent(df, 'recovered')
 df_tidy_table = df_tidy[['country_region', 'value']]
 
 df_tidy_table = df_tidy_table.reset_index()
+# The indices initially displayed
 initial_indices = list(df_tidy_table['value'].nlargest(2).index)
+# We hardcode the second index shown as being China, to give a message of
+# hope
+initial_indices[-1]  = np.where(df_tidy['iso'] == 'CHN')[0][0]
 
 # ----------- Figures ---------------------
 fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered)
