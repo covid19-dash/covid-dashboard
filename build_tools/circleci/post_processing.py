@@ -22,8 +22,11 @@ def inject_index_html(filename):
 
 
 def inject_source_map(filename):
-    with open(filename, "r") as f:
-        content = f.readlines()
+    try:
+        with open(filename, "r") as f:
+            content = f.readlines()
+    except:
+        return
 
     PATTERN = "sourceMappingURL="
 
