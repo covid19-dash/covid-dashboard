@@ -139,9 +139,11 @@ body {
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0;
-  font-weight: 400; }
+  font-weight: 400;
+  color: rgb(18, 7, 137);
+}
 h1 { font-size: 2rem; letter-spacing: -.1rem; margin-bottom: 1.5rem; margin-top: 2.5rem}
-h1.title {font-size: 2.5rem; color: rgb(18, 7, 137); margin-left: 1em;}
+h1.title {font-size: 2.5rem; margin-left: 1em;}
 h2 { font-size: 1.5rem; letter-spacing: -.1rem; margin-bottom: 1rem; margin-top: 1.6rem;}
 h3 { font-size: 1.3rem; letter-spacing: -.1rem; margin-bottom: .8rem; margin-top: 1.4rem;}
 h4 { font-size: 1.2rem; letter-spacing: -.08rem; margin-bottom: .5rem; margin-top: 1.2rem;}
