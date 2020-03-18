@@ -140,6 +140,10 @@ app.layout = html.Div([
         ],
         className="pure-g"),
         html.Div([
+            html.H3(['Date of latest data point: ', df_tidy['date'].max().date()])
+        ],
+        className="text-block"),
+        html.Div([
             html.Span('Contributors', className='contributors'),
             html.Ul([
                 html.Li(['Gaël Varoquaux, Inria & McGill University']),
