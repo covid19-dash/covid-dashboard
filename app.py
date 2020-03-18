@@ -53,8 +53,9 @@ with open("text_block.md", "r") as f:
 
 
 # -----------App definition-----------------------
-app = dash.Dash(__name__,
-    external_stylesheets = [
+app = dash.Dash(
+    __name__,
+    external_stylesheets=[
         {
             'href': 'https://unpkg.com/purecss@1.0.1/build/pure-min.css',
             'rel': 'stylesheet',
