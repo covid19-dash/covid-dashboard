@@ -160,6 +160,7 @@ growth_rate, predicted_cases = fit_on_window(active, weighted_window)
 ax = growth_rate[most_affected_countries[:20]].T.plot(kind='barh',
     legend=False)
 ax.set_title('Estimated growth rate')
+ax.axvline(1, color='.5')
 plt.tight_layout()
 
 # %%
