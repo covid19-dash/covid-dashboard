@@ -419,11 +419,12 @@ there.
 /* Rules specific to the Covid app
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 div.text-block {
-    max-width: 70em;
+    max-width: 65em;
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6em;
     text-size-adjust: auto;  /* Browser auto-adjust font size on some phones */
+    padding-left: 1%;
 }
 
 
