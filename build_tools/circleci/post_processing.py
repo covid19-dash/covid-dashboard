@@ -2,8 +2,8 @@ import os
 import sys
 
 
-def inject_index_html(argv):
-    with open(argv[0], "r") as f:
+def inject_index_html(filename):
+    with open(filename, "r") as f:
         content = f.readlines()
 
     PATTERNS = [
@@ -17,12 +17,12 @@ def inject_index_html(argv):
                 p, "/0" + p
             )
 
-    with open(argv[0], "w") as f:
+    with open(filename, "w") as f:
         f.writelines(content)
 
 
-def inject_source_map(argv):
-    with open(argv[0], "r") as f:
+def inject_source_map(filename):
+    with open(filename, "r") as f:
         content = f.readlines()
 
     PATTERN = "sourceMappingURL="
@@ -32,8 +32,14 @@ def inject_source_map(argv):
             PATTERN, PATTERN + "./0/"
         )
 
+    with open(filename, "w") as f:
+        f.writelines(content)
+
 
 if __name__ == "__main__":
-    filename = os.path.join(sys.argv[1:], "index.html")
+    filename = os.path.join(sys.argv[1], "index.html")
     inject_index_html(filename)
-    # TODO: go through each .js and change inject the source map
+    for root, dirs, files in os.walk(sys.argv[1]):
+        for f in files:
+            if ".js" in f:
+                inject_source_map(os.path.join(root, f))
