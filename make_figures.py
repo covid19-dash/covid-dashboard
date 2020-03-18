@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 import plotly.io as pio
 
+from data_input import normalize_by_population
+
 pio.templates.default = "plotly_white"
 
 FIRST_LINE_HEIGHT = 600
@@ -15,7 +17,7 @@ FIRST_LINE_HEIGHT = 600
 LABEL_FONT_SIZE = 18
 
 
-def make_map(df, df_fatalities, df_recovered, pop):
+def make_map(df, df_fatalities, df_recovered):
     """
     Build figure with map of total number of cases
 
@@ -26,11 +28,7 @@ def make_map(df, df_fatalities, df_recovered, pop):
     pop: pandas DataFrame
         The population, used to normalize
     """
-    normalized_values = (df.set_index('iso')['value']
-                         / pop.set_index('ISO3')['Population'])
-    # NAs appeared because we don't have data for all entries of the pop
-    # table
-    normalized_values = normalized_values.dropna()
+    normalized_values = normalize_by_population(df)
     # Plot per Million individual
     normalized_values *= 1e6
     hovertemplate = ('<b>Country</b>:%{customdata[0]}<br>' +
@@ -51,7 +49,8 @@ def make_map(df, df_fatalities, df_recovered, pop):
             coloraxis_colorbar_len=0.6,
             coloraxis_colorbar_title_font_size=LABEL_FONT_SIZE,
             margin=dict(l=0.03, r=0, b=0),
-            height=FIRST_LINE_HEIGHT)
+            height=FIRST_LINE_HEIGHT,
+            geo_projection_scale=1.26)
     fig.update_traces(
             hovertemplate=hovertemplate,
         )
@@ -78,12 +77,16 @@ def make_timeplot(df_measure, df_prediction):
     colors = px.colors.qualitative.Dark24
     n_colors = len(colors)
     fig = go.Figure()
+    hovertemplate_measure = '<b>%{meta}</b><br>%{x}<br>%{y:.0f}<extra></extra>'
+    hovertemplate_prediction = '<b>%{meta}<br>prediction</b><br>%{x}<br>%{y:.0f}<extra></extra>'
     for i, country in enumerate(df_measure_confirmed.columns):
         fig.add_trace(go.Scatter(x=df_measure_confirmed.index,
                                  y=df_measure_confirmed[country],
                                  name=country[1], mode='markers+lines',
                                  marker_color=colors[i%n_colors],
                                  line_color=colors[i%n_colors],
+                                 meta=country[1],
+                                 hovertemplate=hovertemplate_measure,
                                  visible=False))
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
@@ -98,6 +101,8 @@ def make_timeplot(df_measure, df_prediction):
                                  line_dash='dash',
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
+                                 meta=country[1],
+                                 hovertemplate=hovertemplate_prediction,
                                  visible=False))
         fig.add_trace(go.Scatter(x=upper_bound.index,
                                  y=upper_bound[country],
@@ -106,6 +111,7 @@ def make_timeplot(df_measure, df_prediction):
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
                                  visible=False,
+                                 hoverinfo='skip',
                                  line_width=.8))
         fig.add_trace(go.Scatter(x=lower_bound.index,
                                  y=lower_bound[country],
@@ -114,6 +120,7 @@ def make_timeplot(df_measure, df_prediction):
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
                                  visible=False,
+                                 hoverinfo='skip',
                                  line_width=.8))
 
     last_day = df_measure_confirmed.index.max()
@@ -161,7 +168,7 @@ def make_timeplot(df_measure, df_prediction):
         margin=dict(t=0, b=0.02),
         # The legend position + font size
         # See https://plot.ly/python/legend/#style-legend
-        legend=dict(x=.5, y=.8, font_size=LABEL_FONT_SIZE,
+        legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
                     title="Active cases in"),
 )
     return fig
@@ -169,8 +176,12 @@ def make_timeplot(df_measure, df_prediction):
 
 if __name__ == '__main__':
     from data_input import get_all_data, tidy_most_recent
-    df, df_prediction = get_all_data()
-    df_tidy = tidy_most_recent(df)
-    fig1 = make_map(df_tidy)
-    fig2 = make_timeplot(df, df_prediction)
 
+    df, df_prediction = get_all_data()
+    # most recent date, tidy format (one column for countries)
+    df_tidy = tidy_most_recent(df)
+    df_tidy_fatalities = tidy_most_recent(df, 'death')
+    df_tidy_recovered = tidy_most_recent(df, 'recovered')
+
+    fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered)
+    fig2 = make_timeplot(df, df_prediction)

@@ -8,13 +8,16 @@ To launch the app, run
 Dash documentation: https://dash.plot.ly/
 """
 import os
+import numpy as np
+
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
+
 from make_figures import make_map, make_timeplot, FIRST_LINE_HEIGHT
-from data_input import tidy_most_recent, get_all_data, get_populations
+from data_input import tidy_most_recent, get_all_data
 
 if 'DEBUG' in os.environ:
     debug = os.environ['DEBUG'] == 'True'
@@ -31,14 +34,16 @@ df_tidy_fatalities = tidy_most_recent(df, 'death')
 df_tidy_recovered = tidy_most_recent(df, 'recovered')
 # keep only two columns for Dash DataTable
 df_tidy_table = df_tidy[['country_region', 'value']]
-# The population information
-pop = get_populations()
 
 df_tidy_table = df_tidy_table.reset_index()
+# The indices initially displayed
 initial_indices = list(df_tidy_table['value'].nlargest(2).index)
+# We hardcode the second index shown as being China, to give a message of
+# hope
+initial_indices[-1]  = np.where(df_tidy['iso'] == 'CHN')[0][0]
 
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered, pop)
+fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
@@ -67,12 +72,26 @@ app.layout = html.Div([
     html.H1(children=app.title, className="title"),
     html.Div([#row
         html.Div([
-            dcc.Graph(id='map', figure=fig1)
+            dcc.Graph(
+                id='map', figure=fig1,
+                config={
+                    'displayModeBar': True,
+                    'modeBarButtonsToRemove': ['toImage', 'lasso2d',
+                                               'toggleSpikelines',
+                                               'hoverClosestGeo']})
             ],
             className="pure-u-1 pure-u-lg-1 pure-u-xl-12-24",
             ),
         html.Div([
-            dcc.Graph(id='plot', figure=fig2)
+            dcc.Graph(
+                id='plot', figure=fig2,
+                config={
+                    'displayModeBar': True,
+                    'modeBarButtonsToRemove': ['toImage', 'zoom2d',
+                                               'select2d', 'lasso2d',
+                                               'toggleSpikelines',
+                                               'resetScale2d']}
+                )
             ],
             className="pure-u-1 pure-u-lg-1-2 pure-u-xl-8-24",
             ),
@@ -101,7 +120,9 @@ app.layout = html.Div([
                     },
                 style_cell_conditional=[
                     {'if': {'column_id': 'country_region'},
-                     'width': '70%'},
+                     'width': '60%'},
+                    {'if': {'column_id': 'value'},
+                     'width': '40%'},
                 ],
                 style_data_conditional=[
                 {
@@ -117,6 +138,16 @@ app.layout = html.Div([
             className="pure-u-1 pure-u-lg-1 pure-u-xl-22-24"),
         ],
         className="pure-g"),
+        html.Div([
+            html.Span('Contributors', className='contributors'),
+            html.Ul([
+                html.Li(['Gaël Varoquaux, Inria & McGill University']),
+                html.Li(['Emmanuelle Gouillart, Plotly Inc']),
+                html.Li(['Russell Poldrack, Stanford University']),
+                html.Li(['Guillaume Lemaitre, Inria']),
+            ]),
+        ],
+        className="footer"),
     ],
     )
 
