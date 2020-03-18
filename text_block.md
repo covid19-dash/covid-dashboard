@@ -57,3 +57,13 @@ A perfect diagnostic test would provide a positive result for every infected per
 ## Population differences
 There are differences between populations within and across countries that could affect the spread of the disease.  For example, the prevalence of chronic lung diseases (which increase the risk of severe COVID-19 infection) [vary between countries and between urban and rural enviornments](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4693508).  Differences in population density and in local customs (such as hand-shaking or face-kissing greetings) could also affect the rates of disease transmission between different countries. In addition, the age distribution varies across countries, and as a consequence a larger fraction of the population is at risk in certain countries compared to others.
 
+<!-- Below is a "microformat: to give information to facebook, twitter.. -->
+<div class="h-feed">
+  <h1 class="p-name">Covid-19: active cases and extrapolation</h1>
+  <article class="h-entry">
+  <h2 class="p-name">Extrapolating the growth in various countries</h2>
+  <p class="p-summary">A visualization with the number of active cases and a
+	forecast of its evolution.</p>
+  </article>
+</div>
+

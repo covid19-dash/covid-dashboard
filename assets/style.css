@@ -452,3 +452,8 @@ div.footer ul li {
 div.footer span.contributors {
     font-weight: 600;
 }
+
+
+div.h-feed {
+    display: none;
+}
