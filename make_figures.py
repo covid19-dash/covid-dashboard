@@ -7,6 +7,7 @@ import plotly.express as px
 import numpy as np
 import pandas as pd
 import plotly.io as pio
+from plotly.validators.scatter.marker import SymbolValidator
 
 from data_input import normalize_by_population
 
@@ -83,6 +84,7 @@ def make_timeplot(df_measure, df_prediction):
         fig.add_trace(go.Scatter(x=df_measure_confirmed.index,
                                  y=df_measure_confirmed[country],
                                  name=country[1], mode='markers+lines',
+                                 marker_symbol = SymbolValidator().values[i],
                                  marker_color=colors[i%n_colors],
                                  line_color=colors[i%n_colors],
                                  meta=country[1],
