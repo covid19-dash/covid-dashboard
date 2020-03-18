@@ -14,7 +14,7 @@ import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
 from make_figures import make_map, make_timeplot, FIRST_LINE_HEIGHT
-from data_input import tidy_most_recent, get_all_data, get_populations
+from data_input import tidy_most_recent, get_all_data
 
 if 'DEBUG' in os.environ:
     debug = os.environ['DEBUG'] == 'True'
@@ -31,14 +31,12 @@ df_tidy_fatalities = tidy_most_recent(df, 'death')
 df_tidy_recovered = tidy_most_recent(df, 'recovered')
 # keep only two columns for Dash DataTable
 df_tidy_table = df_tidy[['country_region', 'value']]
-# The population information
-pop = get_populations()
 
 df_tidy_table = df_tidy_table.reset_index()
 initial_indices = list(df_tidy_table['value'].nlargest(2).index)
 
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered, pop)
+fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------

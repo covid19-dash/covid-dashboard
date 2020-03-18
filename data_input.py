@@ -70,6 +70,34 @@ def get_all_data():
         df_prediction = pickle.load(f_pkl)
     return df, df_prediction
 
+
 def get_populations():
+    """ Load the information that we have about countries """
     pop = pd.read_csv('data/countryInfo.txt', sep='\t', skiprows=50)
     return pop
+
+
+def normalize_by_population(tidy_df):
+    """ Normalize by population the column "value" of a dataframe with
+        lines being the country ISO
+    """
+    pop = get_populations()
+    normalized_values = (tidy_df.set_index('iso')['value']
+                         / pop.set_index('ISO3')['Population'])
+
+    # NAs appeared because we don't have data for all entries of the pop
+    # table
+    normalized_values = normalized_values.dropna()
+    assert len(normalized_values) == len(tidy_df),\
+        ("Not every country in the given dataframe was found in our "
+        "database of populations")
+    return normalized_values
+
+
+if __name__ == "__main__":
+    # Basic code to check that we can still do the entity matching
+    # between the different databases
+    df = get_data()
+    tidy_df = tidy_most_recent(df)
+    normalized_values = normalize_by_population(tidy_df)
+

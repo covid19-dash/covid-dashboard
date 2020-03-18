@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 import plotly.io as pio
 
+from data_input import normalize_by_population
+
 pio.templates.default = "plotly_white"
 
 FIRST_LINE_HEIGHT = 600
@@ -15,7 +17,7 @@ FIRST_LINE_HEIGHT = 600
 LABEL_FONT_SIZE = 18
 
 
-def make_map(df, df_fatalities, df_recovered, pop):
+def make_map(df, df_fatalities, df_recovered):
     """
     Build figure with map of total number of cases
 
@@ -26,11 +28,7 @@ def make_map(df, df_fatalities, df_recovered, pop):
     pop: pandas DataFrame
         The population, used to normalize
     """
-    normalized_values = (df.set_index('iso')['value']
-                         / pop.set_index('ISO3')['Population'])
-    # NAs appeared because we don't have data for all entries of the pop
-    # table
-    normalized_values = normalized_values.dropna()
+    normalized_values = normalize_by_population(df)
     # Plot per Million individual
     normalized_values *= 1e6
     hovertemplate = ('<b>Country</b>:%{customdata[0]}<br>' +
@@ -169,8 +167,12 @@ def make_timeplot(df_measure, df_prediction):
 
 if __name__ == '__main__':
     from data_input import get_all_data, tidy_most_recent
-    df, df_prediction = get_all_data()
-    df_tidy = tidy_most_recent(df)
-    fig1 = make_map(df_tidy)
-    fig2 = make_timeplot(df, df_prediction)
 
+    df, df_prediction = get_all_data()
+    # most recent date, tidy format (one column for countries)
+    df_tidy = tidy_most_recent(df)
+    df_tidy_fatalities = tidy_most_recent(df, 'death')
+    df_tidy_recovered = tidy_most_recent(df, 'recovered')
+
+    fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered)
+    fig2 = make_timeplot(df, df_prediction)
