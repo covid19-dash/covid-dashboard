@@ -3,7 +3,7 @@
 The goal on this project is to raise awareness on the evolution of COVID.
 The idea is to associate a visualization that shows data relevant to the
 public with a didactic text on why such evolution is expected. A
-forecasting model will be developed. 
+simple forecasting model estimates growth rates.
 
 ## Project vision
 
@@ -12,12 +12,12 @@ to help someone wanting to see or show what is a likely evolution of the
 situation for their local environment. The ultimate goal is to influence
 individual behavior, to decrease the spread.
 
-So, the goal is to reach the general public, not experts familiar with
-graphs and numbers.
+The goal is to reach the general public, not experts familiar with graphs
+and numbers. For this reason, effort is put on simplifying the
+visualization and putting it along simple text.
 
-To predictions and the associated text should be trustworthy, hence be
-solid and sober, rather than fancy and dramatic. We would like this to be
-approved by people with the relevant expertise.
+The predictions and the associated text should be trustworthy, hence be
+solid and sober, rather than fancy and dramatic.
 
 ## Well thougt-out visualization on COVID-19
 
@@ -41,6 +41,16 @@ python3 app.py
 
 then visit http://127.0.0.1:8050 with your browser
 
-## Make static pages and deploy to github pages
+## Make static pages that will be deployed to github pages
 
-See the `Makefile`.
+The `Makefile` is used by github actions to deploy the model.
+
+The Makefile
+* runs the prediction engine on the latest data
+* start the dash server
+* persists it to a webpage that is not dependent on the server (local
+  javascript callable)
+* pushes to github pages
+
+Care is taken to have a static page, to be able to handle the load with
+many visits.
