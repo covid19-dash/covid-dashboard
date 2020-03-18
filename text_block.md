@@ -27,12 +27,13 @@ The data used here come from the Johns Hopkins University Center for Systems Sci
 
 # How is the forecast made?
 
-We use the data from the last 14 days in each country to estimate the rate of growth for that country.  We then use that estimated rate of growth to project the future growth of cases in that country, assuming that it will continue to grow at the same rate exponentially. 
+We use the data from the last 14 days in each country to estimate the rate of growth for that country.  We then use that estimated rate of growth to project the future growth of cases in that country, assuming that it will continue to grow at the same rate exponentially. Note that this assumption is usually only valid at the beginning of an epidemic.  
 
 The thin dashed lines around the main line for each country reflect the degree of uncertainty in the model.   Note that major interventions (such as large scale social distancing and institutional closures) may reduce this growth rate (as you can see from the plots of cases in China); those factors are not currently included in the model.
 
 Those who want to know more details about how the estimates are computed can find them [here](modeling_short.html).
 
+This model is unlike those used by epidemiologists as it only uses the reported case data, rather than trying to model the actual process of the epidemic.  For more information about the more complex models used by epidemiologists, see [here](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology).
 
 ## How can you be sure that the forecast is accurate?
 
