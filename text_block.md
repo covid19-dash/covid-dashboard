@@ -1,7 +1,3 @@
-# This is work in progress
-
-Please come back later. We are quickly making progress.
-
 # What do these data mean?
 
 These visualizations give predictions about the future number of active COVID-19 cases. The predictions are based on extrapolating the growth observed in a given country over the last two weeks.
