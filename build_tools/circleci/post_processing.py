@@ -32,7 +32,7 @@ def inject_source_map(filename):
 
     for line_idx in range(len(content)):
         content[line_idx] = content[line_idx].replace(
-            PATTERN, PATTERN + "./0/"
+            PATTERN, PATTERN + "/0/"
         )
 
     with open(filename, "w") as f:
