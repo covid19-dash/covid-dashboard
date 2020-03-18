@@ -76,12 +76,16 @@ def make_timeplot(df_measure, df_prediction):
     colors = px.colors.qualitative.Dark24
     n_colors = len(colors)
     fig = go.Figure()
+    hovertemplate_measure = '<b>%{meta}</b><br>%{x}<br>%{y:.0f}<extra></extra>'
+    hovertemplate_prediction = '<b>%{meta}<br>prediction</b><br>%{x}<br>%{y:.0f}<extra></extra>'
     for i, country in enumerate(df_measure_confirmed.columns):
         fig.add_trace(go.Scatter(x=df_measure_confirmed.index,
                                  y=df_measure_confirmed[country],
                                  name=country[1], mode='markers+lines',
                                  marker_color=colors[i%n_colors],
                                  line_color=colors[i%n_colors],
+                                 meta=country[1],
+                                 hovertemplate=hovertemplate_measure,
                                  visible=False))
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
@@ -96,6 +100,8 @@ def make_timeplot(df_measure, df_prediction):
                                  line_dash='dash',
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
+                                 meta=country[1],
+                                 hovertemplate=hovertemplate_prediction,
                                  visible=False))
         fig.add_trace(go.Scatter(x=upper_bound.index,
                                  y=upper_bound[country],
@@ -104,6 +110,7 @@ def make_timeplot(df_measure, df_prediction):
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
                                  visible=False,
+                                 hoverinfo='skip',
                                  line_width=.8))
         fig.add_trace(go.Scatter(x=lower_bound.index,
                                  y=lower_bound[country],
@@ -112,6 +119,7 @@ def make_timeplot(df_measure, df_prediction):
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
                                  visible=False,
+                                 hoverinfo='skip',
                                  line_width=.8))
 
     last_day = df_measure_confirmed.index.max()
