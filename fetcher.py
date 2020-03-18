@@ -1,5 +1,5 @@
 """
-Fetch the data from John Hopkins' github
+Fetch the data from Johns Hopkins' github
 """
 
 import pandas as pd
