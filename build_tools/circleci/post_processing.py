@@ -41,5 +41,4 @@ if __name__ == "__main__":
     inject_index_html(filename)
     for root, dirs, files in os.walk(sys.argv[1]):
         for f in files:
-            if ".js" in f:
-                inject_source_map(os.path.join(root, f))
+            inject_source_map(os.path.join(root, f))
