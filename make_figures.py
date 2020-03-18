@@ -51,7 +51,8 @@ def make_map(df, df_fatalities, df_recovered, pop):
             coloraxis_colorbar_len=0.6,
             coloraxis_colorbar_title_font_size=LABEL_FONT_SIZE,
             margin=dict(l=0.03, r=0, b=0),
-            height=FIRST_LINE_HEIGHT)
+            height=FIRST_LINE_HEIGHT,
+            geo_projection_scale=1.26)
     fig.update_traces(
             hovertemplate=hovertemplate,
         )
