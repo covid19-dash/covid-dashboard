@@ -106,7 +106,9 @@ app.layout = html.Div([
                     },
                 style_cell_conditional=[
                     {'if': {'column_id': 'country_region'},
-                     'width': '70%'},
+                     'width': '60%'},
+                    {'if': {'column_id': 'value'},
+                     'width': '40%'},
                 ],
                 style_data_conditional=[
                 {
