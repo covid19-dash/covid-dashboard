@@ -27,9 +27,9 @@ https://medium.com/nightingale/ten-considerations-before-you-create-another-char
 
 # Development workflow
 
-The application is built with a local dash app (https://plot.ly/dash/)
-for development. Then a Makefile is used to turn this in a static
-website.
+## Some details about the technologies
+
+### Statistical modeling
 
 The "modeling" notebook is generated from the "modeling.py" file, in the
 Makefile. Only the first part of the notebook is executed in the
@@ -37,6 +37,15 @@ Makefile, stopping at "# -----".
 
 The "modeling.py" can be run by itself in ipython, or edited in vscode,
 atom, or with jupyter, that all support this mixed format.
+
+### Web technologies
+
+The application is built with a local dash app (https://plot.ly/dash/)
+for development. Then a Makefile is used to turn this in a static
+website.
+
+The Pure css grids (https://purecss.io/grids/) are used for layout, to
+have a responsive design (ie that displays well on mobile phones).
 
 ## Local development
 
