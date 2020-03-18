@@ -31,6 +31,13 @@ The application is built with a local dash app (https://plot.ly/dash/)
 for development. Then a Makefile is used to turn this in a static
 website.
 
+The "modeling" notebook is generated from the "modeling.py" file, in the
+Makefile. Only the first part of the notebook is executed in the
+Makefile, stopping at "# -----".
+
+The "modeling.py" can be run by itself in ipython, or edited in vscode,
+atom, or with jupyter, that all support this mixed format.
+
 ## Local development
 
 To launch the Dash app:
