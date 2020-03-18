@@ -421,6 +421,7 @@ div.text-block {
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6em;
+    text-size-adjust: auto;  /* Browser auto-adjust font size on some phones */
 }
 
 
