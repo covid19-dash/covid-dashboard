@@ -16,6 +16,10 @@ def inject_index_html(filename):
             content[line_idx] = content[line_idx].replace(
                 p, "/0" + p
             )
+        content[line_idx] = content[line_idx].replace(
+            '"requests_pathname_prefix": "/"',
+            '"requests_pathname_prefix": "/0/"'
+        )
 
     with open(filename, "w") as f:
         f.writelines(content)
