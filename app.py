@@ -78,7 +78,15 @@ app.layout = html.Div([
             className="pure-u-1 pure-u-lg-1 pure-u-xl-12-24",
             ),
         html.Div([
-            dcc.Graph(id='plot', figure=fig2)
+            dcc.Graph(
+                id='plot', figure=fig2,
+                config={
+                    'displayModeBar': True,
+                    'modeBarButtonsToRemove': ['toImage', 'zoom2d',
+                                               'select2d', 'lasso2d',
+                                               'toggleSpikelines',
+                                               'resetScale2d']}
+                )
             ],
             className="pure-u-1 pure-u-lg-1-2 pure-u-xl-8-24",
             ),
