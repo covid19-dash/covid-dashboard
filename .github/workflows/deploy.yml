@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+  schedule:
+    - '0 1 * * *'  # run at during the 1st hour of each day
 jobs:
   build-and-deploy:
     runs-on: ubuntu-18.04
