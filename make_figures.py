@@ -36,22 +36,29 @@ def make_map(df, df_fatalities, df_recovered):
                      '<b>Active cases per million</b>: %{customdata[1]:.1f}<br>' +
                      '<b>Active cases</b>: %{customdata[2]}<br>' +
                      '<b>Fatalities</b>: %{customdata[3]}<br>' +
-                     '<b>Recovered</b>: %{customdata[4]}' 
+                     '<b>Recovered</b>: %{customdata[4]}'
                      )
-    fig = px.choropleth(df, locations='iso',
-                    color=np.log10(normalized_values),
-                    custom_data=[df['country_region'], normalized_values,
-                                 df['value'], df_fatalities['value'],
-                                 df_recovered['value']],
-                    color_continuous_scale='Plasma_r',
-                    labels={'color': 'Active<br>cases<br>per<br>Million'})
-    fig.update_layout(title='Click on map to add/remove a country',
-            coloraxis_colorbar_tickprefix='1.e',
-            coloraxis_colorbar_len=0.6,
-            coloraxis_colorbar_title_font_size=LABEL_FONT_SIZE,
-            margin=dict(l=0.03, r=0, b=0),
-            height=FIRST_LINE_HEIGHT,
-            geo_projection_scale=1.26)
+    fig = px.choropleth(
+        df,
+        locations='iso',
+        color=np.log10(normalized_values),
+        custom_data=[df['country_region'], normalized_values,
+                     df['value'], df_fatalities['value'],
+                     df_recovered['value']],
+        color_continuous_scale='Plasma_r',
+        labels={'color': 'Active<br>cases<br>per<br>Million'}
+    )
+    fig.update_layout(
+        title='Click on map to add/remove a country',
+        coloraxis_colorbar_tickprefix='1.e',
+        coloraxis_colorbar_len=0.6,
+        coloraxis_colorbar_title_font_size=LABEL_FONT_SIZE,
+        coloraxis_colorbar_xanchor="center",
+        coloraxis_colorbar_yanchor="top",
+        margin=dict(l=0.03, r=0, b=0),
+        height=FIRST_LINE_HEIGHT,
+        geo_projection_scale=1.26
+    )
     fig.update_traces(
             hovertemplate=hovertemplate,
         )
