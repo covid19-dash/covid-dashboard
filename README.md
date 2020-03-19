@@ -40,7 +40,7 @@ atom, or with jupyter, that all support this mixed format.
 
 ### Web technologies
 
-The application is built with a local dash app (https://plot.ly/dash/)
+The application is built with a local Dash app (https://dash.plot.ly/)
 for development. Then a Makefile is used to turn this in a static
 website.
 
