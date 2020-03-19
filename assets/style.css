@@ -431,7 +431,7 @@ div.text-block {
 div.footer {
     font-size: 75%;
     border-top: 1px solid #eee;
-    margin-top: 3.4286em;
+    margin-top: 3em;
     margin-bottom: .5em;
     padding: 1.1429em;
     background: rgb(250, 250, 250);
@@ -456,4 +456,17 @@ div.footer span.contributors {
 
 div.h-feed {
     display: none;
+}
+
+
+div.date {
+    background: rgb(250, 250, 250);
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-top: 2em;
+    margin-left: 5%;
+    display: inline-block;
+    font-size: 90%;
+    padding: 3px;
+    color: #444;
 }

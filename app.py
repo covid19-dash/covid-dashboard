@@ -137,12 +137,14 @@ app.layout = html.Div([
                                          dangerously_allow_html=True)],
                   className="text-block")],
             className="pure-u-1 pure-u-lg-1 pure-u-xl-22-24"),
+        html.Div([
+            html.Div(['Latest data point: ',
+                       df_tidy['date'].max().date()],
+                     className="date")
+            ],
+            className="pure-u-1 pure-u-xl-1-24"),
         ],
         className="pure-g"),
-        html.Div([
-            html.H3(['Date of latest data point: ', df_tidy['date'].max().date()])
-        ],
-        className="text-block"),
         html.Div([
             html.Span('Contributors', className='contributors'),
             html.Ul([
@@ -151,9 +153,9 @@ app.layout = html.Div([
                 html.Li(['Russell Poldrack, Stanford University']),
                 html.Li(['Guillaume Lemaitre, Inria']),
             ]),
+            ],
+            className="footer"),
         ],
-        className="footer"),
-    ],
     )
 
 # ---------------------- Callbacks ---------------------------------
