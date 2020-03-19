@@ -70,3 +70,6 @@ The Makefile
 
 Care is taken to have a static page, to be able to handle the load with
 many visits.
+
+An automatic schedule job is launched each day at 1:00 am (UTC) to build the
+website and update with the latest available data.
