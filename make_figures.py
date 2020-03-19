@@ -46,7 +46,7 @@ def make_map(df, df_fatalities, df_recovered):
                     color_continuous_scale='Plasma_r',
                     labels={'color': 'Active<br>cases<br>per<br>Million'})
 
-    fig.update_geos(lataxis_range=[-90, 90], lonaxis_range=[-170, 180])
+    fig.update_geos(lataxis_range=[-90, 90], lonaxis_range=[-160, 180])
     fig.update_layout(title='Click on map to add/remove a country',
             coloraxis_colorbar_tickprefix='1.e',
             coloraxis_colorbar_len=0.6,
