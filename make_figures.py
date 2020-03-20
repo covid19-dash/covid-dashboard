@@ -188,7 +188,7 @@ def make_timeplot(df_measure, df_prediction):
             font_size=LABEL_FONT_SIZE,
             text="Active cases")
     fig.add_annotation(
-            x=0.25,
+            x=1,
             y=-0.13,
             xref='paper',
             yref='paper',
@@ -196,7 +196,7 @@ def make_timeplot(df_measure, df_prediction):
             font_size=LABEL_FONT_SIZE - 6,
             font_color="DarkSlateGray",
             text="Drag handles below to change time window",
-            align="center")
+            align="right")
 
     return fig
 
