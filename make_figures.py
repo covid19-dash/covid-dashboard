@@ -147,7 +147,6 @@ def make_timeplot(df_measure, df_prediction):
                     args=[{'yaxis': {'type':'log'},
                            "legend": {'x':0.65, 'y':0.1,
                                       "font":{"size":18},
-                                      #"title":{"text":'', 'font':{'size':18}}
                                       }}],
                     label="log",
                     method="relayout",
@@ -156,7 +155,6 @@ def make_timeplot(df_measure, df_prediction):
                     args=[{'yaxis': {'type':'linear'}, 
                            "legend": {'x':0.05, 'y':0.8, 
                                       "font":{"size":18},
-                                      #"title":{"text":'', 'font':{'size':18}}
                                       }}],
                     label="lin",
                     method="relayout",
@@ -179,10 +177,26 @@ def make_timeplot(df_measure, df_prediction):
         # The legend position + font size
         # See https://plot.ly/python/legend/#style-legend
         legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
-                    #title=dict(text="Active cases in <br>",
-                    #           font=dict(size=LABEL_FONT_SIZE))
                     )
-)
+    )
+    fig.add_annotation(
+            x=0.1,
+            y=0.95,
+            xref='paper',
+            yref='paper',
+            showarrow=False,
+            font_size=LABEL_FONT_SIZE,
+            text="Active cases")
+    fig.add_annotation(
+            x=0.25,
+            y=-0.11,
+            xref='paper',
+            yref='paper',
+            showarrow=False,
+            font_size=LABEL_FONT_SIZE - 6,
+            font_color="darkblue",
+            text="Drag handles to change time window")
+
     return fig
 
 
