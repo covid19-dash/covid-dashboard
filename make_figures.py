@@ -195,7 +195,8 @@ def make_timeplot(df_measure, df_prediction):
             showarrow=False,
             font_size=LABEL_FONT_SIZE - 6,
             font_color="DarkSlateGray",
-            text="Drag handles below to change time window")
+            text="Drag handles below to change time window",
+            align="center")
 
     return fig
 
