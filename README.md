@@ -13,16 +13,16 @@ situation for their local environment. The ultimate goal is to influence
 individual behavior, to decrease the spread.
 
 The goal is to reach the general public, not experts familiar with graphs
-and numbers. For this reason, effort is put on simplifying the
+and numbers. For this reason, we put a lot of effort on simplifying the
 visualization and putting it along simple text.
 
 The predictions and the associated text should be trustworthy, hence be
 solid and sober, rather than fancy and dramatic.
 
-## Well thougt-out visualization on COVID-19
+## Well thought-out visualization on COVID-19
 
 COVID-19 is a serious issue and our visualization and data analysis needs
-to be thought through serious. The following is a good read:
+to be approached in a thoughtful, serious manner. The following would be a good read: <br>
 https://medium.com/nightingale/ten-considerations-before-you-create-another-chart-about-covid-19-27d3bd691be8
 
 # Development workflow
