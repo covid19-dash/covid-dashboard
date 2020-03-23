@@ -428,6 +428,11 @@ div.text-block {
 }
 
 
+.dash-table-container {
+    text-size-adjust: auto;  /* Browser auto-adjust font size on some phones */
+}
+
+
 div.footer {
     font-size: 75%;
     border-top: 1px solid #eee;
