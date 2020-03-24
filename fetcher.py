@@ -6,6 +6,7 @@ import pandas as pd
 import urllib
 import os
 import glob
+import numpy as np
 
 URL_BASE = (
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/"
@@ -24,19 +25,46 @@ URL_COUNTRY_ISO = (
 )
 
 MAP_UNMATCHED_COUNTRIES = {
-    'Congo (Kinshasa)': "Congo, the Democratic Republic of the",
-    "Cote d'Ivoire": "Côte d'Ivoire",
-    'Czechia': "Czech Republic",
-    'Eswatini': "Swaziland",
+    'Bahamas, The': "Bahamas",
+    'The Bahamas': "Bahamas",
+    'Congo (Kinshasa)': "Democratic Republic of the Congo",
+    "Congo, the Democratic Republic of the":
+                            "Democratic Republic of the Congo",
+    'Congo (Brazzaville)': 'Republic of the Congo',
+    'Cape Verde': 'Cabo Verde',
+    "Czech Republic": 'Czechia',
+    "Cote d'Ivoire": 'Ivory Coast',
+    "Côte d'Ivoire": 'Ivory Coast',
+    "Swaziland": 'Eswatini',
+    'The Gambia': 'Gambia',
+    'Gambia, The': 'Gambia',
+    'Hong Kong SAR': "Hong Kong",
     'Holy See': "Italy",
-    'Iran': "Iran, Islamic Republic of",
+    "Iran, Islamic Republic of": 'Iran',
+    'Iran (Islamic Republic of)': "Iran",
     'Korea, South': "South Korea",
-    'Moldova': "Moldova, Republic of",
-    'North Macedonia': "Macedonia, the former Yugoslav Republic of",
-    'Reunion': "Réunion",
+    'Republic of Korea': "South Korea",
+    'Macau': 'Macao',
+    'Macao SAR': 'Macao', 
+    'Mainland China': 'China',
+    "Moldova, Republic of": 'Moldova',
+    'Republic of Moldova': "Moldova",
+    'Republic of Ireland': 'Ireland',
+    "Macedonia, the former Yugoslav Republic of": 'North Macedonia',
+    "Réunion": 'Reunion',
+    "Russian Federation": "Russia",
+    "St. Martin": "Saint Martin",
     'Taiwan*': "Taiwan",
+    'Taipei and environs': "Taiwan",
+    'Timor-Leste': 'Timor Leste',
+    'East Timor': 'Timor Leste',
     'US': "United States",
-    'occupied Palestinian territory': "Palestinian Territory, Occupied",
+    'UK': 'United Kingdom',
+    'North Ireland': 'United Kingdom',
+    'occupied Palestinian territory': "Palestinian Territory",
+    'Palestine': "Palestinian Territory",
+    'Viet Nam': "Vietnam",
+    'Vatican City': 'Vatican',
 }
 
 MISSING_COUNTRIES = pd.DataFrame({
@@ -48,7 +76,7 @@ MISSING_COUNTRIES = pd.DataFrame({
     "Longitude (average)": [-68.990021],
 })
 
-UNMATCHED_COUNTRIES = ['Cruise Ship']
+UNMATCHED_COUNTRIES = ['Cruise Ship', 'Others', 'Channel Islands']
 
 
 def update_data():
@@ -62,12 +90,16 @@ def update_data():
 
 
 def read_data():
+    import data_input
+    # The population table we will merge with. We use it to check that
+    # the names are properly formatted with their ISO3 code
+    population_table = data_input.get_populations()
     daily_csvs = glob.glob(
         'COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/*.csv')
     daily_csvs.sort()
     all_days = list()
     for day in daily_csvs:
-        day_data = pd.read_csv(day)
+        day_data = pd.read_csv(day, skipinitialspace=True)
         # Some data wrangling to put in tidy wide form
         day_data = day_data.fillna(value=0)
         if 'Country/Region' in day_data.columns:
@@ -78,14 +110,27 @@ def read_data():
                                      MAP_UNMATCHED_COUNTRIES})
         groupby = day_data.groupby(country_column)
         day_data = groupby['Confirmed', 'Deaths', 'Recovered'].sum()
+        day_data.columns = [c.lower() for c in day_data.columns]
+        day_data = day_data.fillna(value=0)
         # Convert to wide with multiindex in column
         day_data = day_data.T.stack().to_frame().T
+        for unknown in UNMATCHED_COUNTRIES:
+            if unknown in day_data.columns.levels[1]:
+                day_data = day_data.drop(unknown, axis=1, level=1)
         # retrieve the date from the filename
         day = pd.to_datetime(os.path.split(day)[-1][:-4])
         day_data['date'] = day
         day_data = day_data.set_index('date')
         all_days.append(day_data)
     all_days = pd.concat(all_days)
+    correspondence = all_days.columns.levels[1].isin(
+        population_table['Country'])
+    if not correspondence.all():
+        missing_countries = all_days.columns.levels[1][np.logical_not(
+            correspondence)]
+        raise ValueError('The countries below are not recognized\n' 
+                         'Pease update the correspondence table %s'
+                         % missing_countries)
     return all_days
 
 
