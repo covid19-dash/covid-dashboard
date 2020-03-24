@@ -4,6 +4,8 @@ Fetch the data from Johns Hopkins' github
 
 import pandas as pd
 import urllib
+import os
+import glob
 
 URL_BASE = (
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/"
@@ -47,6 +49,38 @@ MISSING_COUNTRIES = pd.DataFrame({
 })
 
 UNMATCHED_COUNTRIES = ['Cruise Ship']
+
+
+def update_data():
+    """ Update the data source
+    """
+    os.chdir('COVID-19')
+    try:
+        os.system('git pull')
+    finally:
+        os.chdir('..')
+    daily_csvs = glob.glob(
+        'COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/*.csv')
+    daily_csvs.sort()
+    all_days = list()
+    for day in daily_csvs:
+        day_data = pd.read_csv(day)
+        # Some data wrangling to put in tidy wide form
+        day_data = day_data.fillna(value=0)
+        if 'Country/Region' in day_data.columns:
+            groupby = day_data.groupby('Country/Region')
+        else:
+            groupby = day_data.groupby('Country_Region')
+        day_data = groupby['Confirmed', 'Deaths', 'Recovered'].sum()
+        # Convert to wide with multiindex in column
+        day_data = day_data.T.stack().to_frame().T
+        # retrieve the date from the filename
+        day = pd.to_datetime(os.path.split(day)[-1][:-4])
+        day_data['date'] = day
+        day_data = day_data.set_index('date')
+        all_days.append(day_data)
+    all_days = pd.concat(all_days)
+    return all_days
 
 
 def fetch_john_hopkins_data():
