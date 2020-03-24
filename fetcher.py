@@ -59,6 +59,9 @@ def update_data():
         os.system('git pull')
     finally:
         os.chdir('..')
+
+
+def read_data():
     daily_csvs = glob.glob(
         'COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/*.csv')
     daily_csvs.sort()
@@ -68,9 +71,12 @@ def update_data():
         # Some data wrangling to put in tidy wide form
         day_data = day_data.fillna(value=0)
         if 'Country/Region' in day_data.columns:
-            groupby = day_data.groupby('Country/Region')
+            country_column = 'Country/Region'
         else:
-            groupby = day_data.groupby('Country_Region')
+            country_column = 'Country_Region'
+        day_data = day_data.replace({country_column:
+                                     MAP_UNMATCHED_COUNTRIES})
+        groupby = day_data.groupby(country_column)
         day_data = groupby['Confirmed', 'Deaths', 'Recovered'].sum()
         # Convert to wide with multiindex in column
         day_data = day_data.T.stack().to_frame().T
