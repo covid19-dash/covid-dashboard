@@ -29,6 +29,7 @@ jobs:
         shell: bash
         run: |
             make clean
+            make update
             make html
 
       - name: Setup Hugo

@@ -16,6 +16,7 @@ jobs:
           name: build the static website
           command: |
             make clean
+            make update
             make html
             python ./build_tools/circleci/post_processing.py ./127.0.0.1\:8050
       - store_artifacts:
