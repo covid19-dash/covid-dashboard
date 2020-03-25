@@ -445,6 +445,12 @@ div.text-block {
     .dash-table-container {
 	font-size: 150%;
     }
+
+    .dash-table-container td.dash-select-cell {
+	width: 50px !important;
+	max-width: 50px !important;
+    }
+
 }
 
 @media	only screen and (-webkit-min-device-pixel-ratio: 2.3),
