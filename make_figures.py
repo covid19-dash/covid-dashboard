@@ -100,7 +100,7 @@ def make_timeplot(df_measure, df_prediction):
     prediction *= 1e6
     upper_bound = normalize_by_population_wide(upper_bound)
     upper_bound *= 1e6
-    lower_bound = normalize_by_population_wide(upper_bound)
+    lower_bound = normalize_by_population_wide(lower_bound)
     lower_bound *= 1e6
     for i, country in enumerate(prediction.columns):
         # Do not plot predictions for a country with less than 50 cases
