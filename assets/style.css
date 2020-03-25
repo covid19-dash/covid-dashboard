@@ -431,40 +431,34 @@ div.text-block {
 /* High-DPI devices (eg mobile phone) */
 /* https://www.infobyip.com/detectmonitordpi.php and http://dpi.lv/ */
 /* Safari does not support min-resolution */
-@media	only screen and (pointer: coarse) and (-webkit-min-device-pixel-ratio: 1.8),
-	only screen and (pointer: coarse) and (min-resolution: 180dpi)
-{
-    .dash-table-container, .dash-table-container th.dash-filter {
-	font-size: 130%;
+@media only screen and (pointer: coarse) and (min-width: 1200px) { 
+    @media (min-resolution: 180dpi), (-webkit-min-device-pixel-ratio: 1.8) {
+	.dash-table-container, .dash-table-container th.dash-filter {
+	    font-size: 130%;
+	}
+
+	.dash-table-container th.dash-filter {
+	    height: 1em !important;
+	}
     }
 
-    .dash-table-container th.dash-filter {
-	height: 1em !important;
-    }
-}
+    @media (min-resolution: 220dpi), (-webkit-min-device-pixel-ratio: 2.2) {
+	.dash-table-container, .dash-table-container th.dash-filter {
+	    font-size: 160%;
+	}
 
-@media	only screen and (pointer: coarse) and (-webkit-min-device-pixel-ratio: 2.1),
-	only screen and (pointer: coarse) and (min-resolution: 220dpi)
-{
-    .dash-table-container, .dash-table-container th.dash-filter {
-	font-size: 160%;
-    }
-
-    .dash-table-container td.dash-select-cell {
-	width: 50px !important;
-	max-width: 50px !important;
+	.dash-table-container td.dash-select-cell {
+	    width: 50px !important;
+	    max-width: 50px !important;
+	}
     }
 
-}
-
-@media	only screen and (pointer: coarse) and (-webkit-min-device-pixel-ratio: 2.3),
-	only screen and (pointer: coarse) and (min-resolution: 300dpi)
-{
-    .dash-table-container, .dash-table-container th.dash-filter {
-	font-size: 190%;
+    @media (min-resolution: 300dpi), (-webkit-min-device-pixel-ratio: 3) {
+	.dash-table-container, .dash-table-container th.dash-filter {
+	    font-size: 190%;
+	}
     }
 }
-
 
 /* Easier selection of a row */
 .dash-table-container .dash-select-cell input {
