@@ -31,8 +31,8 @@ update:
 	cd COVID-19 && git pull
 
 submodules:
-	git submodules init
-	git submodules update
+	git submodule init
+	git submodule update
 
 clean:
 	rm -rf 127.0.0.1:8050/
