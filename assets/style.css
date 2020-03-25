@@ -463,10 +463,10 @@ div.text-block {
 }
 
 @media only screen and (max-width: 768px) {
-    .dash-table-container .dash-select-cell input {
+    div.dash-table-container {
 	/* small devices: shift to the side for easier selection with
 	 * thumb */
-	margin-left: 0.4em;
+	margin-left: 0.7em;
     }
 }
 
