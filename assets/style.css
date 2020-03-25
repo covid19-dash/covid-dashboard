@@ -462,7 +462,7 @@ div.text-block {
     height: 1.3em; /* Hacky way of enlarging the checkbox */
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
     div.dash-table-container {
 	/* small devices: shift to the side for easier selection with
 	 * thumb */
