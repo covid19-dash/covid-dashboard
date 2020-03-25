@@ -75,10 +75,9 @@ def update_data():
 
 
 def get_data():
-    import data_input
     # The population table we will merge with. We use it to check that
     # the names are properly formatted with their ISO3 code
-    population_table = data_input.get_populations()
+    population_table = get_populations()
     daily_csvs = glob.glob(
         'COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/*.csv')
     daily_csvs.sort()
