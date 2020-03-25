@@ -457,9 +457,9 @@ div.text-block {
 
 
 /* Easier selection of a row */
-.dash-table-container .dash-select-cell {
-    scale: 120%;
-    background-color: rgba(1,1,1,0) !important;
+.dash-table-container .dash-select-cell input {
+    /*scale: 120%;*/
+    transform: scale(1.3);
 }
 
 div.footer {
