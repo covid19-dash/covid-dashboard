@@ -49,17 +49,21 @@ have a responsive design (ie that displays well on mobile phones).
 
 ## Local development
 
-To launch the Dash app:
+### Checkout the data
 
+First, you need to checkout the upstream data (from Johns Hopkins), which
+is contained in a git submodule. The easiest is to do:
 ```
-python3 app.py
+make submodules
 ```
 
-then visit http://127.0.0.1:8050 with your browser
 
 ## Make static pages that will be deployed to github pages
 
-The `Makefile` is used by github actions to deploy the model.
+The `Makefile` is used by github actions to deploy the model:
+```
+make html
+```
 
 The Makefile
 * runs the prediction engine on the latest data
@@ -73,3 +77,14 @@ many visits.
 
 An automatic schedule job is launched each day at 1:00 am (UTC) to build the
 website and update with the latest available data.
+
+## Interactive development
+
+Launching locally the Dash app can be faster when working on the figures
+or the CSS:
+
+```
+python3 app.py
+```
+
+then visit http://127.0.0.1:8050 with your browser

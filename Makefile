@@ -27,7 +27,12 @@ html:
 	cp _static/async-table* 127.0.0.1:8050/_dash-component-suites/dash_table/
 	ps | grep python | awk '{print $$1}' | xargs kill -9	
 
-predictions.pkl:
+update:
+	cd COVID-19 && git pull
+
+submodules:
+	git submodule init
+	git submodule update
 
 clean:
 	rm -rf 127.0.0.1:8050/
