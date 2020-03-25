@@ -428,6 +428,58 @@ div.text-block {
 }
 
 
+/* High-DPI devices (eg mobile phone) */
+/* https://www.infobyip.com/detectmonitordpi.php and http://dpi.lv/ */
+/* Safari does not support min-resolution */
+@media	only screen and (-webkit-min-device-pixel-ratio: 1.8),
+	only screen and (min-resolution: 180dpi)
+{
+    .dash-table-container, .dash-table-container th.dash-filter {
+	font-size: 130%;
+    }
+
+    .dash-table-container th.dash-filter {
+	height: 1em !important;
+    }
+}
+
+@media	only screen and (-webkit-min-device-pixel-ratio: 2.1),
+	only screen and (min-resolution: 220dpi)
+{
+    .dash-table-container, .dash-table-container th.dash-filter {
+	font-size: 160%;
+    }
+
+    .dash-table-container td.dash-select-cell {
+	width: 50px !important;
+	max-width: 50px !important;
+    }
+
+}
+
+@media	only screen and (-webkit-min-device-pixel-ratio: 2.3),
+	only screen and (min-resolution: 300dpi)
+{
+    .dash-table-container, .dash-table-container th.dash-filter {
+	font-size: 190%;
+    }
+}
+
+
+/* Easier selection of a row */
+.dash-table-container .dash-select-cell input {
+    width: 1.3em; /* Hacky way of enlarging the checkbox */
+    height: 1.3em; /* Hacky way of enlarging the checkbox */
+}
+
+@media only screen and (max-width: 1024px) {
+    div.dash-table-container {
+	/* small devices: shift to the side for easier selection with
+	 * thumb */
+	margin-left: 0.7em;
+    }
+}
+
 div.footer {
     font-size: 75%;
     border-top: 1px solid #eee;
