@@ -30,6 +30,10 @@ html:
 update:
 	cd COVID-19 && git pull
 
+submodules:
+	git submodules init
+	git submodules update
+
 clean:
 	rm -rf 127.0.0.1:8050/
 	rm -rf joblib
