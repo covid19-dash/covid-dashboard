@@ -51,7 +51,7 @@ have a responsive design (ie that displays well on mobile phones).
 
 ### Checkout the data
 
-First, you need to checkout the upstream data (from John Hopkins), which
+First, you need to checkout the upstream data (from Johns Hopkins), which
 is contained in a git submodule. The easiest is to do:
 ```
 make submodules
@@ -88,4 +88,3 @@ python3 app.py
 ```
 
 then visit http://127.0.0.1:8050 with your browser
-
