@@ -474,6 +474,17 @@ div.text-block {
     }
 }
 
+/* Very large sceens */
+@media only screen and (min-width: 2000px) {
+    .pure-u-xl-8-24 {
+	width: 40%;
+    }
+
+    .pure-u-xl-4-24 {
+	width: 10%;
+    }
+}
+
 div.footer {
     font-size: 75%;
     border-top: 1px solid #eee;
