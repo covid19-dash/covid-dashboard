@@ -93,8 +93,6 @@ def make_timeplot(df_measure, df_prediction):
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
     lower_bound = df_prediction['lower_bound']
-    print(df_measure_confirmed.columns.shape)
-    print(prediction.columns.shape)
     for i, country in enumerate(prediction.columns):
         # Do not plot predictions for a country with less than 50 cases
         if df_measure_confirmed[country][-1] < 50:
@@ -189,9 +187,9 @@ def make_timeplot(df_measure, df_prediction):
             xref='x',
             yref='paper',
             x0=last_day,
-            y0=0,
+            y0=0.05,
             x1=last_day,
-            y1=1,
+            y1=0.95,
             line=dict(
                 color="gray",
                 dash='dash',
