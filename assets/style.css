@@ -431,7 +431,7 @@ div.text-block {
 /* High-DPI devices (eg mobile phone) */
 /* https://www.infobyip.com/detectmonitordpi.php and http://dpi.lv/ */
 /* Safari does not support min-resolution */
-@media only screen and (pointer: coarse) and (min-width: 1200px) { 
+@media only screen and (pointer: coarse) and (max-width: 1200px) { 
     @media (min-resolution: 180dpi), (-webkit-min-device-pixel-ratio: 1.8) {
 	.dash-table-container, .dash-table-container th.dash-filter {
 	    font-size: 130%;
