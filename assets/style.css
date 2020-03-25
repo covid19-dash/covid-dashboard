@@ -447,11 +447,18 @@ div.text-block {
     }
 }
 
+@media	only screen and (-webkit-min-device-pixel-ratio: 2.3),
+	only screen and (min-resolution: 300dpi)
+{
+    .dash-table-container {
+	font-size: 180%;
+    }
+}
+
+
 /* Easier selection of a row */
 .dash-table-container .dash-select-cell {
-    scale: 128%;
-    -webkit-transform: scale(1.28);
-    transform: scale(1.28);
+    scale: 120%;
     background-color: rgba(1,1,1,0) !important;
 }
 
