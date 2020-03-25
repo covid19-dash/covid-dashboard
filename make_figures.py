@@ -9,7 +9,7 @@ import pandas as pd
 import plotly.io as pio
 from plotly.validators.scatter.marker import SymbolValidator
 
-from data_input import normalize_by_population
+from data_input import normalize_by_population, normalize_by_population_wide
 
 pio.templates.default = "plotly_white"
 
@@ -75,11 +75,14 @@ def make_timeplot(df_measure, df_prediction):
     # mode = 'confirmed'
     mode = 'active'
     df_measure_confirmed = df_measure[mode]
+    df_measure_confirmed = normalize_by_population_wide(df_measure_confirmed)
+    # Plot per million
+    df_measure_confirmed *= 1e6
     colors = px.colors.qualitative.Dark24
     n_colors = len(colors)
     fig = go.Figure()
-    hovertemplate_measure = '<b>%{meta}</b><br>%{x}<br>%{y:.0f}<extra></extra>'
-    hovertemplate_prediction = '<b>%{meta}<br>prediction</b><br>%{x}<br>%{y:.0f}<extra></extra>'
+    hovertemplate_measure = '<b>%{meta}</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
+    hovertemplate_prediction = '<b>%{meta}<br>prediction</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
     for i, country in enumerate(df_measure_confirmed.columns):
         fig.add_trace(go.Scatter(x=df_measure_confirmed.index,
                                  y=df_measure_confirmed[country],
@@ -93,6 +96,12 @@ def make_timeplot(df_measure, df_prediction):
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
     lower_bound = df_prediction['lower_bound']
+    prediction = normalize_by_population_wide(prediction)
+    prediction *= 1e6
+    upper_bound = normalize_by_population_wide(upper_bound)
+    upper_bound *= 1e6
+    lower_bound = normalize_by_population_wide(lower_bound)
+    lower_bound *= 1e6
     for i, country in enumerate(prediction.columns):
         # Do not plot predictions for a country with less than 50 cases
         if df_measure_confirmed[country][-1] < 50:
@@ -204,7 +213,7 @@ def make_timeplot(df_measure, df_prediction):
             yref='paper',
             showarrow=False,
             font_size=LABEL_FONT_SIZE,
-            text="Active cases")
+            text="Active cases per Million")
     fig.add_annotation(
             x=1,
             y=-0.13,
