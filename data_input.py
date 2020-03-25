@@ -150,14 +150,16 @@ def get_all_data():
     """ Retrieve both the actual data and the predictions from our model.
     """
     df = get_data() # all data
-    df_tidy = tidy_most_recent(df) # most recent date, tidy format (one column for countries)
-    df_tidy_table = df_tidy[['country_region', 'value']] # keep only two columns for Dash DataTable
 
     if not os.path.exists('predictions.pkl'):
         print('Running the model')
         exec_full('modeling.py')
     with open('predictions.pkl', 'rb') as f_pkl:
         df_prediction = pickle.load(f_pkl)
+    # MultiIndex does not pickle, hence we need to rebuild it
+    for p in df_prediction.values():
+        p.columns = pd.MultiIndex.from_tuples(p.columns,
+                                              names=('iso', 'country'))
     return df, df_prediction
 
 
@@ -183,6 +185,19 @@ def normalize_by_population(tidy_df):
          "database of populations")
     return normalized_values
 
+
+def normalize_by_population_wide(df):
+    """ Normalize by population the columns of a dataframe with
+        column names being the country iso
+    """
+    pop = get_populations()
+    # Grap a series, indexed by "iso"
+    pop = pop.rename(dict(ISO3='iso'), axis=1).set_index('iso')['Population']
+    # Use the ".div" for the divison because it support explicit
+    # alignement
+    normalized_df = df.div(pop, level='iso', axis=1)
+
+    return normalized_df
 
 if __name__ == "__main__":
     # Basic code to check that we can still do the entity matching
