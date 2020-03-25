@@ -152,8 +152,8 @@ def make_timeplot(df_measure, df_prediction):
                     method="relayout",
                 ),
                 dict(
-                    args=[{'yaxis': {'type':'linear'}, 
-                           "legend": {'x':0.05, 'y':0.8, 
+                    args=[{'yaxis': {'type':'linear'},
+                           "legend": {'x':0.05, 'y':0.8,
                                       "font":{"size":18},
                                       }}],
                     label="lin",
@@ -179,6 +179,24 @@ def make_timeplot(df_measure, df_prediction):
         legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
                     )
     )
+    # vartical line to seprate the last day of measurements from prediction
+    fig.add_shape(
+        # Line Vertical
+        dict(
+            type='line',
+            xref='x',
+            yref='paper',
+            x0=last_day,
+            y0=0.05,
+            x1=last_day,
+            y1=0.95,
+            line=dict(
+                color="gray",
+                dash='dash',
+                width=1
+            )
+    ))
+
     fig.add_annotation(
             x=0.1,
             y=0.95,
