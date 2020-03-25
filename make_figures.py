@@ -36,7 +36,7 @@ def make_map(df, df_fatalities, df_recovered):
                      '<b>Active cases per million</b>: %{customdata[1]:.1f}<br>' +
                      '<b>Active cases</b>: %{customdata[2]}<br>' +
                      '<b>Fatalities</b>: %{customdata[3]}<br>' +
-                     '<b>Recovered</b>: %{customdata[4]}' 
+                     '<b>Recovered</b>: %{customdata[4]}'
                      )
     fig = px.choropleth(df, locations='iso',
                     color=np.log10(normalized_values),

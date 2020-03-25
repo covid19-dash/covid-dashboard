@@ -110,7 +110,7 @@ def read_data():
                                      MAP_UNMATCHED_COUNTRIES})
         groupby = day_data.groupby(country_column)
         day_data = groupby['Confirmed', 'Deaths', 'Recovered'].sum()
-        day_data.columns = [c.lower() for c in day_data.columns]
+        day_data.columns = ['confirmed', 'death', 'recovered']
         day_data = day_data.fillna(value=0)
         # Convert to wide with multiindex in column
         day_data = day_data.T.stack().to_frame().T
@@ -143,7 +143,7 @@ def read_data():
     all_days = all_days.fillna(value=0)
 
     # compute the active cases
-    active = all_days['confirmed'] - all_days['deaths'] - all_days['recovered']
+    active = all_days['confirmed'] - all_days['death'] - all_days['recovered']
     # Add a level
     active = pd.concat(dict(active=active), axis=1)
     active.columns.names = all_days.columns.names
