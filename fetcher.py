@@ -123,14 +123,23 @@ def read_data():
         day_data = day_data.set_index('date')
         all_days.append(day_data)
     all_days = pd.concat(all_days)
-    correspondence = all_days.columns.levels[1].isin(
-        population_table['Country'])
+    # Check that all countries can be merged with our population table
+    countries = all_days.columns.levels[1]
+    correspondence = countries.isin(population_table['Country'])
     if not correspondence.all():
         missing_countries = all_days.columns.levels[1][np.logical_not(
             correspondence)]
         raise ValueError('The countries below are not recognized\n' 
                          'Pease update the correspondence table %s'
                          % missing_countries)
+    population_table = population_table.set_index('Country')
+    iso3 = population_table['ISO3'].loc[countries].reset_index()
+    iso3.columns = ['iso', 'country_region']
+    new_columns = [(kind, p[1]['country_region'], p[1]['iso'])
+                   for kind in all_days.columns.levels[0]
+                   for p in iso3.iterrows()]
+    all_days.columns = pd.MultiIndex.from_tuples(new_columns,
+                    names=['type', 'iso', 'country_region'])
     return all_days
 
 
