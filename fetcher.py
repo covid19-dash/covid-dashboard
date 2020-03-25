@@ -140,6 +140,14 @@ def read_data():
                    for p in iso3.iterrows()]
     all_days.columns = pd.MultiIndex.from_tuples(new_columns,
                     names=['type', 'iso', 'country_region'])
+    all_days = all_days.fillna(value=0)
+
+    # compute the active cases
+    active = all_days['confirmed'] - all_days['deaths'] - all_days['recovered']
+    # Add a level
+    active = pd.concat(dict(active=active), axis=1)
+    active.columns.names = all_days.columns.names
+    all_days = pd.concat((all_days, active), axis=1)
     return all_days
 
 
