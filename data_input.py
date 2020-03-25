@@ -2,7 +2,6 @@
 Data massaging: prepare the data so that it is easy to plot it.
 """
 
-from fetcher import fetch_john_hopkins_data
 import os
 import pickle
 import glob
@@ -17,35 +16,6 @@ def tidy_most_recent(df, column='active'):
     return df.sort_values('iso')
 
 
-def get_data_orig():
-    """ Download the data and return it as a 'wide' data frame
-    """
-    df = fetch_john_hopkins_data()
-    # The number of reported cases per day, country, and type
-    df_day = df.groupby(['country_region', 'iso', 'date', 'type']).sum()
-
-    # Switch to wide format (time series)
-    data = df_day.pivot_table(values='cases',
-                              columns=['type', 'iso', 'country_region'],
-                              index=['date'])
-    data = data.fillna(method='ffill')
-    data = data.fillna(value=0)
-
-    # Align columns and compute active cases
-    death, recovered = data['death'].align(
-        data['recovered'], join='outer', fill_value=0
-    )
-    inactive = death + recovered
-    confirmed, inactive = data['confirmed'].align(
-        inactive, join='outer', fill_value=0
-    )
-
-    active = confirmed - inactive
-    # Add a level
-    active = pd.concat(dict(active=active), axis=1)
-    active.columns.names = ['type', 'iso', 'country_region']
-    data = pd.concat((data, active), axis=1)
-    return data
 
 
 MAP_UNMATCHED_COUNTRIES = {
