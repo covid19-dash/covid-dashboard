@@ -429,20 +429,27 @@ div.text-block {
 
 
 /* High-DPI devices (eg mobile phone) */
-/* https://gist.github.com/marcedwards/3446599 */
-@media	only screen and (-webkit-min-device-pixel-ratio: 1.3),
-	only screen and (-o-min-device-pixel-ratio: 13/10),
-	only screen and (min-resolution: 120dpi)
+/* https://www.infobyip.com/detectmonitordpi.php and http://dpi.lv/ */
+/* Safari does not support min-resolution */
+@media	only screen and (-webkit-min-device-pixel-ratio: 1.8),
+	only screen and (min-resolution: 180dpi)
+{
+    .dash-table-container {
+	font-size: 120%;
+    }
+}
+
+@media	only screen and (-webkit-min-device-pixel-ratio: 2.1),
+	only screen and (min-resolution: 220dpi)
 {
     .dash-table-container {
 	font-size: 150%;
     }
-
 }
 
 /* Easier selection of a row */
 .dash-select-cell {
-    font-size: 130%;
+    scale: 130%;
     background-color: rgba(1,1,1,0);
 }
 
