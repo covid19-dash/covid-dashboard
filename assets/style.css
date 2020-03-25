@@ -449,7 +449,9 @@ div.text-block {
 
 /* Easier selection of a row */
 .dash-table-container .dash-select-cell {
-    scale: 130%;
+    scale: 128%;
+    -webkit-transform: scale(1.28);
+    transform: scale(1.28);
     background-color: rgba(1,1,1,0) !important;
 }
 
