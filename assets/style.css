@@ -462,6 +462,14 @@ div.text-block {
     height: 1.3em; /* Hacky way of enlarging the checkbox */
 }
 
+@media only screen and (max-width: 768px) {
+    .dash-table-container .dash-select-cell input {
+	/* small devices: shift to the side for easier selection with
+	 * thumb */
+	margin-left: 0.4em;
+    }
+}
+
 div.footer {
     font-size: 75%;
     border-top: 1px solid #eee;
