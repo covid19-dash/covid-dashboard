@@ -429,6 +429,7 @@ div.text-block {
 
 
 /* High-DPI devices (eg mobile phone) */
+/* https://gist.github.com/marcedwards/3446599 */
 @media	only screen and (-webkit-min-device-pixel-ratio: 1.3),
 	only screen and (-o-min-device-pixel-ratio: 13/10),
 	only screen and (min-resolution: 120dpi)
@@ -436,8 +437,14 @@ div.text-block {
     .dash-table-container {
 	font-size: 150%;
     }
+
 }
 
+/* Easier selection of a row */
+.dash-select-cell {
+    font-size: 130%;
+    background-color: rgba(1,1,1,0);
+}
 
 div.footer {
     font-size: 75%;
