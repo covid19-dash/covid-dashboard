@@ -15,7 +15,7 @@ pio.templates.default = "plotly_white"
 
 FIRST_LINE_HEIGHT = 600
 
-LABEL_FONT_SIZE = 18
+LABEL_FONT_SIZE = 20
 
 
 def make_map(df, df_fatalities, df_recovered):
