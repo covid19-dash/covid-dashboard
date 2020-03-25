@@ -428,8 +428,14 @@ div.text-block {
 }
 
 
-.dash-table-container {
-    text-size-adjust: auto;  /* Browser auto-adjust font size on some phones */
+/* High-DPI devices (eg mobile phone) */
+@media	only screen and (-webkit-min-device-pixel-ratio: 1.3),
+	only screen and (-o-min-device-pixel-ratio: 13/10),
+	only screen and (min-resolution: 120dpi)
+{
+    .dash-table-container {
+	font-size: 150%;
+    }
 }
 
 
