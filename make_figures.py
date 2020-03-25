@@ -165,7 +165,7 @@ def make_timeplot(df_measure, df_prediction):
                            "legend": {'x':0.05, 'y':0.8,
                                       "font":{"size":18},
                                       }}],
-                    label="lin",
+                    label="linear",
                     method="relayout",
                 ),
 
