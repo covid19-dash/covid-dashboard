@@ -434,16 +434,20 @@ div.text-block {
 @media	only screen and (-webkit-min-device-pixel-ratio: 1.8),
 	only screen and (min-resolution: 180dpi)
 {
-    .dash-table-container {
-	font-size: 120%;
+    .dash-table-container, .dash-table-container th.dash-filter {
+	font-size: 130%;
+    }
+
+    .dash-table-container th.dash-filter {
+	height: 1em !important;
     }
 }
 
 @media	only screen and (-webkit-min-device-pixel-ratio: 2.1),
 	only screen and (min-resolution: 220dpi)
 {
-    .dash-table-container {
-	font-size: 150%;
+    .dash-table-container, .dash-table-container th.dash-filter {
+	font-size: 160%;
     }
 
     .dash-table-container td.dash-select-cell {
@@ -456,8 +460,8 @@ div.text-block {
 @media	only screen and (-webkit-min-device-pixel-ratio: 2.3),
 	only screen and (min-resolution: 300dpi)
 {
-    .dash-table-container {
-	font-size: 180%;
+    .dash-table-container, .dash-table-container th.dash-filter {
+	font-size: 190%;
     }
 }
 
