@@ -31,7 +31,6 @@ df, df_prediction = get_all_data()
 # most recent date, tidy format (one column for countries)
 df_tidy = tidy_most_recent(df)
 df_tidy_fatalities = tidy_most_recent(df, 'death')
-df_tidy_recovered = tidy_most_recent(df, 'recovered')
 # keep only two columns for Dash DataTable
 df_tidy_table = df_tidy[['country_region', 'value']]
 
@@ -44,7 +43,7 @@ initial_indices[-1]  = np.where(df_tidy['iso'] == 'CHN')[0][0]
 initial_indices[-2]  = np.where(df_tidy['iso'] == 'KOR')[0][0]
 
 # ----------- Figures ---------------------
-fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered)
+fig1 = make_map(df_tidy, df_tidy_fatalities)
 fig2 = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
@@ -66,7 +65,7 @@ app = dash.Dash(__name__,
         'https://unpkg.com/purecss@1.0.1/build/base-min.css',
     ],
 )
-app.title = 'Covid-19: active cases and extrapolation'
+app.title = 'Covid-19: confirmed cases and extrapolation'
 server = app.server
 
 app.layout = html.Div([
