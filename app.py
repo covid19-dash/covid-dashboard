@@ -46,7 +46,8 @@ initial_indices[-2]  = np.where(df_tidy['iso'] == 'KOR')[0][0]
 
 # ----------- Figures ---------------------
 fig1 = make_map(df_tidy, df_tidy_fatalities)
-fig2 = make_timeplot(df, df_prediction)
+fig2 = make_timeplot(df, df_prediction, countries=['France', 'Italy', 'Spain'])
+fig_store = make_timeplot(df, df_prediction)
 
 # ------------ Markdown text ---------------
 # maybe later we can break the text in several parts
@@ -97,7 +98,7 @@ app.layout = html.Div([
             ],
             className="pure-u-1 pure-u-lg-1-2 pure-u-xl-8-24",
             ),
-        dcc.Store(id='store', data=[fig2, initial_indices]),
+        dcc.Store(id='store', data=[fig_store, initial_indices]),
         html.Div([
             dash_table.DataTable(
                 id='table',
@@ -167,19 +168,10 @@ app.layout = html.Div([
 
 app.clientside_callback(
     ClientsideFunction(
-        namespace='clientside2',
-        function_name='get_store_data'
-    ),
-    output=Output('plot', 'figure'),
-    inputs=[Input('store', 'data')])
-
-
-app.clientside_callback(
-    ClientsideFunction(
         namespace='clientside',
         function_name='update_store_data'
     ),
-    output=Output('store', 'data'),
+    output=Output('plot', 'figure'),
     inputs=[
         Input('table', "data"),
         Input('table', "selected_rows")],
@@ -201,7 +193,6 @@ app.clientside_callback(
     state=[State('table', 'selected_rows'),
            State('store', 'data')],
     )
-
 
 
 if __name__ == '__main__':
