@@ -174,6 +174,7 @@ app.clientside_callback(
     inputs=[Input('store', 'data')])
 
 
+"""
 app.clientside_callback(
     ClientsideFunction(
         namespace='clientside',
@@ -185,7 +186,7 @@ app.clientside_callback(
         Input('table', "selected_rows")],
     state=[State('store', 'data')],
     )
-
+"""
 
 app.clientside_callback(
     ClientsideFunction(
