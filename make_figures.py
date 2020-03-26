@@ -146,11 +146,6 @@ def make_timeplot(df_measure, df_prediction):
             direction = "left",
             buttons=list([
                 dict(
-                    args=[{"visible": [False,]*len(df_measure_confirmed.columns)}],
-                    label="Reset",
-                    method="update",
-                ),
-                dict(
                     args=[{'yaxis': {'type':'log'},
                            "legend": {'x':0.65, 'y':0.1,
                                       "font":{"size":18},
