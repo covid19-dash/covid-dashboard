@@ -3,11 +3,6 @@ if (!window.dash_clientside) {
 }
 
 
-window.dash_clientside.clientside2 = {
-    get_store_data: function(data) {
-        return data[0];
-    }
-};
 
 window.dash_clientside.clientside3 = {
     update_table: function(clickdata, selecteddata, table_data, selectedrows, store) {
@@ -51,27 +46,26 @@ window.dash_clientside.clientside3 = {
 
     
 window.dash_clientside.clientside = {
-    update_store_data: function(selectedrows, rows, store) {
+    update_store_data: function(rows, selectedrows, store) {
 	var fig = store[0];
 	if (!rows) {
            throw "Figure data not loaded, aborting update."
        }
-	var new_fig = {...fig};
+	var new_fig = {};
+	new_fig['data'] = [];
+	new_fig['layout'] = fig['layout'];
 	
 	var countries = [];
-	for (i = 0; i < rows.length; i++) {
-	    countries.push(selectedrows[rows[i]]["country_region"]);
+	for (i = 0; i < selectedrows.length; i++) {
+	    countries.push(rows[selectedrows[i]]["country_region"]);
 	}
-	for (i = 0; i < new_fig['data'].length; i++) {
-	    var name = new_fig['data'][i]['name'];
+	for (i = 0; i < fig['data'].length; i++) {
+	    var name = fig['data'][i]['name'];
 	    if (countries.includes(name) || countries.includes(name.substring(1))){
-		new_fig['data'][i]['visible'] = true;
-	    }
-	    else{
-		new_fig['data'][i]['visible'] = false;
+		new_fig['data'].push(fig['data'][i]);
 	    }
 	}
-        return [new_fig, store[1]];
+        return new_fig;
     }
 };
 
