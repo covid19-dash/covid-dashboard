@@ -1,6 +1,6 @@
 # What do these data mean?
 
-These visualizations give predictions about the future number of active COVID-19 cases. The predictions are based on extrapolating the growth observed in a given country over the last two weeks.
+These visualizations give predictions about the future number of confirmed COVID-19 cases. The predictions are based on extrapolating the growth observed in a given country over the last two weeks.
 
 These predictions are only short-term extrapolation: predicting the future is hard, and epidemic dynamics will change with changes in public health measures, social interaction patterns, or even weather.  Please also keep in mind that each data point in these visualizations represents a person who has suffered or lost their lives to this disease.
 

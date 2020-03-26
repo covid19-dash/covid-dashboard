@@ -18,7 +18,7 @@ FIRST_LINE_HEIGHT = 600
 LABEL_FONT_SIZE = 20
 
 
-def make_map(df, df_fatalities, df_recovered):
+def make_map(df, df_fatalities):
     """
     Build figure with map of total number of cases
 
@@ -33,18 +33,17 @@ def make_map(df, df_fatalities, df_recovered):
     # Plot per Million individual
     normalized_values *= 1e6
     hovertemplate = ('<b>Country</b>:%{customdata[0]}<br>' +
-                     '<b>Active cases per million</b>: %{customdata[1]:.1f}<br>' +
-                     '<b>Active cases</b>: %{customdata[2]}<br>' +
-                     '<b>Fatalities</b>: %{customdata[3]}<br>' +
-                     '<b>Recovered</b>: %{customdata[4]}'
+                     '<b>Confirmed cases per million</b>: %{customdata[1]:.1f}<br>' +
+                     '<b>Confirmed cases</b>: %{customdata[2]}<br>' +
+                     '<b>Fatalities</b>: %{customdata[3]}'
                      )
     fig = px.choropleth(df, locations='iso',
                     color=np.log10(normalized_values),
                     custom_data=[df['country_region'], normalized_values,
                                  df['value'], df_fatalities['value'],
-                                 df_recovered['value']],
+                                 ],
                     color_continuous_scale='Plasma_r',
-                    labels={'color': 'Active<br>cases<br>per<br>Million'})
+                    labels={'color': 'Confirmed<br>cases<br>per<br>Million'})
     fig.update_layout(title='Click on map to add/remove a country',
             coloraxis_colorbar_tickprefix='1.e',
             coloraxis_colorbar_len=0.6,
@@ -72,8 +71,7 @@ def make_timeplot(df_measure, df_prediction):
     df_prediction: pandas DataFrame
         DataFrame of predictions, with similar structure as df_measure
     """
-    # mode = 'confirmed'
-    mode = 'active'
+    mode = 'confirmed'
     df_measure_confirmed = df_measure[mode]
     df_measure_confirmed = normalize_by_population_wide(df_measure_confirmed)
     # Plot per million
@@ -213,7 +211,7 @@ def make_timeplot(df_measure, df_prediction):
             yref='paper',
             showarrow=False,
             font_size=LABEL_FONT_SIZE,
-            text="Active cases per Million")
+            text="Confirmed cases per Million")
     fig.add_annotation(
             x=1,
             y=-0.13,
@@ -235,7 +233,6 @@ if __name__ == '__main__':
     # most recent date, tidy format (one column for countries)
     df_tidy = tidy_most_recent(df)
     df_tidy_fatalities = tidy_most_recent(df, 'death')
-    df_tidy_recovered = tidy_most_recent(df, 'recovered')
 
-    fig1 = make_map(df_tidy, df_tidy_fatalities, df_tidy_recovered)
+    fig1 = make_map(df_tidy, df_tidy_fatalities)
     fig2 = make_timeplot(df, df_prediction)

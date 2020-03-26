@@ -25,18 +25,18 @@ import data_input
 data = mem.cache(data_input.get_data)()
 
 
-# We model only the active cases
-active = data['active']
+# We model only the confirmed cases
+confirmed = data['confirmed']
 
 # %%
 # First plot the time course of the most affected countries
-last_day = active.iloc[-1]
-most_affected_countries = active.columns[last_day.argsort()][::-1]
+last_day = confirmed.iloc[-1]
+most_affected_countries = confirmed.columns[last_day.argsort()][::-1]
 
 import matplotlib.pyplot as plt
-ax = active[most_affected_countries[:20]].plot(figsize=(12, 7))
+ax = confirmed[most_affected_countries[:20]].plot(figsize=(12, 7))
 ax.set_yscale('log')
-ax.set_title("Log-scale plot of number of active cases")
+ax.set_title("Log-scale plot of number of confirmed cases")
 plt.legend(loc='best', ncol=3)
 plt.tight_layout()
 
@@ -77,20 +77,20 @@ plt.title('The weights over the last few days')
 # # A simple model: fit the last few points
 
 # %%
-# the log of the active counts in the last fortnight
-last_fortnight = active.iloc[-window_size:]
+# the log of the confirmed counts in the last fortnight
+last_fortnight = confirmed.iloc[-window_size:]
 np.seterr(divide='ignore')
 log_last_fortnight = np.log(last_fortnight)
 log_last_fortnight[log_last_fortnight == -np.inf] = 0
 
 ax = log_last_fortnight[most_affected_countries[:20]].plot(figsize=(12, 7))
-ax.set_title('Log of the number of active cases in the last fortnight')
+ax.set_title('Log of the number of confirmed cases in the last fortnight')
 plt.legend(loc='best', ncol=3)
 plt.tight_layout()
 
 # %%
 # Our model-fitting routine: a weighted least square on the log of
-# the active counts
+# the confirmed counts
 #
 # The errors in the data are expected to be proportional to the value of
 # the data: the more cases are present, the more tests are realized, and
@@ -155,7 +155,7 @@ def fit_on_window(data, window):
 
 # %%
 # Fit it on the data
-growth_rate, predicted_cases = fit_on_window(active, weighted_window)
+growth_rate, predicted_cases = fit_on_window(confirmed, weighted_window)
 
 ax = growth_rate[most_affected_countries[:20]].T.plot(kind='barh',
     legend=False)
@@ -180,7 +180,7 @@ predicted_cases['upper_bound'][most_affected_countries[:10]].plot(
 
 plt.legend(loc=(.8, -1.3))
 ax.set_yscale('log')
-ax.set_title('Number of active cases in the last fortnight and prediction')
+ax.set_title('Number of confirmed cases in the last fortnight and prediction')
 
 # %%
 # Save our results for the dashboard. We pickle a dict, because
@@ -254,7 +254,7 @@ for start in range(8, 14):
     for middle in range(2, start + 1):
         window = ramp_window(start, middle)
         window_name = f'Ramp, from -{start} to -{middle}'
-        errors = mem.cache(historical_replay)(active, window)
+        errors = mem.cache(historical_replay)(confirmed, window)
         errors_by_window[window_name] = (errors, start, middle)
 
 # %%
@@ -296,7 +296,7 @@ for start in range(12, 18):
     for growth in [1.4, 1.5, 1.6, 1.7, 1.8, 1.9]:
         window = exp_window(start, growth)
         window_name = f'Exp, from -{start} with growth {growth}'
-        errors = mem.cache(historical_replay)(active, window)
+        errors = mem.cache(historical_replay)(confirmed, window)
         errors_by_window[window_name] = (errors, start, growth)
 
 # %%
