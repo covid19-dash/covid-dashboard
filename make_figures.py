@@ -57,7 +57,7 @@ def make_map(df, df_fatalities):
     return fig
 
 
-def make_timeplot(df_measure, df_prediction):
+def make_timeplot(df_measure, df_prediction, countries=None):
     """
     Build figure showing evolution of number of cases vs. time for all countries.
     The visibility of traces is set to 0 so that the interactive app will
@@ -82,6 +82,8 @@ def make_timeplot(df_measure, df_prediction):
     hovertemplate_measure = '<b>%{meta}</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
     hovertemplate_prediction = '<b>%{meta}<br>prediction</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
     for i, country in enumerate(df_measure_confirmed.columns):
+        if countries and country[1] not in countries:
+            continue
         fig.add_trace(go.Scatter(x=df_measure_confirmed.index,
                                  y=df_measure_confirmed[country],
                                  name=country[1], mode='markers+lines',
@@ -90,7 +92,7 @@ def make_timeplot(df_measure, df_prediction):
                                  line_color=colors[i%n_colors],
                                  meta=country[1],
                                  hovertemplate=hovertemplate_measure,
-                                 visible=False))
+                                 visible=True))
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
     lower_bound = df_prediction['lower_bound']
@@ -101,6 +103,8 @@ def make_timeplot(df_measure, df_prediction):
     lower_bound = normalize_by_population_wide(lower_bound)
     lower_bound *= 1e6
     for i, country in enumerate(prediction.columns):
+        if countries and country[1] not in countries:
+            continue
         # Do not plot predictions for a country with less than 50 cases
         if df_measure_confirmed[country][-1] < 50:
             continue
@@ -112,14 +116,14 @@ def make_timeplot(df_measure, df_prediction):
                                  showlegend=False,
                                  meta=country[1],
                                  hovertemplate=hovertemplate_prediction,
-                                 visible=False))
+                                 visible=True))
         fig.add_trace(go.Scatter(x=upper_bound.index,
                                  y=upper_bound[country],
                                  name='+' + country[1], mode='lines',
                                  line_dash='dot',
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
-                                 visible=False,
+                                 visible=True,
                                  hoverinfo='skip',
                                  line_width=.8))
         fig.add_trace(go.Scatter(x=lower_bound.index,
@@ -128,7 +132,7 @@ def make_timeplot(df_measure, df_prediction):
                                  line_dash='dot',
                                  line_color=colors[i%n_colors],
                                  showlegend=False,
-                                 visible=False,
+                                 visible=True,
                                  hoverinfo='skip',
                                  line_width=.8))
 
