@@ -39,7 +39,9 @@ df_tidy_table = df_tidy_table.reset_index()
 initial_indices = list(df_tidy_table['value'].nlargest(3).index)
 # We hardcode the second and third index shown as being China, and Korea
 # to give a message of hope
-initial_indices[-1]  = np.where(df_tidy['iso'] == 'CHN')[0][0]
+# Not China so far, as it is still the top on in terms of numbers of
+# total confirmed cases
+#initial_indices[-1]  = np.where(df_tidy['iso'] == 'CHN')[0][0]
 initial_indices[-2]  = np.where(df_tidy['iso'] == 'KOR')[0][0]
 
 # ----------- Figures ---------------------
