@@ -71,6 +71,8 @@ def make_timeplot(df_measure, df_prediction):
     df_prediction: pandas DataFrame
         DataFrame of predictions, with similar structure as df_measure
     """
+    visibility_tag=[]
+    # active cases
     mode = 'confirmed'
     df_measure_confirmed = df_measure[mode]
     df_measure_confirmed = normalize_by_population_wide(df_measure_confirmed)
@@ -91,6 +93,8 @@ def make_timeplot(df_measure, df_prediction):
                                  meta=country[1],
                                  hovertemplate=hovertemplate_measure,
                                  visible=False))
+        visibility_tag.append(True)
+    # predictions
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
     lower_bound = df_prediction['lower_bound']
@@ -131,6 +135,29 @@ def make_timeplot(df_measure, df_prediction):
                                  visible=False,
                                  hoverinfo='skip',
                                  line_width=.8))
+        visibility_tag.append([True])
+    # fatalities
+    mode = 'death'
+    df_measure_death = df_measure[mode]
+    df_measure_death = normalize_by_population_wide(df_measure_death)
+    # Plot per million
+    df_measure_death *= 1e6
+    colors = px.colors.qualitative.Dark24
+    n_colors = len(colors)
+    fig = go.Figure()
+    hovertemplate_fatalities = '<b>%{meta}</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
+    hovertemplate_prediction = '<b>%{meta}<br>prediction</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
+    for i, country in enumerate(df_measure_death.columns):
+        fig.add_trace(go.Scatter(x=df_measure_death.index,
+                                 y=df_measure_death[country],
+                                 name=country[1], mode='markers+lines',
+                                 marker_symbol = SymbolValidator().values[i],
+                                 marker_color=colors[i%n_colors],
+                                 line_color=colors[i%n_colors],
+                                 meta=country[1],
+                                 hovertemplate=hovertemplate_fatalities,
+                                 visible=False))
+        visibility_tag.append(False)
 
     last_day = df_measure_confirmed.index.max()
     day = pd.DateOffset(days=1)
@@ -138,6 +165,7 @@ def make_timeplot(df_measure, df_prediction):
             xaxis=dict(rangeslider_visible=True,
                 range=(last_day - 10 * day,
                        last_day + 4 * day)))
+
     fig.update_layout(
         showlegend=True,
         updatemenus=[
@@ -199,24 +227,74 @@ def make_timeplot(df_measure, df_prediction):
             )
     ))
 
-    fig.add_annotation(
-            x=0.1,
-            y=0.95,
-            xref='paper',
-            yref='paper',
-            showarrow=False,
-            font_size=LABEL_FONT_SIZE,
-            text="Confirmed cases per Million")
-    fig.add_annotation(
-            x=1,
-            y=-0.13,
-            xref='paper',
-            yref='paper',
-            showarrow=False,
-            font_size=LABEL_FONT_SIZE - 6,
-            font_color="DarkSlateGray",
-            text="Drag handles below to change time window",
-            align="right")
+    # fig.add_annotation(
+    #         x=0.1,
+    #         y=0.95,
+    #         xref='paper',
+    #         yref='paper',
+    #         showarrow=False,
+    #         font_size=LABEL_FONT_SIZE,
+    #         text="Confirmed cases per Million")
+    # fig.add_annotation(
+    #         x=1,
+    #         y=-0.13,
+    #         xref='paper',
+    #         yref='paper',
+    #         showarrow=False,
+    #         font_size=LABEL_FONT_SIZE - 6,
+    #         font_color="DarkSlateGray",
+    #         text="Drag handles below to change time window",
+    #         align="right")
+    fatalities_annotation = [dict(x=0.1,
+                                 y=0.95,
+                                 xref='paper',
+                                 yref='paper',
+                                 showarrow=False,
+                                 font_size=LABEL_FONT_SIZE,
+                                 text="fatalities cases per Million"
+                                 )]
+    confirmed_annotation = [dict(x=0.1,
+                                 y=0.95,
+                                 xref='paper',
+                                 yref='paper',
+                                 showarrow=False,
+                                 font_size=LABEL_FONT_SIZE,
+                                 text="Confirmed cases per Million"
+                                 )]
+    drag_handle_annotation = [dict(x=1,
+                                   y=-0.13,
+                                   xref='paper',
+                                   yref='paper',
+                                   showarrow=False,
+                                   font_size=LABEL_FONT_SIZE - 6,
+                                   font_color="DarkSlateGray",
+                                   text="Drag handles below to change time window",
+                                   align="right")]
+
+    visibility_tag_inv = list(np.logical_not(visibility_tag))
+    fig.update_layout(
+    updatemenus=[
+        dict(
+            type="buttons",
+            direction="right",
+            active=0,
+            x=0.57,
+            y=1.2,
+            buttons=list([
+                dict(label="Active",
+                     method="update",
+                     args=[{"visible": visibility_tag},
+                           {"title": "Confirmed cases per Million",
+                            "annotations": confirmed_annotation + drag_handle_annotation}]),
+                dict(label="Fatalities",
+                     method="update",
+                     args=[{"visible": visibility_tag_inv},
+                           {"title": "Death cases per Million",
+                            "annotations": fatalities_annotation}]),
+            ]),
+        )
+    ])
+
 
     return fig
 
