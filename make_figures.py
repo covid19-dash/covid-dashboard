@@ -96,6 +96,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  hovertemplate=hovertemplate_measure,
                                  visible=True))
         visibility_tag.append(True)
+
     # predictions
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
@@ -121,6 +122,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  meta=country[1],
                                  hovertemplate=hovertemplate_prediction,
                                  visible=True))
+        visibility_tag.append(True)
         fig.add_trace(go.Scatter(x=upper_bound.index,
                                  y=upper_bound[country],
                                  name='+' + country[1], mode='lines',
@@ -130,6 +132,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  visible=True,
                                  hoverinfo='skip',
                                  line_width=.8))
+        visibility_tag.append(True)
         fig.add_trace(go.Scatter(x=lower_bound.index,
                                  y=lower_bound[country],
                                  name='+' + country[1], mode='lines',
@@ -139,7 +142,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  visible=True,
                                  hoverinfo='skip',
                                  line_width=.8))
-        visibility_tag.append([True])
+        visibility_tag.append(True)
     # fatalities
     mode = 'death'
     df_measure_death = df_measure[mode]
@@ -150,8 +153,10 @@ def make_timeplot(df_measure, df_prediction, countries=None):
     n_colors = len(colors)
     fig = go.Figure()
     hovertemplate_fatalities = '<b>%{meta}</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
-    hovertemplate_prediction = '<b>%{meta}<br>prediction</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
     for i, country in enumerate(df_measure_death.columns):
+        if countries and country[1] not in countries:
+            continue
+        print(df_measure_death[country])
         fig.add_trace(go.Scatter(x=df_measure_death.index,
                                  y=df_measure_death[country],
                                  name=country[1], mode='markers+lines',
@@ -160,7 +165,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  line_color=colors[i%n_colors],
                                  meta=country[1],
                                  hovertemplate=hovertemplate_fatalities,
-                                 visible=False))
+                                 visible=True))
         visibility_tag.append(False)
 
     last_day = df_measure_confirmed.index.max()
@@ -170,50 +175,50 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                 range=(last_day - 10 * day,
                        last_day + 4 * day)))
 
-    fig.update_layout(
-        showlegend=True,
-        updatemenus=[
-        dict(
-            type = "buttons",
-            direction = "left",
-            buttons=list([
-                dict(
-                    args=[{'yaxis': {'type':'log'},
-                           "legend": {'x':0.65, 'y':0.1,
-                                      "font":{"size":18},
-                                      }}],
-                    label="log",
-                    method="relayout",
-                ),
-                dict(
-                    args=[{'yaxis': {'type':'linear'},
-                           "legend": {'x':0.05, 'y':0.8,
-                                      "font":{"size":18},
-                                      }}],
-                    label="linear",
-                    method="relayout",
-                ),
+    # fig.update_layout(
+    #     showlegend=True,
+    #     updatemenus=[
+    #     dict(
+    #         type = "buttons",
+    #         direction = "left",
+    #         buttons=list([
+    #             dict(
+    #                 args=[{'yaxis': {'type':'log'},
+    #                        "legend": {'x':0.65, 'y':0.1,
+    #                                   "font":{"size":18},
+    #                                   }}],
+    #                 label="log",
+    #                 method="relayout",
+    #             ),
+    #             dict(
+    #                 args=[{'yaxis': {'type':'linear'},
+    #                        "legend": {'x':0.05, 'y':0.8,
+    #                                   "font":{"size":18},
+    #                                   }}],
+    #                 label="linear",
+    #                 method="relayout",
+    #             ),
 
-            ]),
-            pad={"r": 10, "t": 0, "b": 0},
-            showactive=True,
-            x=0.05,
-            xanchor="left",
-            y=1.05,
-            yanchor="top",
-            font_color='black',
-        ),
-        ],
-        xaxis_tickfont_size=LABEL_FONT_SIZE - 4,
-        yaxis_tickfont_size=LABEL_FONT_SIZE - 4,
-        height=FIRST_LINE_HEIGHT,
-        margin=dict(t=0, b=0.02),
-        # The legend position + font size
-        # See https://plot.ly/python/legend/#style-legend
-        legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
-                    )
-    )
-    # vartical line to seprate the last day of measurements from prediction
+    #         ]),
+    #         pad={"r": 10, "t": 0, "b": 0},
+    #         showactive=True,
+    #         x=0.05,
+    #         xanchor="left",
+    #         y=1.05,
+    #         yanchor="top",
+    #         font_color='black',
+    #     ),
+    #     ],
+    #     xaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+    #     yaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+    #     height=FIRST_LINE_HEIGHT,
+    #     margin=dict(t=0, b=0.02),
+    #     # The legend position + font size
+    #     # See https://plot.ly/python/legend/#style-legend
+    #     legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
+    #                 )
+    # )
+    # # vartical line to seprate the last day of measurements from prediction
     fig.add_shape(
         # Line Vertical
         dict(
@@ -255,7 +260,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  yref='paper',
                                  showarrow=False,
                                  font_size=LABEL_FONT_SIZE,
-                                 text="fatalities cases per Million"
+                                 text='Deaths per Million'
                                  )]
     confirmed_annotation = [dict(x=0.1,
                                  y=0.95,
@@ -263,7 +268,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  yref='paper',
                                  showarrow=False,
                                  font_size=LABEL_FONT_SIZE,
-                                 text="Confirmed cases per Million"
+                                 text='Confirmed cases per Million'
                                  )]
     drag_handle_annotation = [dict(x=1,
                                    y=-0.13,
@@ -276,28 +281,66 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                    align="right")]
 
     visibility_tag_inv = list(np.logical_not(visibility_tag))
+
     fig.update_layout(
-    updatemenus=[
-        dict(
-            type="buttons",
-            direction="right",
-            active=0,
-            x=0.57,
-            y=1.2,
+        showlegend=True,
+        updatemenus=[
+            dict(
+            type = "buttons",
+            direction = "left",
             buttons=list([
-                dict(label="Active",
+                dict(
+                    args=[{'yaxis': {'type':'log'},
+                           "legend": {'x':0.65, 'y':0.1,
+                                      "font":{"size":18},
+                                      }}],
+                    label="log",
+                    method="relayout",
+                ),
+                dict(
+                    args=[{'yaxis': {'type':'linear'},
+                           "legend": {'x':0.05, 'y':0.8,
+                                      "font":{"size":18},
+                                      }}],
+                    label="linear",
+                    method="relayout",
+                ),
+                dict(
+                    label="Active",
                      method="update",
                      args=[{"visible": visibility_tag},
-                           {"title": "Confirmed cases per Million",
-                            "annotations": confirmed_annotation + drag_handle_annotation}]),
-                dict(label="Fatalities",
+                           {"title": "",
+                            "annotations": confirmed_annotation + \
+                                drag_handle_annotation}]
+                ),
+                dict(
+                    label="Fatalities",
                      method="update",
                      args=[{"visible": visibility_tag_inv},
-                           {"title": "Death cases per Million",
-                            "annotations": fatalities_annotation}]),
+                           {"title": "",
+                            "annotations": fatalities_annotation + \
+                                drag_handle_annotation}]
+                ),
+
             ]),
-        )
-    ])
+            pad={"r": 10, "t": 0, "b": 0},
+            showactive=True,
+            x=0.57,
+            y=1.2,
+            xanchor="left",
+            yanchor="top",
+            font_color='black'
+            ),
+            ],
+        xaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+        yaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+        height=FIRST_LINE_HEIGHT,
+        margin=dict(t=0, b=0.02),
+        # The legend position + font size
+        # See https://plot.ly/python/legend/#style-legend
+        legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
+                    )
+    )
 
 
     return fig
