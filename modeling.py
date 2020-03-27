@@ -165,7 +165,8 @@ plt.tight_layout()
 
 # %%
 # Display the estimated growth rates
-growth_rate.T.sort_values(by=0)
+pd.set_option('display.max_rows', 60)
+growth_rate[most_affected_countries[:60]].T
 
 # %%
 # Plot our prediction
