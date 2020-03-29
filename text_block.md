@@ -1,8 +1,8 @@
 # What do these data mean?
 
-These visualizations give predictions about the future number of confirmed COVID-19 cases. The predictions are based on extrapolating the growth observed in a given country over the last two weeks.
+These visualizations give predictions about the future number of confirmed COVID-19 cases and fatalities. The predictions are based on extrapolating the growth observed in a given country over the last two weeks.
 
-These predictions are only short-term extrapolation: predicting the future is hard, and epidemic dynamics will change with changes in public health measures, social interaction patterns, or even weather.  Please also keep in mind that each data point in these visualizations represents a person who has suffered or lost their lives to this disease.
+These predictions are only short-term extrapolation: predicting the future is hard, and epidemic dynamics will change with changes in public health measures, social interaction patterns, or even weather.  In addition, the projections are only as good as the data that they are based on, and we know that the data are biased (see [our detailed description below](#what-are-the-potential-biases-in-the-data)).  Please also keep in mind that each data point in these visualizations represents a person who has suffered or lost their lives to this disease.
 
 ## Understanding exponential growth
 
@@ -44,7 +44,7 @@ We cannot. We are simply using the data to project further growth. However, you 
 Accurate measurements of health across populations are difficult. There are many sources of bias in the data.
 
 ## Reporting biases
-Perhaps the greatest bias is that cases can only be counted if they seek out medical care or are tested. COVID-19 appears to cause mild or no symptoms in a sizeable proportion of people, which means that the reported counts underestimate the true total number of infected persons.  This could also cause biases between countries --- for example, if people are told to stay home unless their disease worsens, then fewer cases will be detected than if people are told to seek medical care for mild symptoms and receive testing for the virus. Also, some countries test systematically many individuals, while other countries only test individuals with severe symptoms. This testing strategy, as well as the diagnostic criteria, may vary across time in a given country.
+Perhaps the greatest bias is that cases can only be counted if they seek out medical care or are tested. COVID-19 appears to cause mild or no symptoms in a sizeable proportion of people, which means that the reported counts underestimate the true total number of infected persons.  This could also cause biases between countries --- for example, if people are told to stay home unless their disease worsens, then fewer cases will be detected than if people are told to seek medical care for mild symptoms and receive testing for the virus. Also, some countries have tested many individuals systematically, while other countries only test individuals with severe symptoms. This testing strategy, as well as the diagnostic criteria, may also change across time in a given country.  Similarly, fatality data will depend on accurate reporting of the cause of death, and shortage of tests may lead to COVID-19 deaths being classified as death from other causes such as seasonal flu (see [here](https://www.washingtonpost.com/politics/2020/03/27/those-covid-19-death-toll-figures-are-incomplete/) for more on the difficultly of accurately computing fatality statistics).
 
 ## Test accuracy
 
