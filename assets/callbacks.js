@@ -65,7 +65,7 @@ window.dash_clientside.clientside3 = {
 
     
 window.dash_clientside.clientside = {
-    update_store_data: function(rows, selectedrows, cases_type, store) {
+    update_store_data: function(rows, selectedrows, cases_type, log_or_lin, store) {
 	/**
 	 * Update timeseries figure when selected countries change,
 	 * or type of cases (active cases or fatalities)

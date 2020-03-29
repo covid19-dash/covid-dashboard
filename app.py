@@ -95,6 +95,16 @@ app.layout = html.Div([
                 labelStyle={'display': 'inline-block',
                             'padding-right': '0.5em'}
           ),
+            dcc.RadioItems(id='log-lin',
+                options=[
+                    {'label':'log', 'value': 'log'},
+                    {'label': 'linear', 'value': 'linear'},
+                ],
+                value='linear',
+                labelStyle={'display': 'inline-block',
+                            'padding-right': '0.5em'}
+          ),
+
             dcc.Graph(
                 id='plot', figure=fig2,
                 config={
@@ -200,7 +210,8 @@ app.clientside_callback(
     inputs=[
         Input('table', "data"),
         Input('table', "selected_rows"),
-        Input('radio-cases', 'value')],
+        Input('radio-cases', 'value'),
+        Input('log-lin', 'value')],
     state=[State('store', 'data')],
     )
 

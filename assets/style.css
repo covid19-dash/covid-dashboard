@@ -539,5 +539,11 @@ div.date {
 }
 
 #radio-cases {
-    text-align: center;
+    display: inline-block;
+    padding-right: 2em;
+}
+
+#log-lin {
+    text-align: right;
+    display: inline-block;
 }
