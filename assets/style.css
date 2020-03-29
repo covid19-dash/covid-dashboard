@@ -537,3 +537,13 @@ div.date {
     padding: 3px;
     color: #444;
 }
+
+#radio-cases {
+    display: inline-block;
+    padding-right: 2em;
+}
+
+#log-lin {
+    text-align: right;
+    display: inline-block;
+}

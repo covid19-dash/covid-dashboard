@@ -25,9 +25,9 @@ def make_map(df, df_fatalities):
     Parameters
     ----------
     df: pandas DataFrame
-        Our cases to plot
-    pop: pandas DataFrame
-        The population, used to normalize
+        Tidt dataframe of confirmed cases
+    df_fatalities: pandas DataFrame
+        Tidy dataframe of fatalities
     """
     normalized_values = normalize_by_population(df)
     # Plot per Million individual
@@ -70,7 +70,11 @@ def make_timeplot(df_measure, df_prediction, countries=None):
 
     df_prediction: pandas DataFrame
         DataFrame of predictions, with similar structure as df_measure
+
+    countries: list or None (default)
+        list of countries to use for the figure. If None, all countries are used.
     """
+    # active cases
     mode = 'confirmed'
     df_measure_confirmed = df_measure[mode]
     df_measure_confirmed = normalize_by_population_wide(df_measure_confirmed)
@@ -93,6 +97,8 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  meta=country[1],
                                  hovertemplate=hovertemplate_measure,
                                  visible=True))
+
+    # predictions
     prediction = df_prediction['prediction']
     upper_bound = df_prediction['upper_bound']
     lower_bound = df_prediction['lower_bound']
@@ -135,6 +141,27 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  visible=True,
                                  hoverinfo='skip',
                                  line_width=.8))
+    # fatalities
+    mode = 'death'
+    df_measure_death = df_measure[mode]
+    df_measure_death = normalize_by_population_wide(df_measure_death)
+    # Plot per million
+    df_measure_death *= 1e6
+    colors = px.colors.qualitative.Dark24
+    n_colors = len(colors)
+    hovertemplate_fatalities = '<b>%{meta}<br>fatalities</b><br>%{x}<br>%{y:.0f} per Million<extra></extra>'
+    for i, country in enumerate(df_measure_death.columns):
+        if countries and country[1] not in countries:
+            continue
+        fig.add_trace(go.Scatter(x=df_measure_death.index,
+                                 y=df_measure_death[country],
+                                 name='  ' + country[1], mode='markers+lines',
+                                 marker_symbol = SymbolValidator().values[i],
+                                 marker_color=colors[i%n_colors],
+                                 line_color=colors[i%n_colors],
+                                 meta=country[1],
+                                 hovertemplate=hovertemplate_fatalities,
+                                 visible=True))
 
     last_day = df_measure_confirmed.index.max()
     day = pd.DateOffset(days=1)
@@ -142,50 +169,9 @@ def make_timeplot(df_measure, df_prediction, countries=None):
             xaxis=dict(rangeslider_visible=True,
                 range=(last_day - 10 * day,
                        last_day + 4 * day)))
-    fig.update_layout(
-        showlegend=True,
-        updatemenus=[
-        dict(
-            type = "buttons",
-            direction = "left",
-            buttons=list([
-                dict(
-                    args=[{'yaxis': {'type':'log'},
-                           "legend": {'x':0.65, 'y':0.1,
-                                      "font":{"size":18},
-                                      }}],
-                    label="log",
-                    method="relayout",
-                ),
-                dict(
-                    args=[{'yaxis': {'type':'linear'},
-                           "legend": {'x':0.05, 'y':0.8,
-                                      "font":{"size":18},
-                                      }}],
-                    label="linear",
-                    method="relayout",
-                ),
 
-            ]),
-            pad={"r": 10, "t": 0, "b": 0},
-            showactive=True,
-            x=0.05,
-            xanchor="left",
-            y=1.05,
-            yanchor="top",
-            font_color='black',
-        ),
-        ],
-        xaxis_tickfont_size=LABEL_FONT_SIZE - 4,
-        yaxis_tickfont_size=LABEL_FONT_SIZE - 4,
-        height=FIRST_LINE_HEIGHT,
-        margin=dict(t=0, b=0.02),
-        # The legend position + font size
-        # See https://plot.ly/python/legend/#style-legend
-        legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE,
-                    )
-    )
-    # vartical line to seprate the last day of measurements from prediction
+
+    # # vertical line to separate the last day of measurements from prediction
     fig.add_shape(
         # Line Vertical
         dict(
@@ -203,24 +189,52 @@ def make_timeplot(df_measure, df_prediction, countries=None):
             )
     ))
 
-    fig.add_annotation(
-            x=0.1,
-            y=0.95,
-            xref='paper',
-            yref='paper',
-            showarrow=False,
-            font_size=LABEL_FONT_SIZE,
-            text="Confirmed cases per Million")
-    fig.add_annotation(
-            x=1,
-            y=-0.13,
-            xref='paper',
-            yref='paper',
-            showarrow=False,
-            font_size=LABEL_FONT_SIZE - 6,
-            font_color="DarkSlateGray",
-            text="Drag handles below to change time window",
-            align="right")
+
+    fatalities_annotation = dict(x=0.1,
+                                 y=0.95,
+                                 xref='paper',
+                                 yref='paper',
+                                 showarrow=False,
+                                 font_size=LABEL_FONT_SIZE,
+                                 text='Fatalities per Million',
+                                 visible=False,
+                                 )
+    confirmed_annotation = dict(x=0.1,
+                                 y=0.95,
+                                 xref='paper',
+                                 yref='paper',
+                                 showarrow=False,
+                                 font_size=LABEL_FONT_SIZE,
+                                 text='Confirmed cases per Million',
+                                 visible=True,
+                                 )
+    drag_handle_annotation = dict(x=1,
+                                   y=-0.1,
+                                   xref='paper',
+                                   yref='paper',
+                                   showarrow=False,
+                                   font_size=LABEL_FONT_SIZE - 6,
+                                   font_color="DarkSlateGray",
+                                   text="Drag handles below to change time window",
+                                   align="right")
+
+
+    fig.update_layout(
+        showlegend=True,
+        annotations=[fatalities_annotation,
+                     confirmed_annotation,
+                     drag_handle_annotation],
+        xaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+        yaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+        yaxis_type='linear',
+        height=FIRST_LINE_HEIGHT,
+        margin=dict(t=0, b=0.02),
+        # The legend position + font size
+        # See https://plot.ly/python/legend/#style-legend
+        legend=dict(x=.05, y=.8, font_size=LABEL_FONT_SIZE)
+    )
+
+
 
     return fig
 

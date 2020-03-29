@@ -86,6 +86,25 @@ app.layout = html.Div([
             className="pure-u-1 pure-u-lg-1 pure-u-xl-12-24",
             ),
         html.Div([
+            dcc.RadioItems(id='radio-cases',
+                options=[
+                    {'label':'Confirmed cases', 'value': 'active'},
+                    {'label': 'Fatalities', 'value': 'death'},
+                ],
+                value='active',
+                labelStyle={'display': 'inline-block',
+                            'padding-right': '0.5em'}
+          ),
+            dcc.RadioItems(id='log-lin',
+                options=[
+                    {'label':'log', 'value': 'log'},
+                    {'label': 'linear', 'value': 'linear'},
+                ],
+                value='linear',
+                labelStyle={'display': 'inline-block',
+                            'padding-right': '0.5em'}
+          ),
+
             dcc.Graph(
                 id='plot', figure=fig2,
                 config={
@@ -168,19 +187,6 @@ app.layout = html.Div([
 
 app.clientside_callback(
     ClientsideFunction(
-        namespace='clientside',
-        function_name='update_store_data'
-    ),
-    output=Output('plot', 'figure'),
-    inputs=[
-        Input('table', "data"),
-        Input('table', "selected_rows")],
-    state=[State('store', 'data')],
-    )
-
-
-app.clientside_callback(
-    ClientsideFunction(
         namespace='clientside3',
         function_name='update_table'
     ),
@@ -193,6 +199,22 @@ app.clientside_callback(
     state=[State('table', 'selected_rows'),
            State('store', 'data')],
     )
+
+
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_store_data'
+    ),
+    output=Output('plot', 'figure'),
+    inputs=[
+        Input('table', "data"),
+        Input('table', "selected_rows"),
+        Input('radio-cases', 'value'),
+        Input('log-lin', 'value')],
+    state=[State('store', 'data')],
+    )
+
 
 
 if __name__ == '__main__':
