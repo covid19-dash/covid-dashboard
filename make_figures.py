@@ -25,9 +25,9 @@ def make_map(df, df_fatalities):
     Parameters
     ----------
     df: pandas DataFrame
-        Our cases to plot
-    pop: pandas DataFrame
-        The population, used to normalize
+        Tidt dataframe of confirmed cases
+    df_fatalities: pandas DataFrame
+        Tidy dataframe of fatalities
     """
     normalized_values = normalize_by_population(df)
     # Plot per Million individual
@@ -70,8 +70,10 @@ def make_timeplot(df_measure, df_prediction, countries=None):
 
     df_prediction: pandas DataFrame
         DataFrame of predictions, with similar structure as df_measure
+
+    countries: list or None (default)
+        list of countries to use for the figure. If None, all countries are used.
     """
-    visibility_tag=[]
     # active cases
     mode = 'confirmed'
     df_measure_confirmed = df_measure[mode]
@@ -95,7 +97,6 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  meta=country[1],
                                  hovertemplate=hovertemplate_measure,
                                  visible=True))
-        visibility_tag.append(True)
 
     # predictions
     prediction = df_prediction['prediction']
@@ -122,7 +123,6 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  meta=country[1],
                                  hovertemplate=hovertemplate_prediction,
                                  visible=True))
-        visibility_tag.append(True)
         fig.add_trace(go.Scatter(x=upper_bound.index,
                                  y=upper_bound[country],
                                  name='+' + country[1], mode='lines',
@@ -132,7 +132,6 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  visible=True,
                                  hoverinfo='skip',
                                  line_width=.8))
-        visibility_tag.append(True)
         fig.add_trace(go.Scatter(x=lower_bound.index,
                                  y=lower_bound[country],
                                  name='+' + country[1], mode='lines',
@@ -142,7 +141,6 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  visible=True,
                                  hoverinfo='skip',
                                  line_width=.8))
-        visibility_tag.append(True)
     # fatalities
     mode = 'death'
     df_measure_death = df_measure[mode]
@@ -157,14 +155,13 @@ def make_timeplot(df_measure, df_prediction, countries=None):
             continue
         fig.add_trace(go.Scatter(x=df_measure_death.index,
                                  y=df_measure_death[country],
-                                 name=country[1], mode='markers+lines',
+                                 name='  ' + country[1], mode='markers+lines',
                                  marker_symbol = SymbolValidator().values[i],
                                  marker_color=colors[i%n_colors],
                                  line_color=colors[i%n_colors],
                                  meta=country[1],
                                  hovertemplate=hovertemplate_fatalities,
                                  visible=True))
-        visibility_tag.append(False)
 
     last_day = df_measure_confirmed.index.max()
     day = pd.DateOffset(days=1)
@@ -174,7 +171,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                        last_day + 4 * day)))
 
 
-    # # vartical line to seprate the last day of measurements from prediction
+    # # vertical line to separate the last day of measurements from prediction
     fig.add_shape(
         # Line Vertical
         dict(
@@ -193,36 +190,40 @@ def make_timeplot(df_measure, df_prediction, countries=None):
     ))
 
 
-    fatalities_annotation = [dict(x=0.1,
+    fatalities_annotation = dict(x=0.1,
                                  y=0.95,
                                  xref='paper',
                                  yref='paper',
                                  showarrow=False,
                                  font_size=LABEL_FONT_SIZE,
-                                 text=''
-                                 )]
-    confirmed_annotation = [dict(x=0.1,
+                                 text='Fatalities per Million',
+                                 visible=False,
+                                 )
+    confirmed_annotation = dict(x=0.1,
                                  y=0.95,
                                  xref='paper',
                                  yref='paper',
                                  showarrow=False,
                                  font_size=LABEL_FONT_SIZE,
-                                 text=''
-                                 )]
-    drag_handle_annotation = [dict(x=1,
-                                   y=-0.15,
+                                 text='Confirmed cases per Million',
+                                 visible=True,
+                                 )
+    drag_handle_annotation = dict(x=1,
+                                   y=-0.1,
                                    xref='paper',
                                    yref='paper',
                                    showarrow=False,
                                    font_size=LABEL_FONT_SIZE - 6,
                                    font_color="DarkSlateGray",
                                    text="Drag handles below to change time window",
-                                   align="right")]
+                                   align="right")
 
-    visibility_tag_inv = list(np.logical_not(visibility_tag))
 
     fig.update_layout(
         showlegend=True,
+        annotations=[fatalities_annotation,
+                     confirmed_annotation,
+                     drag_handle_annotation],
         updatemenus=[
             dict(
             type = "buttons",

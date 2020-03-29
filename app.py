@@ -88,7 +88,7 @@ app.layout = html.Div([
         html.Div([
             dcc.RadioItems(id='radio-cases',
                 options=[
-                    {'label':'Active cases', 'value': 'active'},
+                    {'label':'Confirmed cases', 'value': 'active'},
                     {'label': 'Fatalities', 'value': 'death'},
                 ],
                 value='active',
@@ -176,20 +176,6 @@ app.layout = html.Div([
 
 app.clientside_callback(
     ClientsideFunction(
-        namespace='clientside',
-        function_name='update_store_data'
-    ),
-    output=Output('plot', 'figure'),
-    inputs=[
-        Input('table', "data"),
-        Input('table', "selected_rows"),
-        Input('radio-cases', 'value')],
-    state=[State('store', 'data')],
-    )
-
-
-app.clientside_callback(
-    ClientsideFunction(
         namespace='clientside3',
         function_name='update_table'
     ),
@@ -202,6 +188,21 @@ app.clientside_callback(
     state=[State('table', 'selected_rows'),
            State('store', 'data')],
     )
+
+
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_store_data'
+    ),
+    output=Output('plot', 'figure'),
+    inputs=[
+        Input('table', "data"),
+        Input('table', "selected_rows"),
+        Input('radio-cases', 'value')],
+    state=[State('store', 'data')],
+    )
+
 
 
 if __name__ == '__main__':

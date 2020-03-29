@@ -6,6 +6,25 @@ if (!window.dash_clientside) {
 
 window.dash_clientside.clientside3 = {
     update_table: function(clickdata, selecteddata, table_data, selectedrows, store) {
+	/**
+	 * Update selected rows in table when clicking or selecting in map
+	 * chart
+	 *
+	 * Parameters
+	 * ----------
+	 *
+	 * clickdata: object (dict)
+	 *     clicked points
+	 * selected: object (dict)
+	 *     box-selected points
+	 * table_data: list of dict
+	 *     data of the table
+	 * selectedrows: list of indices
+	 *     list of selected countries to be updated
+	 * store: list
+	 *     store[1] is the list of countries to be used when initializing
+	 *     the app
+	 */
     	if ((!selecteddata) && (!clickdata)) {
 	    // this is only visited when initializing the app
 	    // we use a pre-defined list of indices
@@ -56,19 +75,15 @@ window.dash_clientside.clientside = {
 	 *
 	 *  rows: list of dicts
 	 *	data of the table
-	 *
 	 *  selectedrows: list of indices
 	 *	indices of selected countries
-	 *
 	 *  cases_type: str
 	 *	active or death
-	 *
 	 *  store: list
 	 *	store[0]: plotly-figure-dict, containing all the traces (all
 	 *	countries, data and prediction, for active cases and deaths)
-	 *	store[1]: list of selected countries
+	 *	store[1]: list of countries to be used at initialization
 	 */
-	console.log('hello');	
 	var fig = store[0];
 	if (!rows) {
            throw "Figure data not loaded, aborting update."
@@ -76,13 +91,13 @@ window.dash_clientside.clientside = {
 	var new_fig = {};
 	new_fig['data'] = [];
 	new_fig['layout'] = fig['layout'];
-	console.log('hello');	
-	console.log(cases_type);	
 	var countries = [];
 	for (i = 0; i < selectedrows.length; i++) {
 	    countries.push(rows[selectedrows[i]]["country_region"]);
 	}
-	if (cases_type === 'cases'){
+	if (cases_type === 'active'){
+	    new_fig['layout']['annotations'][0]['visible'] = false;
+	    new_fig['layout']['annotations'][1]['visible'] = true;
 	    for (i = 0; i < fig['data'].length; i++) {
 		var name = fig['data'][i]['name'];
 		if (countries.includes(name) || countries.includes(name.substring(1))){
@@ -91,9 +106,11 @@ window.dash_clientside.clientside = {
 	    }
 	}
 	else{
+	    new_fig['layout']['annotations'][0]['visible'] = true;
+	    new_fig['layout']['annotations'][1]['visible'] = false;
 	    for (i = 0; i < fig['data'].length; i++) {
 		var name = fig['data'][i]['name'];
-		if (countries.includes(name + '')){
+		if (countries.includes(name.substring(2))){
 		    new_fig['data'].push(fig['data'][i]);
 		}
 	    }
