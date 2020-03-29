@@ -92,7 +92,8 @@ app.layout = html.Div([
                     {'label': 'Fatalities', 'value': 'death'},
                 ],
                 value='active',
-                labelStyle={'display': 'inline-block'}
+                labelStyle={'display': 'inline-block',
+                            'padding-right': '0.5em'}
           ),
             dcc.Graph(
                 id='plot', figure=fig2,

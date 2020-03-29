@@ -537,3 +537,7 @@ div.date {
     padding: 3px;
     color: #444;
 }
+
+#radio-cases {
+    text-align: center;
+}
