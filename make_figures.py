@@ -163,7 +163,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                  line_color=colors[i%n_colors],
                                  meta=country[1],
                                  hovertemplate=hovertemplate_fatalities,
-                                 visible=False))
+                                 visible=True))
         visibility_tag.append(False)
 
     last_day = df_measure_confirmed.index.max()
@@ -250,22 +250,6 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                                       }}],
                     label="linear",
                     method="relayout",
-                ),
-                dict(
-                    label="Active",
-                     method="update",
-                     args=[{"visible": visibility_tag},
-                           {"title": "",
-                            "annotations": confirmed_annotation + \
-                                drag_handle_annotation}]
-                ),
-                dict(
-                    label="Fatalities",
-                     method="update",
-                     args=[{"visible": visibility_tag_inv},
-                           {"title": "",
-                            "annotations": fatalities_annotation + \
-                                drag_handle_annotation}]
                 ),
             ]),
         ),

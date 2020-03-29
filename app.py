@@ -86,6 +86,14 @@ app.layout = html.Div([
             className="pure-u-1 pure-u-lg-1 pure-u-xl-12-24",
             ),
         html.Div([
+            dcc.RadioItems(id='radio-cases',
+                options=[
+                    {'label':'Active cases', 'value': 'active'},
+                    {'label': 'Fatalities', 'value': 'death'},
+                ],
+                value='active',
+                labelStyle={'display': 'inline-block'}
+          ),
             dcc.Graph(
                 id='plot', figure=fig2,
                 config={
@@ -174,7 +182,8 @@ app.clientside_callback(
     output=Output('plot', 'figure'),
     inputs=[
         Input('table', "data"),
-        Input('table', "selected_rows")],
+        Input('table', "selected_rows"),
+        Input('radio-cases', 'value')],
     state=[State('store', 'data')],
     )
 

@@ -46,7 +46,29 @@ window.dash_clientside.clientside3 = {
 
     
 window.dash_clientside.clientside = {
-    update_store_data: function(rows, selectedrows, store) {
+    update_store_data: function(rows, selectedrows, cases_type, store) {
+	/**
+	 * Update timeseries figure when selected countries change,
+	 * or type of cases (active cases or fatalities)
+	 *
+	 * Parameters
+	 * ----------
+	 *
+	 *  rows: list of dicts
+	 *	data of the table
+	 *
+	 *  selectedrows: list of indices
+	 *	indices of selected countries
+	 *
+	 *  cases_type: str
+	 *	active or death
+	 *
+	 *  store: list
+	 *	store[0]: plotly-figure-dict, containing all the traces (all
+	 *	countries, data and prediction, for active cases and deaths)
+	 *	store[1]: list of selected countries
+	 */
+	console.log('hello');	
 	var fig = store[0];
 	if (!rows) {
            throw "Figure data not loaded, aborting update."
@@ -54,15 +76,26 @@ window.dash_clientside.clientside = {
 	var new_fig = {};
 	new_fig['data'] = [];
 	new_fig['layout'] = fig['layout'];
-	
+	console.log('hello');	
+	console.log(cases_type);	
 	var countries = [];
 	for (i = 0; i < selectedrows.length; i++) {
 	    countries.push(rows[selectedrows[i]]["country_region"]);
 	}
-	for (i = 0; i < fig['data'].length; i++) {
-	    var name = fig['data'][i]['name'];
-	    if (countries.includes(name) || countries.includes(name.substring(1))){
-		new_fig['data'].push(fig['data'][i]);
+	if (cases_type === 'cases'){
+	    for (i = 0; i < fig['data'].length; i++) {
+		var name = fig['data'][i]['name'];
+		if (countries.includes(name) || countries.includes(name.substring(1))){
+		    new_fig['data'].push(fig['data'][i]);
+		}
+	    }
+	}
+	else{
+	    for (i = 0; i < fig['data'].length; i++) {
+		var name = fig['data'][i]['name'];
+		if (countries.includes(name + '')){
+		    new_fig['data'].push(fig['data'][i]);
+		}
 	    }
 	}
         return new_fig;
