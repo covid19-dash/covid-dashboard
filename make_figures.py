@@ -226,6 +226,7 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                      drag_handle_annotation],
         xaxis_tickfont_size=LABEL_FONT_SIZE - 4,
         yaxis_tickfont_size=LABEL_FONT_SIZE - 4,
+        yaxis_type='linear',
         height=FIRST_LINE_HEIGHT,
         margin=dict(t=0, b=0.02),
         # The legend position + font size

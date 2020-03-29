@@ -79,6 +79,8 @@ window.dash_clientside.clientside = {
 	 *	indices of selected countries
 	 *  cases_type: str
 	 *	active or death
+	 *  log_or_lin: str
+	 *	log or linear axis
 	 *  store: list
 	 *	store[0]: plotly-figure-dict, containing all the traces (all
 	 *	countries, data and prediction, for active cases and deaths)
@@ -114,6 +116,15 @@ window.dash_clientside.clientside = {
 		    new_fig['data'].push(fig['data'][i]);
 		}
 	    }
+	}
+	new_fig['layout']['yaxis']['type'] = log_or_lin;
+	if (log_or_lin === 'log'){
+	    new_fig['layout']['legend']['x'] = .65;
+	    new_fig['layout']['legend']['y'] = .1;
+	}
+	else{
+	    new_fig['layout']['legend']['x'] = .05;
+	    new_fig['layout']['legend']['y'] = .8;
 	}
         return new_fig;
     }
