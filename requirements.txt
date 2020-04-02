@@ -1,8 +1,7 @@
 pycovid
-plotly
 numpy
 pandas
-dash
+dash==1.9.1
 gunicorn
 joblib
 matplotlib
