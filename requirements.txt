@@ -1,5 +1,4 @@
 pycovid
-plotly==4.5.4
 numpy
 pandas
 dash==1.8.0
