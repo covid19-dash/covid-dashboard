@@ -94,6 +94,8 @@ window.dash_clientside.clientside = {
 	new_fig['data'] = [];
 	new_fig['layout'] = fig['layout'];
 	var countries = [];
+	var max = 100;
+	var max_data = 0;
 	for (i = 0; i < selectedrows.length; i++) {
 	    countries.push(rows[selectedrows[i]]["country_region"]);
 	}
@@ -104,6 +106,10 @@ window.dash_clientside.clientside = {
 		var name = fig['data'][i]['name'];
 		if (countries.includes(name) || countries.includes(name.substring(1))){
 		    new_fig['data'].push(fig['data'][i]);
+		    max_data = Math.max(...fig['data'][i]['y']);
+		    if (max_data > max){
+			max = max_data;
+		    }
 		}
 	    }
 	}
@@ -114,6 +120,10 @@ window.dash_clientside.clientside = {
 		var name = fig['data'][i]['name'];
 		if (countries.includes(name.substring(2))){
 		    new_fig['data'].push(fig['data'][i]);
+		    max_data = Math.max(...fig['data'][i]['y']);
+		    if (max_data > max){
+			max = max_data;
+		    }
 		}
 	    }
 	}
@@ -121,6 +131,8 @@ window.dash_clientside.clientside = {
 	if (log_or_lin === 'log'){
 	    new_fig['layout']['legend']['x'] = .65;
 	    new_fig['layout']['legend']['y'] = .1;
+	    new_fig['layout']['yaxis']['range'] = [1.2, Math.log10(max)];
+	    new_fig['layout']['yaxis']['autorange'] = false;
 	}
 	else{
 	    new_fig['layout']['legend']['x'] = .05;
