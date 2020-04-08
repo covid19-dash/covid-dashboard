@@ -142,6 +142,10 @@ def make_timeplot(df_measure, df_prediction, countries=None):
             xaxis=dict(rangeslider_visible=True,
                 range=(last_day - 10 * day,
                        last_day + 4 * day)))
+    # A robust max across the countries with the maximum absolute numbers
+    # of cases, to be robust to noise in small countries
+    important_countries = np.argsort(df_measure['confirmed'].iloc[-1]) > 100
+    y_max = df_measure_confirmed.iloc[-1][important_countries].max()
     fig.update_layout(
         showlegend=True,
         updatemenus=[
@@ -150,7 +154,9 @@ def make_timeplot(df_measure, df_prediction, countries=None):
             direction = "left",
             buttons=list([
                 dict(
-                    args=[{'yaxis': {'type':'log'},
+                    args=[{'yaxis': {'type':'log',
+                                     'range': [np.log10(5), np.log10(y_max)],
+                                    },
                            "legend": {'x':0.65, 'y':0.1,
                                       "font":{"size":18},
                                       }}],
@@ -165,7 +171,6 @@ def make_timeplot(df_measure, df_prediction, countries=None):
                     label="linear",
                     method="relayout",
                 ),
-
             ]),
             pad={"r": 10, "t": 0, "b": 0},
             showactive=True,
