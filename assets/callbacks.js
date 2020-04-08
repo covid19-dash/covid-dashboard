@@ -137,6 +137,7 @@ window.dash_clientside.clientside = {
 	else{
 	    new_fig['layout']['legend']['x'] = .05;
 	    new_fig['layout']['legend']['y'] = .8;
+	    new_fig['layout']['yaxis']['autorange'] = true;
 	}
         return new_fig;
     }
