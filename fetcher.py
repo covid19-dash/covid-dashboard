@@ -53,9 +53,17 @@ def fetch_john_hopkins_data():
         key: pd.read_csv(urllib.request.urljoin(URL_BASE, filename))
         for key, filename in FILENAME_JOHN_HOPKINS.items()
     }
-    columns_drop = ["Province/State", "Lat", "Long"]
+    columns_drop = ["Province/State", "Province_State",
+                    "Lat", "Long", "Long_", "Population",
+                    "UID", "iso2", "iso3", "code3", "FIPS", "Admin2",
+                    ]
     for key in df_covid:
-        df_covid[key] = df_covid[key].drop(columns=columns_drop)
+        for col in columns_drop:
+            if col in df_covid[key].columns:
+                df_covid[key] = df_covid[key].drop(columns=[col, ])
+        df_covid[key] = df_covid[key].rename(
+                            columns={'Country_Region': 'Country/Region'})
+    for key in df_covid:
         df_covid[key] = df_covid[key].groupby("Country/Region").sum()
         # move each date column as a row entry to get a "date" column instead
         df_covid[key] = df_covid[key].stack().to_frame().reset_index().rename(
