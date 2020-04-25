@@ -12,8 +12,6 @@ URL_BASE = (
 FILENAME_JOHN_HOPKINS = {
     "confirmed": "time_series_covid19_confirmed_global.csv",
     "death": "time_series_covid19_deaths_global.csv",
-    "confirmed_US": "time_series_covid19_confirmed_US.csv",
-    "death_US": "time_series_covid19_deaths_US.csv",
 }
 
 URL_COUNTRY_ISO = (
@@ -65,13 +63,6 @@ def fetch_john_hopkins_data():
                 df_covid[key] = df_covid[key].drop(columns=[col, ])
         df_covid[key] = df_covid[key].rename(
                             columns={'Country_Region': 'Country/Region'})
-    # Merge US and global
-    df_covid['confirmed'] = pd.concat(
-                    [df_covid['confirmed'], df_covid.pop('confirmed_US')],
-                    )
-    df_covid['death'] = pd.concat(
-                    [df_covid['death'], df_covid.pop('death_US')],
-                    )
     for key in df_covid:
         df_covid[key] = df_covid[key].groupby("Country/Region").sum()
         # move each date column as a row entry to get a "date" column instead
