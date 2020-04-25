@@ -25,7 +25,6 @@ COVID-19 is a serious issue and our visualization and data analysis needs
 to be approached in a thoughtful, serious manner. The following would be a good read: <br>
 https://medium.com/nightingale/ten-considerations-before-you-create-another-chart-about-covid-19-27d3bd691be8
 
-
 # Development workflow
 
 ## Some details about the technologies
