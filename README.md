@@ -5,6 +5,7 @@ The idea is to associate a visualization that shows data relevant to the
 public with a didactic text on why such evolution is expected. A
 simple forecasting model estimates growth rates.
 
+
 ## Project vision
 
 This web-based visualization (https://covid19-dash.github.io/) is meant
