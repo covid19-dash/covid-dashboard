@@ -547,3 +547,12 @@ div.date {
     text-align: right;
     display: inline-block;
 }
+
+/*Disable red background color when selecting table cell */
+.dash-spreadsheet-container .dash-spreadsheet-inner table {
+	--accent: transparent  !important;
+        --selected-background: rgb(231, 231, 231) !important;
+        --muted: transparent !important;
+}
+
+
