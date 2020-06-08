@@ -10,3 +10,4 @@ nbconvert
 ipykernel
 jupyter_client
 sphinx-gallery
+jupyter_dash
