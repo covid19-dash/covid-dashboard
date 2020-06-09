@@ -1,8 +1,7 @@
 pycovid
 numpy
 pandas
-dash==1.9.1
-gunicorn
+dash
 joblib
 matplotlib
 statsmodels
@@ -11,3 +10,5 @@ ipykernel
 jupyter_client
 sphinx-gallery
 jupyter_dash
+notebook==6.0.3
+jupyter_server_proxy
