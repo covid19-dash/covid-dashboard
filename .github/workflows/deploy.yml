@@ -5,6 +5,7 @@ on:
       - master
   schedule:
     - cron: '0 5 * * *'  # run at during the 5th hour of each day
+    - cron: '0 17 * * *'  # run at during the 17th hour of each day
 jobs:
   build-and-deploy:
     runs-on: ubuntu-18.04
