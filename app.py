@@ -174,6 +174,7 @@ app.layout = html.Div([
                 html.Li(['Emmanuelle Gouillart, Plotly Inc']),
                 html.Li(['Russell Poldrack, Stanford University']),
                 html.Li(['Guillaume Lemaitre, Inria']),
+                html.Li(['Ashwin Nalwade, NYU Courant']),
             ]),
             ],
             className="footer"),
