@@ -10,6 +10,8 @@ In their early stages, outbreaks display *exponential growth*: the number of cas
 
 For a deeper explanation of how exponential growth relates to epidemics, see [this video](https://www.youtube.com/watch?v=Kas0tIxDvrg).
 
+One way to understand how smaller increments can lead to drastic changes in terms of exponentiation, is to consider the difference in values between 1^1000 and (1.01)^1000. 1^1000 is still 1, but (1.01)^100 is ~ 20,960! This is why social distancing is such a crucial measure of prevention against the spread of COVID-19. For more inisghts, see [reproduction number](https://en.wikipedia.org/wiki/Basic_reproduction_number).
+
 ### The growth rate is not only a property of the virus
 
 The local growth of an outbreaks is related to how likely one infected individual is to transmit the disease to another person. It is related to properties of the virus (such as how long it can stay on a surface), but also to how much people interact with each other, and public health measures such as hand washing.
