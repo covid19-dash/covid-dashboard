@@ -1,7 +1,7 @@
 pycovid
 numpy
 pandas
-dash==1.9.1
+dash==2.15.0
 gunicorn
 joblib
 matplotlib
